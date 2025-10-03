@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Profesional - Desarrollador Vibe Coding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #F5F5F5;
+            background-color: #0E0F13;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(14, 15, 19, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(89, 150, 194, 0.2);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5996C2;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #E0E0E0;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #5996C2;
+            background: rgba(89, 150, 194, 0.1);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 50%, #2d1b69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(89, 150, 194, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            color: #E0E0E0;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            color: #B0B0B0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(89, 150, 194, 0.3);
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #F5F5F5;
+        }
+
+        /* DRAGÓN ULTRA-ESTÁTICO - Movimientos mínimos */
+        .dragon {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            pointer-events: auto;
+            z-index: 9999;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+
+        .dragon-tooltip {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(89, 150, 194, 0.4);
+            box-shadow: 0 8px 25px rgba(89, 150, 194, 0.3);
+            z-index: 10001;
+            animation: tooltipPulse 2s ease-in-out infinite;
+            max-width: 280px;
+            text-align: center;
+        }
+
+        .dragon-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: #5996C2;
+        }
+
+        .dragon:hover .dragon-tooltip {
+            opacity: 1 !important;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        .dragon-tooltip.show {
+            opacity: 1 !important;
+        }
+
+        @keyframes tooltipPulse {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(89, 150, 194, 0.3);
+                border-color: rgba(89, 150, 194, 0.4);
+            }
+            50% {
+                box-shadow: 0 12px 35px rgba(89, 150, 194, 0.5);
+                border-color: rgba(89, 150, 194, 0.6);
+            }
+        }
+
+        .dragon-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 12px rgba(89, 150, 194, 0.4));
+        }
+
+        .dragon.happy {
+            filter: drop-shadow(0 4px 12px rgba(76, 175, 80, 0.4));
+        }
+
+        .dragon.excited {
+            filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.4));
+        }
+
+        .dragon.flying {
+            animation: dragonFlight 2s ease-in-out;
+        }
+
+        .dragon.resting {
+            animation: dragonRest 4s ease-in-out infinite;
+        }
+
+        @keyframes dragonFlight {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(-12px) rotate(1deg) scale(1.02);
+            }
+        }
+
+        @keyframes dragonRest {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-6px) scale(1.01);
+            }
+        }
+
+        @keyframes fireFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-40px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Resto de estilos existentes... */
+        .about-text { color: #B0B0B0; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .skill-card { background: rgba(26, 27, 38, 0.8); padding: 2rem; border-radius: 12px; text-align: center; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .project-card { background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; }
+        .contact-form { background: rgba(26, 27, 38, 0.8); padding: 2rem; border-radius: 12px; }
+
+        /* Estilos del abanico de certificados */
+        .certificates-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            perspective: 1200px;
+            perspective-origin: center center;
+            overflow: visible;
+        }
+
+        .certificates-fan {
+            position: relative;
+            width: 600px;
+            height: 300px;
+            transform-style: preserve-3d;
+            transform-origin: center center;
+        }
+
+        .certificate-card {
+            position: absolute;
+            width: 200px;
+            height: 140px;
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(89, 150, 194, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transform-origin: center center;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -70px;
+        }
+
+        .certificate-card:nth-child(1) {
+            transform: rotateY(0deg) translateZ(150px);
+            animation-delay: 0s;
+        }
+
+        .certificate-card:nth-child(2) {
+            transform: rotateY(90deg) translateZ(150px);
+            animation-delay: 0.5s;
+        }
+
+        .certificate-card:nth-child(3) {
+            transform: rotateY(180deg) translateZ(150px);
+            animation-delay: 1s;
+        }
+
+        .certificate-card:nth-child(4) {
+            transform: rotateY(270deg) translateZ(150px);
+            animation-delay: 1.5s;
+        }
+
+        .certificate-card:hover,
+        .certificate-card.enlarged {
+            transform: rotateY(var(--rotation, 0deg)) translateZ(150px) scale(1.2);
+            z-index: 10;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.5);
+        }
+
+        .certificate-card.enlarged {
+            animation-play-state: paused;
+        }
+
+        @keyframes certificateFloat {
+            0%, 100% {
+                transform: rotateY(var(--rotation, 0deg)) translateZ(150px) translateY(0px);
+            }
+            50% {
+                transform: rotateY(var(--rotation, 0deg)) translateZ(150px) translateY(-8px);
+            }
+        }
+
+        .certificate-preview {
+            text-align: center;
+            color: white;
+            padding: 0.8rem;
+        }
+
+        .certificate-icon {
+            font-size: 2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .certificate-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .certificate-description {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        /* Modal de certificado */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .certificate-modal-content {
+            position: relative;
+            background-color: #1a1b26;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .certificate-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .certificate-close:hover,
+        .certificate-close:focus {
+            color: #5996C2;
+        }
+
+        #certificate-frame {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        /* Animación de rotación continua del abanico */
+        @keyframes fanRotation {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .certificates-fan {
+            animation: fanRotation 25s linear infinite;
+        }
+
+        .certificates-fan.paused {
+            animation-play-state: paused;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .certificates-fan {
+                width: 400px;
+                height: 200px;
+            }
+
+            .certificate-card {
+                width: 140px;
+                height: 100px;
+                left: 50%;
+                top: 50%;
+                margin-left: -70px;
+                margin-top: -50px;
+            }
+
+            .certificate-card:nth-child(1) {
+                transform: rotateY(0deg) translateZ(120px);
+            }
+
+            .certificate-card:nth-child(2) {
+                transform: rotateY(90deg) translateZ(120px);
+            }
+
+            .certificate-card:nth-child(3) {
+                transform: rotateY(180deg) translateZ(120px);
+            }
+
+            .certificate-card:nth-child(4) {
+                transform: rotateY(270deg) translateZ(120px);
+            }
+
+            .certificate-card:hover,
+            .certificate-card.enlarged {
+                transform: rotateY(var(--rotation, 0deg)) translateZ(160px) scale(1.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { flex-direction: column; gap: 1rem; }
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Portfolio David Valero Roman</div>
+        <ul class="nav-menu">
+            <li><a href="#inicio" class="nav-link">Inicio</a></li>
+            <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+            <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+            <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+            <li><a href="#certificados" class="nav-link">Certificados</a></li>
+            <li><a href="#contacto" class="nav-link">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Hola, soy <span style="color: #FFD700;">David Valero Roman</span></h1>
+            <p class="hero-subtitle">Desarrollador Vibe Coding</p>
+            <p class="hero-description">
+                Creo experiencias web modernas, responsivas y dinámicas utilizando las últimas tecnologías.
+                Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras.
+            </p>
+            <a href="#proyectos" class="btn btn-primary">Ver Proyectos</a>
+            <a href="#contacto" class="btn btn-primary">Contactar</a>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Sobre Mí</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div class="about-text">
+                <p>Soy un desarrollador web apasionado con experiencia en la creación de aplicaciones web modernas y responsivas.</p>
+                <p>Durante mi trayectoria, he trabajado en diversos proyectos que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend.</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">🚀</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+        <h2 class="section-title">Mis Proyectos</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div style="height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">🛒</div>
+                <h3 style="color: #F5F5F5; margin: 1rem 0;">E-commerce Platform</h3>
+                <p style="color: #B0B0B0;">Plataforma completa con carrito de compras y procesamiento de pagos.</p>
+            </div>
+            <div class="project-card">
+                <div style="height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">✅</div>
+                <h3 style="color: #F5F5F5; margin: 1rem 0;">Task Management App</h3>
+                <p style="color: #B0B0B0;">Aplicación colaborativa con tiempo real y seguimiento de progreso.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Habilidades Técnicas</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div style="font-size: 3rem; color: #5996C2; margin-bottom: 1rem;">⚛️</div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">React</h3>
+                <div style="width: 100%; height: 8px; background: rgba(89, 150, 194, 0.2); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; background: linear-gradient(90deg, #5996C2, #7C3AED); border-radius: 4px; width: 90%;"></div>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div style="font-size: 3rem; color: #5996C2; margin-bottom: 1rem;">🟨</div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">JavaScript</h3>
+                <div style="width: 100%; height: 8px; background: rgba(89, 150, 194, 0.2); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; background: linear-gradient(90deg, #5996C2, #7C3AED); border-radius: 4px; width: 95%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificados" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Mis Certificados</h2>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="color: #B0B0B0; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo web.
+            </p>
+        </div>
+
+        <div class="certificates-container">
+            <div class="certificates-fan">
+                <div class="certificate-card" data-cert="Diploma.pdf">
+                    <div class="certificate-preview">
+                        <div class="certificate-icon">📜</div>
+                        <div class="certificate-title">Diseño Básico de Páginas Web</div>
+                        <div class="certificate-description">Técnicas básicas de desarrollo web</div>
+                    </div>
+                </div>
+                <div class="certificate-card" data-cert="Diploma web avanazado.pdf">
+                    <div class="certificate-preview">
+                        <div class="certificate-icon">🚀</div>
+                        <div class="certificate-title">Diseño Avanzado de Páginas Web</div>
+                        <div class="certificate-description">Técnicas avanzadas de desarrollo web</div>
+                    </div>
+                </div>
+                <div class="certificate-card" data-cert="Modelo_certificado_final_GDPymes_-_EX.pdf">
+                    <div class="certificate-preview">
+                        <div class="certificate-icon">💼</div>
+                        <div class="certificate-title">Liderando la IA</div>
+                        <div class="certificate-description">Uso de la IA para empresas</div>
+                    </div>
+                </div>
+                <div class="certificate-card" data-cert="1569765_4827_727473_75753_C2102004006-efsjp727470.pdf">
+                    <div class="certificate-preview">
+                        <div class="certificate-icon">🔧</div>
+                        <div class="certificate-title">Machine Learning Aplicado Usando Python</div>
+                        <div class="certificate-description">Técnicas de Machine Learning</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ver certificado completo -->
+        <div id="certificate-modal" class="certificate-modal">
+            <div class="certificate-modal-content">
+                <span class="certificate-close">&times;</span>
+                <iframe id="certificate-frame" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </section>
+        <h2 class="section-title">Contacto</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+            <div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">Hablemos</h3>
+                <p style="color: #B0B0B0;">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Tu nombre" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <input type="email" placeholder="tu@email.com" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <textarea rows="5" placeholder="Tu mensaje..." style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;"></textarea>
+                <button type="submit" class="btn" style="background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;">Enviar Mensaje</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- DRAGÓN ULTRA-ESTÁTICO FINAL -->
+    <div id="dragon" class="dragon" style="left: 50px; top: 200px;">
+        <svg class="dragon-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="40" cy="50" rx="25" ry="15" fill="url(#dragonGradient)"/>
+            <circle cx="40" cy="25" r="18" fill="url(#dragonGradient)"/>
+            <path d="M 25 15 Q 20 8 25 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <path d="M 55 15 Q 60 8 55 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <ellipse cx="35" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="45" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="36" cy="21" rx="1" ry="2" fill="#FFF"/>
+            <ellipse cx="46" cy="21" rx="1" ry="2" fill="#FFF"/>
+            <ellipse cx="40" cy="32" rx="8" ry="4" fill="url(#dragonGradient)"/>
+            <ellipse cx="40" cy="32" rx="4" ry="2" fill="#333"/>
+            <circle cx="37" cy="30" r="1" fill="#333"/>
+            <circle cx="43" cy="30" r="1" fill="#333"/>
+            <path d="M 15 45 Q 5 35 15 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+            <path d="M 65 45 Q 75 35 65 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+            <ellipse cx="30" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+            <ellipse cx="50" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+            <path d="M 28 68 L 26 72 L 30 72 Z" fill="#333"/>
+            <path d="M 32 68 L 30 72 L 34 72 Z" fill="#333"/>
+            <path d="M 48 68 L 46 72 L 50 72 Z" fill="#333"/>
+            <path d="M 52 68 L 50 72 L 54 72 Z" fill="#333"/>
+            <path d="M 65 55 Q 75 50 85 45 Q 80 40 75 45 Q 70 50 65 55" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <circle cx="70" cy="48" r="2" fill="#333"/>
+            <circle cx="75" cy="45" r="2" fill="#333"/>
+            <circle cx="80" cy="42" r="2" fill="#333"/>
+
+            <defs>
+                <linearGradient id="dragonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#5996C2"/>
+                    <stop offset="50%" style="stop-color:#7B68EE"/>
+                    <stop offset="100%" style="stop-color:#9D4EDD"/>
+                </linearGradient>
+                <linearGradient id="dragonWing" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#87CEEB"/>
+                    <stop offset="100%" style="stop-color:#5996C2"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <div class="dragon-tooltip">¡Hola, bienvenido a mi portfolio!  :)</div>
+    </div>
+
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Dragón ULTRA-ESTÁTICO - Movimientos mínimos con interacción por hover
+        class DragonUltraStatic {
+            constructor() {
+                console.log('🚀 Inicializando dragón ultra-estático...');
+                this.dragon = document.getElementById('dragon');
+                this.sections = ['inicio', 'sobre-mi', 'proyectos', 'habilidades', 'contacto'];
+                this.interactiveElements = document.querySelectorAll('.interactive-element, .btn, .skill-card, .project-card, p, h1, h2, h3, span');
+                this.textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, .nav-link');
+                this.currentTarget = null;
+                this.isEnabled = true;
+                this.evasionTimer = null;
+                this.recentlyMoved = false;
+                this.movementInterval = null;
+                this.safePositions = [];
+
+                if (this.dragon) {
+                    this.init();
+                } else {
+                    console.error('❌ Dragón no encontrado');
+                }
+            }
+
+            init() {
+                console.log('✅ Dragón encontrado, inicializando...');
+
+                // Eventos del tooltip - GARANTIZADO
+                this.dragon.addEventListener('mouseenter', () => {
+                    console.log('🖱️ Mouse sobre dragón - mostrando tooltip');
+                    this.showTooltip();
+                });
+
+                this.dragon.addEventListener('mouseleave', () => {
+                    console.log('👋 Mouse fuera del dragón - ocultando tooltip');
+                    this.hideTooltip();
+                });
+
+                // Eventos de interacción
+                this.dragon.addEventListener('click', () => {
+                    console.log('🐲 Dragón clickeado - efectos de fuego');
+                    this.dragon.classList.add('excited');
+                    this.breatheFire();
+                    setTimeout(() => {
+                        this.dragon.classList.remove('excited');
+                    }, 2000);
+                });
+
+                // Eventos hover en elementos interactivos - SOLO CUANDO EL CURSOR ESTÁ SOBRE ELLOS
+                this.interactiveElements.forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        if (this.isEnabled) {
+                            this.currentTarget = element;
+                            this.flyToElement(element);
+                        }
+                    });
+
+                    element.addEventListener('mouseleave', () => {
+                        if (this.currentTarget === element) {
+                            this.currentTarget = null;
+                            this.returnToResting();
+                        }
+                    });
+                });
+
+                // Sistema ultra-estático: solo 1 movimiento cada 60 segundos máximo
+                this.updatePositions();
+                this.generateSafePositions();
+                this.startEvasionSystem();
+                this.startUltraStaticMovement();
+
+                console.log('🎯 Dragón ultra-estático listo');
+            }
+
+            showTooltip() {
+                const tooltip = this.dragon.querySelector('.dragon-tooltip');
+                if (tooltip) {
+                    tooltip.classList.add('show');
+                    tooltip.style.opacity = '1';
+                    tooltip.style.transform = 'translateX(-50%) translateY(-5px)';
+                }
+            }
+
+            hideTooltip() {
+                const tooltip = this.dragon.querySelector('.dragon-tooltip');
+                if (tooltip) {
+                    tooltip.classList.remove('show');
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'translateX(-50%) translateY(0px)';
+                }
+            }
+
+            generateSafePositions() {
+                this.safePositions = [];
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                const dragonSize = 80;
+
+                for (let x = dragonSize; x < viewportWidth - dragonSize; x += 100) {
+                    for (let y = dragonSize; y < viewportHeight - dragonSize; y += 100) {
+                        if (this.isPositionSafe(x, y)) {
+                            this.safePositions.push({ x, y });
+                        }
+                    }
+                }
+            }
+
+            isPositionSafe(x, y) {
+                const dragonRect = {
+                    left: x - 40,
+                    right: x + 40,
+                    top: y - 40,
+                    bottom: y + 40
+                };
+
+                for (const element of this.textElements) {
+                    const rect = element.getBoundingClientRect();
+                    if (this.rectsOverlap(dragonRect, rect)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            rectsOverlap(rect1, rect2) {
+                return !(rect1.right < rect2.left ||
+                        rect1.left > rect2.right ||
+                        rect1.bottom < rect2.top ||
+                        rect1.top > rect2.bottom);
+            }
+
+            startEvasionSystem() {
+                setInterval(() => {
+                    if (this.isEnabled && !this.currentTarget) {
+                        const currentX = parseInt(this.dragon.style.left) || 50;
+                        const currentY = parseInt(this.dragon.style.top) || 200;
+
+                        if (!this.isPositionSafe(currentX, currentY)) {
+                            this.evasionTimer = setTimeout(() => {
+                                this.moveToSafePosition();
+                            }, 1000);
+                        } else {
+                            if (this.evasionTimer) {
+                                clearTimeout(this.evasionTimer);
+                                this.evasionTimer = null;
+                            }
+                        }
+                    }
+                }, 500);
+            }
+
+            moveToSafePosition() {
+                if (this.safePositions.length > 0) {
+                    const randomSafePos = this.safePositions[Math.floor(Math.random() * this.safePositions.length)];
+                    this.flyToPosition(randomSafePos);
+                }
+            }
+
+            updatePositions() {
+                this.positions = this.sections.map(sectionId => {
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        return {
+                            x: rect.left + rect.width / 2 - 40,
+                            y: rect.top + window.scrollY + rect.height / 2 - 40
+                        };
+                    }
+                    return { x: 0, y: 0 };
+                });
+            }
+
+            // Sistema ultra-estático: SOLO 1 movimiento cada 60 segundos máximo
+            startUltraStaticMovement() {
+                this.movementInterval = setInterval(() => {
+                    if (this.isEnabled && !this.currentTarget && !this.evasionTimer && !this.recentlyMoved) {
+                        console.log('🚀 Movimiento automático del dragón (cada 60 segundos)');
+                        this.patrolSections();
+                        this.recentlyMoved = true;
+                        // Resetear después de 60 segundos
+                        setTimeout(() => {
+                            this.recentlyMoved = false;
+                        }, 60000);
+                    }
+                }, 60000);
+            }
+
+            patrolSections() {
+                if (this.positions.length === 0) return;
+
+                const currentIndex = this.sections.findIndex(section => {
+                    const element = document.getElementById(section);
+                    const rect = element.getBoundingClientRect();
+                    const dragonRect = this.dragon.getBoundingClientRect();
+                    return Math.abs(rect.top - dragonRect.top) < 100;
+                });
+
+                let nextIndex;
+                if (currentIndex === -1) {
+                    nextIndex = 0;
+                } else {
+                    nextIndex = (currentIndex + 1) % this.sections.length;
+                }
+
+                this.flyToPosition(this.positions[nextIndex]);
+            }
+
+            flyToElement(element) {
+                const rect = element.getBoundingClientRect();
+                let targetX = rect.left + rect.width / 2 - 40;
+                let targetY = rect.top + window.scrollY + rect.height / 2 - 40;
+
+                if (!this.isPositionSafe(targetX, targetY)) {
+                    const safePos = this.findNearbySafePosition(targetX, targetY);
+                    if (safePos) {
+                        targetX = safePos.x;
+                        targetY = safePos.y;
+                    }
+                }
+
+                this.flyToPosition({ x: targetX, y: targetY });
+                this.dragon.classList.add('happy');
+            }
+
+            findNearbySafePosition(targetX, targetY) {
+                let bestPosition = null;
+                let minDistance = Infinity;
+
+                for (const pos of this.safePositions) {
+                    const distance = Math.sqrt(
+                        Math.pow(pos.x - targetX, 2) +
+                        Math.pow(pos.y - targetY, 2)
+                    );
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        bestPosition = pos;
+                    }
+                }
+
+                return bestPosition;
+            }
+
+            flyToPosition(position) {
+                if (!this.isPositionSafe(position.x, position.y)) {
+                    const safePos = this.findNearbySafePosition(position.x, position.y);
+                    if (safePos) {
+                        position = safePos;
+                    }
+                }
+
+                this.dragon.style.left = position.x + 'px';
+                this.dragon.style.top = position.y + 'px';
+
+                this.dragon.classList.remove('resting');
+                this.dragon.classList.add('flying');
+
+                setTimeout(() => {
+                    if (!this.currentTarget) {
+                        this.dragon.classList.remove('flying');
+                        this.dragon.classList.add('resting');
+                    }
+                }, 2000);
+            }
+
+            returnToResting() {
+                this.dragon.classList.remove('happy');
+                setTimeout(() => {
+                    if (!this.currentTarget) {
+                        this.dragon.classList.remove('flying');
+                        this.dragon.classList.add('resting');
+                    }
+                }, 1000);
+            }
+
+            breatheFire() {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        this.createFireParticle();
+                    }, i * 100);
+                }
+            }
+
+            createFireParticle() {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '6px';
+                particle.style.height = '6px';
+                particle.style.background = 'linear-gradient(45deg, #5996C2, #7C3AED)';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 80 + 'px';
+                particle.style.bottom = '10px';
+                particle.style.animation = 'fireFloat 1.2s ease-out forwards';
+                particle.style.pointerEvents = 'none';
+
+                this.dragon.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1200);
+            }
+        }
+
+        // Sistema del abanico de certificados
+        class CertificateFan {
+            constructor() {
+                this.certificatesFan = document.querySelector('.certificates-fan');
+                this.certificateCards = document.querySelectorAll('.certificate-card');
+                this.modal = document.getElementById('certificate-modal');
+                this.modalFrame = document.getElementById('certificate-frame');
+                this.closeBtn = document.querySelector('.certificate-close');
+                this.isPaused = false;
+
+                if (this.certificatesFan && this.certificateCards.length > 0) {
+                    this.init();
+                }
+            }
+
+            init() {
+                console.log('🎓 Inicializando abanico de certificados...');
+
+                // Eventos para las tarjetas de certificados
+                this.certificateCards.forEach((card, index) => {
+                    // Definir rotaciones específicas para 4 certificados (90 grados cada una)
+                    const rotations = [0, 90, 180, 270];
+                    const rotation = rotations[index] || 0;
+
+                    card.style.setProperty('--rotation', `${rotation}deg`);
+                    card.dataset.rotation = rotation;
+
+                    // Eventos de interacción
+                    card.addEventListener('mouseenter', () => {
+                        this.pauseAndEnlarge(card, rotation);
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        this.resumeAndShrink(card);
+                    });
+
+                    card.addEventListener('click', () => {
+                        this.openCertificate(card);
+                    });
+                });
+
+                // Eventos para el modal
+                this.closeBtn.addEventListener('click', () => {
+                    this.closeModal();
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (e.target === this.modal) {
+                        this.closeModal();
+                    }
+                });
+
+                // Pausar cuando el cursor está sobre el contenedor
+                const container = document.querySelector('.certificates-container');
+                container.addEventListener('mouseenter', () => {
+                    this.certificatesFan.classList.add('paused');
+                    this.isPaused = true;
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    this.certificatesFan.classList.remove('paused');
+                    this.isPaused = false;
+                    // Quitar la clase enlarged de todas las tarjetas
+                    this.certificateCards.forEach(card => {
+                        card.classList.remove('enlarged');
+                    });
+                });
+
+                console.log('✅ Abanico de certificados inicializado');
+            }
+
+            pauseAndEnlarge(card, rotation) {
+                if (!this.isPaused) {
+                    this.certificatesFan.classList.add('paused');
+                }
+                card.classList.add('enlarged');
+                // Solo escalar, mantener posición exacta
+                card.style.transform = `rotateY(${rotation}deg) translateZ(150px) scale(1.2)`;
+            }
+
+            resumeAndShrink(card) {
+                if (!this.isPaused) {
+                    this.certificatesFan.classList.remove('paused');
+                }
+                card.classList.remove('enlarged');
+                const rotation = card.dataset.rotation;
+                // Volver a escala normal, mantener posición
+                card.style.transform = `rotateY(${rotation}deg) translateZ(150px) scale(1)`;
+            }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌟 Página cargada - iniciando sistemas...');
+            new DragonUltraStatic();
+            new CertificateFan();
+        });
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

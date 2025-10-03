@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado Machine Learning - Solución Simplificada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1b26;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            background-color: #1a1b26;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            color: #5996C2;
+            font-size: 1.5em;
+        }
+        .modal-actions button {
+            background: #5996C2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .image-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .certificate-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .certificate-card {
+            background: rgba(89, 150, 194, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .certificate-card:hover {
+            transform: scale(1.05);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Certificado Machine Learning - Solución Simplificada</h1>
+
+    <div class="certificate-card" onclick="openCertificate()">
+        <div style="font-size: 2em;">🔧</div>
+        <h3>Machine Learning Aplicado Usando Python</h3>
+        <p>Técnicas de Machine Learning</p>
+    </div>
+
+    <div id="certificate-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Visualizando Certificado</div>
+                <div class="modal-actions">
+                    <button onclick="downloadImage()">Descargar</button>
+                    <button onclick="openImageInNewTab()">Nueva Pestaña</button>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+            </div>
+            <div class="image-container">
+                <img id="certificate-image" class="certificate-image" src="" alt="Certificado">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentImagePath = '';
+
+        function openCertificate() {
+            console.log('🎯 Abriendo certificado de Machine Learning');
+
+            // Usar ruta absoluta directa SIN fetch innecesario
+            currentImagePath = '/Certificados/Imagen_maching_lerning_aplicado.jpg';
+            console.log('🖼️ Ruta absoluta:', currentImagePath);
+
+            // Cargar imagen directamente
+            const certImage = document.getElementById('certificate-image');
+            const modal = document.getElementById('certificate-modal');
+            const modalTitle = document.getElementById('modal-title');
+
+            if (!certImage || !modal || !modalTitle) {
+                console.error('❌ Elementos DOM no encontrados');
+                return;
+            }
+
+            // Actualizar título
+            modalTitle.textContent = 'Visualizando: Machine Learning Aplicado Usando Python';
+
+            // Cargar imagen directamente
+            console.log('🖼️ Configurando imagen con src:', currentImagePath);
+            certImage.src = currentImagePath;
+            certImage.alt = 'Certificado Machine Learning';
+
+            // Eventos de carga
+            certImage.onload = () => {
+                console.log('✅ Imagen cargada exitosamente');
+                console.log('📏 Dimensiones:', certImage.naturalWidth + 'x' + certImage.naturalHeight);
+            };
+
+            certImage.onerror = (error) => {
+                console.error('❌ Error cargando imagen:', error);
+                console.error('🔍 Intentando con ruta alternativa...');
+
+                // Intentar ruta alternativa
+                const altPath = 'Certificados/Imagen_maching_lerning_aplicado.jpg';
+                console.log('🔄 Ruta alternativa:', altPath);
+                certImage.src = altPath;
+
+                certImage.onload = () => {
+                    console.log('✅ Imagen cargada con ruta alternativa');
+                };
+
+                certImage.onerror = () => {
+                    console.error('❌ Ambas rutas fallaron');
+                    certImage.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzU5OTZDMiIvPjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RXJyb3I6IE5vIHNlIHB1ZG8gY2FyZ2FyIGxhIGltYWdlbiBkZWwgY2VydGlmaWNhZG88L3RleHQ+PC9zdmc+';
+                };
+            };
+
+            // Mostrar modal
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+
+            console.log('✅ Modal mostrado');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        function openImageInNewTab() {
+            if (currentImagePath) {
+                window.open(currentImagePath, '_blank');
+            }
+        }
+
+        function downloadImage() {
+            if (currentImagePath) {
+                const link = document.createElement('a');
+                link.href = currentImagePath;
+                link.download = currentImagePath.split('/').pop();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = (event) => {
+            const modal = document.getElementById('certificate-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        console.log('🚀 Página de prueba simplificada cargada');
+    </script>
+</body>
+</html>

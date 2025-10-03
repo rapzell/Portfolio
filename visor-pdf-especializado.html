@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor de PDF - Certificados</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 50%, #2d1b69 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pdf-container {
+            background: rgba(26, 27, 38, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .pdf-title {
+            color: #5996C2;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .pdf-filename {
+            color: #B0B0B0;
+            font-size: 0.9rem;
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-btn {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(89, 150, 194, 0.3);
+        }
+
+        .pdf-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pdf-status {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(89, 150, 194, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .pdf-viewer {
+            border: 2px solid rgba(89, 150, 194, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            min-height: 400px;
+        }
+
+        .pdf-canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .pdf-page {
+            margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #B0B0B0;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .zoom-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .zoom-value {
+            background: rgba(89, 150, 194, 0.1);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pdf-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <div class="pdf-header">
+            <div class="pdf-title">Visor de Certificados PDF</div>
+            <div class="pdf-filename" id="pdf-filename">Selecciona un certificado para visualizar</div>
+        </div>
+
+        <div class="pdf-controls">
+            <select id="cert-select" class="pdf-btn" style="background: rgba(26, 27, 38, 0.9); color: white; border: 1px solid rgba(89, 150, 194, 0.3);">
+                <option value="">Seleccionar certificado...</option>
+                <option value="Diploma.pdf">📜 Diseño Básico de Páginas Web</option>
+                <option value="Diploma web avanazado.pdf">🚀 Diseño Avanzado de Páginas Web</option>
+                <option value="Modelo_certificado_final_GDPymes_-_EX.pdf">💼 Liderando la IA</option>
+                <option value="1569765_4827_727473_75753_C2102004006-efsjp727470.pdf">🔧 Machine Learning Aplicado Usando Python</option>
+            </select>
+
+            <button id="load-btn" class="pdf-btn" onclick="loadPdf()">Cargar PDF</button>
+            <button id="prev-btn" class="pdf-btn" onclick="previousPage()" disabled>Anterior</button>
+            <button id="next-btn" class="pdf-btn" onclick="nextPage()" disabled>Siguiente</button>
+
+            <div class="zoom-controls">
+                <button id="zoom-out-btn" class="pdf-btn" onclick="zoomOut()" disabled>-</button>
+                <div class="zoom-value" id="zoom-value">100%</div>
+                <button id="zoom-in-btn" class="pdf-btn" onclick="zoomIn()" disabled">+</button>
+            </div>
+        </div>
+
+        <div class="pdf-status" id="pdf-status">
+            Esperando selección de certificado...
+        </div>
+
+        <div class="pdf-viewer" id="pdf-viewer">
+            <div class="loading" id="loading">Cargando PDF...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configurar el worker de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let scale = 1.0;
+        let currentCertPath = '';
+
+        const certSelect = document.getElementById('cert-select');
+        const loadBtn = document.getElementById('load-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const zoomInBtn = document.getElementById('zoom-in-btn');
+        const zoomOutBtn = document.getElementById('zoom-out-btn');
+        const zoomValue = document.getElementById('zoom-value');
+        const pdfStatus = document.getElementById('pdf-status');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const pdfFilename = document.getElementById('pdf-filename');
+        const loading = document.getElementById('loading');
+
+        // Evento para cargar PDF cuando se selecciona del dropdown
+        certSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue) {
+                pdfFilename.textContent = `Archivo: ${selectedValue}`;
+                currentCertPath = `./Certificados/${selectedValue}`;
+            }
+        });
+
+        async function loadPdf() {
+            if (!currentCertPath) {
+                pdfStatus.textContent = '❌ Selecciona un certificado primero';
+                pdfStatus.style.background = 'rgba(255, 107, 107, 0.1)';
+                pdfStatus.style.color = '#ff6b6b';
+                return;
+            }
+
+            try {
+                pdfStatus.textContent = '🔄 Cargando PDF...';
+                pdfStatus.style.background = 'rgba(89, 150, 194, 0.1)';
+                pdfStatus.style.color = '#5996C2';
+                loading.style.display = 'block';
+
+                console.log('📄 Cargando PDF:', currentCertPath);
+
+                // Cargar el PDF
+                const loadingTask = pdfjsLib.getDocument(currentCertPath);
+                pdfDoc = await loadingTask.promise;
+
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+                scale = 1.0;
+
+                console.log(`✅ PDF cargado: ${totalPages} páginas`);
+
+                // Actualizar controles
+                updateControls();
+
+                // Mostrar primera página
+                await renderPage(currentPage);
+
+                pdfStatus.textContent = `✅ PDF cargado correctamente: ${totalPages} página(s)`;
+                pdfStatus.style.background = 'rgba(76, 175, 80, 0.1)';
+                pdfStatus.style.color = '#4CAF50';
+
+            } catch (error) {
+                console.error('❌ Error cargando PDF:', error);
+                pdfStatus.textContent = `❌ Error cargando PDF: ${error.message}`;
+                pdfStatus.style.background = 'rgba(255, 107, 107, 0.1)';
+                pdfStatus.style.color = '#ff6b6b';
+                loading.style.display = 'none';
+            }
+        }
+
+        async function renderPage(pageNum) {
+            try {
+                loading.style.display = 'block';
+
+                const page = await pdfDoc.getPage(pageNum);
+                const viewport = page.getViewport({ scale: scale });
+
+                // Crear canvas para la página
+                const canvas = document.createElement('canvas');
+                canvas.className = 'pdf-canvas pdf-page';
+                const context = canvas.getContext('2d');
+
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Renderizar página en el canvas
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                await page.render(renderContext).promise;
+
+                // Limpiar el visor y añadir la nueva página
+                pdfViewer.innerHTML = '';
+                pdfViewer.appendChild(canvas);
+
+                loading.style.display = 'none';
+
+                console.log(`📄 Página ${pageNum} renderizada correctamente`);
+
+            } catch (error) {
+                console.error('❌ Error renderizando página:', error);
+                loading.style.display = 'none';
+            }
+        }
+
+        function updateControls() {
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+            zoomInBtn.disabled = false;
+            zoomOutBtn.disabled = false;
+            zoomValue.textContent = Math.round(scale * 100) + '%';
+        }
+
+        async function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                await renderPage(currentPage);
+                updateControls();
+            }
+        }
+
+        async function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                await renderPage(currentPage);
+                updateControls();
+            }
+        }
+
+        async function zoomIn() {
+            if (scale < 2.0) {
+                scale += 0.1;
+                await renderPage(currentPage);
+                updateControls();
+            }
+        }
+
+        async function zoomOut() {
+            if (scale > 0.5) {
+                scale -= 0.1;
+                await renderPage(currentPage);
+                updateControls();
+            }
+        }
+
+        // Función para abrir en nueva ventana como respaldo
+        function openInNewWindow() {
+            if (currentCertPath) {
+                window.open(currentCertPath, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+            }
+        }
+
+        // Función para descargar
+        function downloadPdf() {
+            if (currentCertPath) {
+                const link = document.createElement('a');
+                link.href = currentCertPath;
+                link.download = currentCertPath.split('/').pop();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Añadir controles adicionales al header
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.pdf-header');
+            const additionalControls = document.createElement('div');
+            additionalControls.className = 'pdf-controls';
+            additionalControls.innerHTML = `
+                <button class="pdf-btn" onclick="openInNewWindow()">Nueva Ventana</button>
+                <button class="pdf-btn" onclick="downloadPdf()">Descargar</button>
+            `;
+            header.appendChild(additionalControls);
+        });
+    </script>
+</body>
+</html>

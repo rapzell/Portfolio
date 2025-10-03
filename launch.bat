@@ -1,0 +1,6 @@
+@echo off
+echo Instalando dependencias...
+call "C:\Users\David\CascadeProjects\Portfolio React\node-v20.17.0-win-x64\npm.cmd" install
+echo Iniciando servidor de desarrollo...
+call "C:\Users\David\CascadeProjects\Portfolio React\node-v20.17.0-win-x64\npx.cmd" react-scripts start
+pause

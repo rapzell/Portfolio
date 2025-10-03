@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Profesional - Certificados con Información Detallada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #F5F5F5;
+            background-color: #0E0F13;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(14, 15, 19, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(89, 150, 194, 0.2);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5996C2;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #E0E0E0;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #5996C2;
+            background: rgba(89, 150, 194, 0.1);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 50%, #2d1b69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #5996C2;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .certificates-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .certificates-fan {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            height: 400px;
+            position: relative;
+        }
+
+        .certificate-card {
+            background: rgba(89, 150, 194, 0.1);
+            border: 2px solid rgba(89, 150, 194, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            width: 200px;
+            height: 280px;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .certificate-card:hover {
+            transform: scale(1.1);
+            border-color: #5996C2;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.4);
+        }
+
+        .certificate-card.enlarged {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+        .certificate-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .certificate-title {
+            color: #5996C2;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .certificate-description {
+            color: #B0B0B0;
+            font-size: 0.9em;
+        }
+
+        /* Modal para información detallada */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1b26 0%, #2d3748 100%);
+            margin: 3% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            position: relative;
+            border: 2px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .modal-title {
+            color: #5996C2;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            color: #B0B0B0;
+            font-size: 1.1em;
+        }
+
+        .modal-body {
+            line-height: 1.8;
+        }
+
+        .info-section {
+            background: rgba(89, 150, 194, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #5996C2;
+        }
+
+        .info-title {
+            color: #5996C2;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .info-text {
+            color: #E0E0E0;
+            margin-bottom: 8px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(89, 150, 194, 0.4);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #aaa;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { flex-direction: column; gap: 1rem; }
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Portfolio David Valero Roman</div>
+        <ul class="nav-menu">
+            <li><a href="#inicio" class="nav-link">Inicio</a></li>
+            <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+            <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+            <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+            <li><a href="#certificados" class="nav-link">Certificados</a></li>
+            <li><a href="#contacto" class="nav-link">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Hola, soy <span style="color: #FFD700;">David Valero Roman</span></h1>
+            <p class="hero-subtitle">Desarrollador Vibe Coding</p>
+            <p class="hero-description">
+                Creo experiencias web modernas, responsivas y dinámicas utilizando las últimas tecnologías.
+                Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras.
+            </p>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Sobre Mí</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div class="about-text">
+                <p>Soy un desarrollador web apasionado con experiencia en la creación de aplicaciones web modernas y responsivas.</p>
+                <p>Durante mi trayectoria, he trabajado en diversos proyectos que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend.</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">🚀</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+        <h2 class="section-title">Mis Proyectos</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div style="height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">🛒</div>
+                <h3 style="color: #F5F5F5; margin: 1rem 0;">E-commerce Platform</h3>
+                <p style="color: #B0B0B0;">Plataforma completa con carrito de compras y procesamiento de pagos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Habilidades Técnicas</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div style="font-size: 3rem; color: #5996C2; margin-bottom: 1rem;">⚛️</div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">React</h3>
+                <div style="width: 100%; height: 8px; background: rgba(89, 150, 194, 0.2); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; background: linear-gradient(90deg, #5996C2, #7C3AED); border-radius: 4px; width: 90%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificados" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Mis Certificados</h2>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="color: #B0B0B0; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo web.
+            </p>
+        </div>
+
+        <div class="certificates-container">
+            <div class="certificates-fan">
+                <div class="certificate-card" data-cert="machine-learning" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🔧</div>
+                    <div class="certificate-title">Machine Learning Aplicado</div>
+                    <div class="certificate-description">Técnicas de Machine Learning</div>
+                </div>
+
+                <div class="certificate-card" data-cert="liderando-ia" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🤖</div>
+                    <div class="certificate-title">Liderando la IA</div>
+                    <div class="certificate-description">Programa de Inteligencia Artificial</div>
+                </div>
+
+                <div class="certificate-card" data-cert="diseno-web-avanzado" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🎨</div>
+                    <div class="certificate-title">Diseño Web Avanzado</div>
+                    <div class="certificate-description">Técnicas Avanzadas de Diseño</div>
+                </div>
+
+                <div class="certificate-card" data-cert="diseno-web-basico" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">📱</div>
+                    <div class="certificate-title">Diseño Web Básico</div>
+                    <div class="certificate-description">Fundamentos de Diseño Web</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para información detallada -->
+        <div id="certificate-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="modal-header">
+                    <div class="modal-title" id="modal-title">Certificado</div>
+                    <div class="modal-subtitle" id="modal-subtitle">Información detallada</div>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Contenido dinámico se insertará aquí -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" onclick="closeModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+        <h2 class="section-title">Contacto</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+            <div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">Hablemos</h3>
+                <p style="color: #B0B0B0;">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Tu nombre" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <input type="email" placeholder="tu@email.com" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <textarea rows="5" placeholder="Tu mensaje..." style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;"></textarea>
+                <button type="submit" class="btn" style="background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;">Enviar Mensaje</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Función para mostrar información detallada de certificados
+        function showCertificateDetails(card) {
+            const certKey = card.dataset.cert;
+            console.log('🎯 Mostrando información detallada del certificado:', certKey);
+
+            // Datos detallados de cada certificado
+            const certificatesData = {
+                'machine-learning': {
+                    title: 'Machine Learning Aplicado Usando Python',
+                    icon: '🔧',
+                    details: {
+                        'curso': 'IFCD093PO - Machine Learning aplicado usando Python',
+                        'codigo': 'F211080AA 004 006',
+                        'duracion': '150 horas (Teleformación)',
+                        'fecha': '01/04/2022 a 17/06/2022',
+                        'lugar': 'Málaga, 17 de junio de 2022'
+                    }
+                },
+                'liderando-ia': {
+                    title: 'Liderando la IA',
+                    icon: '🤖',
+                    details: {
+                        'entidad': 'IRONHACK SPAIN S.L.U.',
+                        'codigo_expediente': '2024/GDP_01/000017',
+                        'accion_formativa': 'Liderando la IA',
+                        'fecha_inicio': '2025-06-09',
+                        'fecha_fin': '2025-08-17',
+                        'horas_totales': '150 horas'
+                    }
+                },
+                'diseno-web-avanzado': {
+                    title: 'Diseño Web Avanzado',
+                    icon: '🎨',
+                    details: {
+                        'entidad': 'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)',
+                        'accion_formativa': '3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB',
+                        'modalidad': 'Teleformación',
+                        'duracion': '50 horas',
+                        'fecha_inicio': '10/05/2022',
+                        'fecha_fin': '13/06/2022'
+                    }
+                },
+                'diseno-web-basico': {
+                    title: 'Diseño Web Básico',
+                    icon: '📱',
+                    details: {
+                        'entidad_certificadora': 'BEST PEOPLE SOLUTIONS, S.L.',
+                        'cif_entidad': 'B87316022',
+                        'accion_formativa': '3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB',
+                        'modalidad': 'Teleformación',
+                        'duracion': '25.00 horas',
+                        'fecha_inicio': '01-04-2022',
+                        'fecha_fin': '09-05-2022'
+                    }
+                }
+            };
+
+            const certData = certificatesData[certKey];
+            if (!certData) {
+                console.error('❌ Datos de certificado no encontrados:', certKey);
+                return;
+            }
+
+            // Actualizar elementos del modal
+            document.getElementById('modal-title').textContent = certData.title;
+            document.getElementById('modal-subtitle').textContent = `Información detallada del certificado`;
+
+            // Crear contenido del modal
+            let content = `<div style="text-align: center; margin-bottom: 30px;">`;
+            content += `<div style="font-size: 4em; margin-bottom: 20px;">${certData.icon}</div>`;
+            content += `<h2 style="color: #5996C2; margin-bottom: 30px;">${certData.title}</h2>`;
+            content += `</div>`;
+
+            // Crear secciones de información
+            for (const [key, value] of Object.entries(certData.details)) {
+                const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                content += `
+                    <div class="info-section">
+                        <div class="info-title">${label}:</div>
+                        <div class="info-text">${value}</div>
+                    </div>
+                `;
+            }
+
+            // Agregar acciones adicionales
+            content += `
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid rgba(89, 150, 194, 0.3); text-align: center;">
+                    <p style="color: #B0B0B0; margin-bottom: 20px;">
+                        💡 Certificado obtenido satisfactoriamente
+                    </p>
+                    <button onclick="closeModal()" class="btn">Cerrar</button>
+                </div>
+            `;
+
+            document.getElementById('modal-body').innerHTML = content;
+
+            // Mostrar modal
+            const modal = document.getElementById('certificate-modal');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+
+            console.log('✅ Información detallada mostrada exitosamente');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            console.log('🔒 Modal cerrado');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.addEventListener('click', (event) => {
+            const modal = document.getElementById('certificate-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Información inicial en consola
+        console.log('🚀 Portfolio de certificados cargado');
+        console.log('📋 Sistema de información detallada activado');
+        console.log('💡 Haz clic en cualquier certificado para ver información detallada');
+    </script>
+</body>
+</html>

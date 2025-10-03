@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Imagen JPG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1b26;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .test-container {
+            background: rgba(89, 150, 194, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #5996C2;
+            margin: 20px 0;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnóstico de Imagen JPG</h1>
+
+    <div class="info">
+        <h3>📋 Información del Archivo</h3>
+        <p><strong>Archivo:</strong> Imagen_maching_lerning_aplicado.jpg</p>
+        <p><strong>Ruta:</strong> ./Certificados/Imagen_maching_lerning_aplicado.jpg</p>
+        <p><strong>Objetivo:</strong> Diagnosticar problemas de carga de imagen</p>
+    </div>
+
+    <div class="test-container">
+        <h3>🧪 Prueba 1: Carga Directa</h3>
+        <img src="./Certificados/Imagen_maching_lerning_aplicado.jpg"
+             alt="Imagen de certificado Machine Learning"
+             class="test-image"
+             onload="document.getElementById('direct-status').textContent='✅ Imagen cargada correctamente'"
+             onerror="document.getElementById('direct-status').textContent='❌ Error cargando imagen directa'">
+        <p id="direct-status">Cargando imagen directa...</p>
+    </div>
+
+    <div class="test-container">
+        <h3>🔧 Prueba 2: Verificación con Fetch</h3>
+        <button onclick="testFetch()">Probar con Fetch</button>
+        <div id="fetch-results"></div>
+    </div>
+
+    <div class="test-container">
+        <h3>📊 Prueba 3: Información Técnica</h3>
+        <button onclick="testTechnical()">Análisis Técnico</button>
+        <div id="technical-results"></div>
+    </div>
+
+    <script>
+        console.log('🔍 Iniciando diagnóstico de imagen JPG...');
+
+        // Función para probar fetch
+        async function testFetch() {
+            const resultsDiv = document.getElementById('fetch-results');
+            resultsDiv.innerHTML = '<p>🔄 Probando fetch...</p>';
+
+            try {
+                const response = await fetch('./Certificados/Imagen_maching_lerning_aplicado.jpg');
+                console.log('🌐 Respuesta fetch:', response.status, response.statusText);
+                console.log('🔍 Content-Type:', response.headers.get('content-type'));
+
+                resultsDiv.innerHTML = `
+                    <div class="info">
+                        <h4>✅ Resultados de Fetch:</h4>
+                        <p><strong>Estado:</strong> ${response.status} ${response.statusText}</p>
+                        <p><strong>Tipo MIME:</strong> ${response.headers.get('content-type')}</p>
+                        <p><strong>Accesible:</strong> ${response.ok ? '✅ Sí' : '❌ No'}</p>
+                    </div>
+                `;
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    console.log('📦 Blob:', blob.type, blob.size, 'bytes');
+
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const dataUrl = reader.result;
+                        console.log('✅ Data URL tipo MIME:', dataUrl.substring(5, dataUrl.indexOf(';')));
+
+                        resultsDiv.innerHTML += `
+                            <div class="info">
+                                <h4>📋 Información del Blob:</h4>
+                                <p><strong>Tipo:</strong> ${blob.type}</p>
+                                <p><strong>Tamaño:</strong> ${blob.size} bytes</p>
+                                <p><strong>Data URL tipo:</strong> ${dataUrl.substring(5, dataUrl.indexOf(';'))}</p>
+                            </div>
+                        `;
+                    };
+                    reader.readAsDataURL(blob);
+                }
+
+            } catch (error) {
+                console.error('❌ Error en fetch:', error);
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Error en Fetch:</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Función para análisis técnico
+        async function testTechnical() {
+            const resultsDiv = document.getElementById('technical-results');
+            resultsDiv.innerHTML = '<p>🔄 Analizando técnicamente...</p>';
+
+            try {
+                const response = await fetch('./Certificados/Imagen_maching_lerning_aplicado.jpg');
+                const blob = await response.blob();
+
+                resultsDiv.innerHTML = `
+                    <div class="info">
+                        <h4>🔬 Análisis Técnico:</h4>
+                        <p><strong>Tipo MIME del servidor:</strong> ${response.headers.get('content-type')}</p>
+                        <p><strong>Tipo del blob:</strong> ${blob.type}</p>
+                        <p><strong>Tamaño del blob:</strong> ${blob.size} bytes</p>
+                        <p><strong>¿Es imagen JPG?:</strong> ${blob.type === 'image/jpeg' ? '✅ Sí' : '❌ No'}</p>
+                    </div>
+                `;
+
+                // Verificar si el archivo es realmente una imagen JPG
+                if (blob.type !== 'image/jpeg') {
+                    resultsDiv.innerHTML += `
+                        <div class="error">
+                            <h4>🚨 Problema Detectado:</h4>
+                            <p>El servidor está devolviendo tipo MIME incorrecto.</p>
+                            <p><strong>Solución:</strong> El servidor necesita configuración correcta para archivos JPG.</p>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Error Técnico:</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-ejecutar análisis inicial
+        window.addEventListener('load', () => {
+            console.log('🚀 Página de diagnóstico cargada');
+            setTimeout(testTechnical, 1000);
+        });
+    </script>
+</body>
+</html>

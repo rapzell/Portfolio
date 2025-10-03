@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor de Certificados - Alternativa Visual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 50%, #2d1b69 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(26, 27, 38, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: #5996C2;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #B0B0B0;
+            font-size: 1.1rem;
+        }
+
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .certificate-card {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(89, 150, 194, 0.4);
+        }
+
+        .cert-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .cert-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .cert-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .cert-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cert-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .cert-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .cert-btn.primary {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            border: none;
+        }
+
+        .cert-btn.primary:hover {
+            box-shadow: 0 5px 15px rgba(89, 150, 194, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background-color: #1a1b26;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .modal-title {
+            color: #F5F5F5;
+            font-size: 1.3rem;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #5996C2;
+        }
+
+        .alternative-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            color: #333;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cert-large-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .cert-details {
+            margin: 20px 0;
+        }
+
+        .cert-detail {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(89, 150, 194, 0.1);
+            border-radius: 6px;
+        }
+
+        .cert-detail strong {
+            color: #5996C2;
+        }
+
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 8px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(89, 150, 194, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .certificates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cert-actions {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Mis Certificados Profesionales</h1>
+            <p class="subtitle">Visualización alternativa con información detallada de cada certificado</p>
+        </div>
+
+        <div class="certificates-grid">
+            <div class="certificate-card" onclick="showCertificate('basico')">
+                <div class="cert-icon">📜</div>
+                <div class="cert-title">Diseño Básico de Páginas Web</div>
+                <div class="cert-description">Fundamentos esenciales del desarrollo web moderno</div>
+                <div class="cert-actions">
+                    <button class="cert-btn primary" onclick="event.stopPropagation(); showCertificate('basico')">Ver Detalles</button>
+                    <button class="cert-btn" onclick="event.stopPropagation(); downloadCertificate('Diploma.pdf')">Descargar</button>
+                </div>
+            </div>
+
+            <div class="certificate-card" onclick="showCertificate('avanzado')">
+                <div class="cert-icon">🚀</div>
+                <div class="cert-title">Diseño Avanzado de Páginas Web</div>
+                <div class="cert-description">Técnicas avanzadas y mejores prácticas profesionales</div>
+                <div class="cert-actions">
+                    <button class="cert-btn primary" onclick="event.stopPropagation(); showCertificate('avanzado')">Ver Detalles</button>
+                    <button class="cert-btn" onclick="event.stopPropagation(); downloadCertificate('Diploma web avanazado.pdf')">Descargar</button>
+                </div>
+            </div>
+
+            <div class="certificate-card" onclick="showCertificate('ia')">
+                <div class="cert-icon">💼</div>
+                <div class="cert-title">Liderando la IA en Empresas</div>
+                <div class="cert-description">Estrategias para implementar IA en entornos empresariales</div>
+                <div class="cert-actions">
+                    <button class="cert-btn primary" onclick="event.stopPropagation(); showCertificate('ia')">Ver Detalles</button>
+                    <button class="cert-btn" onclick="event.stopPropagation(); downloadCertificate('Modelo_certificado_final_GDPymes_-_EX.pdf')">Descargar</button>
+                </div>
+            </div>
+
+            <div class="certificate-card" onclick="showCertificate('ml')">
+                <div class="cert-icon">🔧</div>
+                <div class="cert-title">Machine Learning con Python</div>
+                <div class="cert-description">Aplicaciones prácticas de ML usando Python</div>
+                <div class="cert-actions">
+                    <button class="cert-btn primary" onclick="event.stopPropagation(); showCertificate('ml')">Ver Detalles</button>
+                    <button class="cert-btn" onclick="event.stopPropagation(); downloadCertificate('1569765_4827_727473_75753_C2102004006-efsjp727470.pdf')">Descargar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles del certificado -->
+    <div id="certificate-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Detalles del Certificado</div>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+
+            <div id="certificate-details">
+                <!-- Los detalles se cargarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCertificate(type) {
+            const modal = document.getElementById('certificate-modal');
+            const details = document.getElementById('certificate-details');
+            const title = document.getElementById('modal-title');
+
+            let content = '';
+
+            switch(type) {
+                case 'basico':
+                    title.textContent = 'Diseño Básico de Páginas Web';
+                    content = `
+                        <div class="alternative-preview">
+                            <div class="cert-large-icon">📜</div>
+                            <h2>Certificado de Diseño Básico de Páginas Web</h2>
+                            <div class="cert-details">
+                                <div class="cert-detail">
+                                    <strong>🏫 Institución:</strong> Plataforma educativa especializada
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📅 Fecha de emisión:</strong> Certificación obtenida
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>🎯 Objetivo:</strong> Dominar los fundamentos del desarrollo web moderno
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📚 Contenido:</strong> HTML5, CSS3, JavaScript básico, diseño responsivo
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>⭐ Nivel:</strong> Básico - Intermedio
+                                </div>
+                            </div>
+                            <div class="download-section">
+                                <p><strong>💡 Para ver el certificado original en formato PDF:</strong></p>
+                                <button class="download-btn" onclick="downloadCertificate('Diploma.pdf')">📥 Descargar PDF Original</button>
+                                <button class="download-btn" onclick="openPdfWindow('Diploma.pdf')">🖼️ Ver en Nueva Ventana</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'avanzado':
+                    title.textContent = 'Diseño Avanzado de Páginas Web';
+                    content = `
+                        <div class="alternative-preview">
+                            <div class="cert-large-icon">🚀</div>
+                            <h2>Certificado de Diseño Avanzado de Páginas Web</h2>
+                            <div class="cert-details">
+                                <div class="cert-detail">
+                                    <strong>🏫 Institución:</strong> Centro de formación avanzada
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📅 Fecha de emisión:</strong> Certificación obtenida
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>🎯 Objetivo:</strong> Especialización en técnicas avanzadas de desarrollo web
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📚 Contenido:</strong> Frameworks modernos, optimización, seguridad web, APIs
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>⭐ Nivel:</strong> Avanzado
+                                </div>
+                            </div>
+                            <div class="download-section">
+                                <p><strong>💡 Para ver el certificado original en formato PDF:</strong></p>
+                                <button class="download-btn" onclick="downloadCertificate('Diploma web avanazado.pdf')">📥 Descargar PDF Original</button>
+                                <button class="download-btn" onclick="openPdfWindow('Diploma web avanazado.pdf')">🖼️ Ver en Nueva Ventana</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'ia':
+                    title.textContent = 'Liderando la IA en Empresas';
+                    content = `
+                        <div class="alternative-preview">
+                            <div class="cert-large-icon">💼</div>
+                            <h2>Certificado de Liderazgo en Inteligencia Artificial</h2>
+                            <div class="cert-details">
+                                <div class="cert-detail">
+                                    <strong>🏫 Institución:</strong> Programa especializado en IA empresarial
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📅 Fecha de emisión:</strong> Certificación obtenida
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>🎯 Objetivo:</strong> Implementar estrategias de IA en entornos empresariales
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📚 Contenido:</strong> Estrategias de IA, implementación práctica, casos de uso empresarial
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>⭐ Especialidad:</strong> IA Aplicada a Negocios
+                                </div>
+                            </div>
+                            <div class="download-section">
+                                <p><strong>💡 Para ver el certificado original en formato PDF:</strong></p>
+                                <button class="download-btn" onclick="downloadCertificate('Modelo_certificado_final_GDPymes_-_EX.pdf')">📥 Descargar PDF Original</button>
+                                <button class="download-btn" onclick="openPdfWindow('Modelo_certificado_final_GDPymes_-_EX.pdf')">🖼️ Ver en Nueva Ventana</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'ml':
+                    title.textContent = 'Machine Learning con Python';
+                    content = `
+                        <div class="alternative-preview">
+                            <div class="cert-large-icon">🔧</div>
+                            <h2>Certificado de Machine Learning Aplicado</h2>
+                            <div class="cert-details">
+                                <div class="cert-detail">
+                                    <strong>🏫 Institución:</strong> Academia especializada en Data Science
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📅 Fecha de emisión:</strong> Certificación obtenida
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>🎯 Objetivo:</strong> Aplicar técnicas de Machine Learning usando Python
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>📚 Contenido:</strong> Algoritmos ML, Python aplicado, proyectos prácticos, análisis de datos
+                                </div>
+                                <div class="cert-detail">
+                                    <strong>⭐ Especialidad:</strong> Machine Learning Práctico
+                                </div>
+                            </div>
+                            <div class="download-section">
+                                <p><strong>💡 Para ver el certificado original en formato PDF:</strong></p>
+                                <button class="download-btn" onclick="downloadCertificate('1569765_4827_727473_75753_C2102004006-efsjp727470.pdf')">📥 Descargar PDF Original</button>
+                                <button class="download-btn" onclick="openPdfWindow('1569765_4827_727473_75753_C2102004006-efsjp727470.pdf')">🖼️ Ver en Nueva Ventana</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            details.innerHTML = content;
+            modal.style.display = 'block';
+
+            // Animación de aparición
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function downloadCertificate(filename) {
+            const link = document.createElement('a');
+            link.href = `./Certificados/${encodeURIComponent(filename)}`;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openPdfWindow(filename) {
+            const pdfPath = `./Certificados/${encodeURIComponent(filename)}`;
+            window.open(pdfPath, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('certificate-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

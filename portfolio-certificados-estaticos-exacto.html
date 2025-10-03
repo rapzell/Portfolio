@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Profesional - David Valero Roman</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #F5F5F5;
+            background-color: #0E0F13;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(14, 15, 19, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(89, 150, 194, 0.2);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5996C2;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #E0E0E0;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #5996C2;
+            background: rgba(89, 150, 194, 0.1);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 50%, #2d1b69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #5996C2;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .certificates-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .certificates-fan {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            height: 400px;
+            position: relative;
+        }
+
+        /* Estilos básicos para todos los certificados - posiciones fijas */
+        .certificate-card {
+            background: rgba(89, 150, 194, 0.1);
+            border: 2px solid rgba(89, 150, 194, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            width: 200px;
+            height: 280px;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transform-origin: center center;
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
+        /* Posiciones específicas en 3D para cada certificado - FIJAS */
+        .certificate-card:nth-child(1) {
+            transform: rotateY(0deg) translateZ(150px) !important;
+        }
+
+        .certificate-card:nth-child(2) {
+            transform: rotateY(90deg) translateZ(150px) !important;
+        }
+
+        .certificate-card:nth-child(3) {
+            transform: rotateY(180deg) translateZ(150px) !important;
+        }
+
+        .certificate-card:nth-child(4) {
+            transform: rotateY(270deg) translateZ(150px) !important;
+        }
+
+        /* Hover behavior - MANTENER POSICIÓN FIJA, solo cambiar escala */
+        .certificate-card:nth-child(1):hover {
+            transform: rotateY(0deg) translateZ(150px) scale(1.1) !important;
+            border-color: #5996C2 !important;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.4) !important;
+            z-index: 10 !important;
+        }
+
+        .certificate-card:nth-child(2):hover {
+            transform: rotateY(90deg) translateZ(150px) scale(1.1) !important;
+            border-color: #5996C2 !important;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.4) !important;
+            z-index: 10 !important;
+        }
+
+        .certificate-card:nth-child(3):hover {
+            transform: rotateY(180deg) translateZ(150px) scale(1.1) !important;
+            border-color: #5996C2 !important;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.4) !important;
+            z-index: 10 !important;
+        }
+
+        .certificate-card:nth-child(4):hover {
+            transform: rotateY(270deg) translateZ(150px) scale(1.1) !important;
+            border-color: #5996C2 !important;
+            box-shadow: 0 15px 40px rgba(89, 150, 194, 0.4) !important;
+            z-index: 10 !important;
+        }
+
+        /* Estado enlarged - MANTENER POSICIÓN FIJA */
+        .certificate-card:nth-child(1).enlarged {
+            transform: rotateY(0deg) translateZ(150px) scale(1.2) !important;
+            z-index: 10 !important;
+            animation-play-state: paused !important;
+        }
+
+        .certificate-card:nth-child(2).enlarged {
+            transform: rotateY(90deg) translateZ(150px) scale(1.2) !important;
+            z-index: 10 !important;
+            animation-play-state: paused !important;
+        }
+
+        .certificate-card:nth-child(3).enlarged {
+            transform: rotateY(180deg) translateZ(150px) scale(1.2) !important;
+            z-index: 10 !important;
+            animation-play-state: paused !important;
+        }
+
+        .certificate-card:nth-child(4).enlarged {
+            transform: rotateY(270deg) translateZ(150px) scale(1.2) !important;
+            z-index: 10 !important;
+            animation-play-state: paused !important;
+        }
+
+        .certificate-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .certificate-title {
+            color: #5996C2;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .certificate-description {
+            color: #B0B0B0;
+            font-size: 0.9em;
+        }
+
+        /* Área para mostrar información detallada de certificados */
+        .certificate-info-area {
+            background: rgba(89, 150, 194, 0.1);
+            border: 2px solid rgba(89, 150, 194, 0.3);
+            border-radius: 15px;
+            margin: 2rem auto;
+            padding: 2rem;
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .certificate-info-area.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .certificate-info-content {
+            text-align: center;
+        }
+
+        .certificate-info-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .certificate-info-icon {
+            font-size: 3em;
+            margin-right: 1rem;
+        }
+
+        .certificate-info-title {
+            color: #5996C2;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .certificate-info-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .certificate-info-item {
+            background: rgba(89, 150, 194, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #5996C2;
+        }
+
+        .certificate-info-label {
+            color: #5996C2;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .certificate-info-value {
+            color: #E0E0E0;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .certificate-info-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid rgba(89, 150, 194, 0.3);
+        }
+
+        .certificate-info-success {
+            color: #B0B0B0;
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .dragon {
+            position: fixed;
+            z-index: 999;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .dragon-tooltip {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dragon-tooltip.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { flex-direction: column; gap: 1rem; }
+            .hero-title { font-size: 2.5rem; }
+            .certificate-info-body {
+                grid-template-columns: 1fr;
+            }
+            .certificate-info-header {
+                flex-direction: column;
+            }
+            .certificate-info-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Portfolio David Valero Roman</div>
+        <ul class="nav-menu">
+            <li><a href="#inicio" class="nav-link">Inicio</a></li>
+            <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+            <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+            <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+            <li><a href="#certificados" class="nav-link">Certificados</a></li>
+            <li><a href="#contacto" class="nav-link">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Hola, soy <span style="color: #FFD700;">David Valero Roman</span></h1>
+            <p class="hero-subtitle">Desarrollador Vibe Coding</p>
+            <p class="hero-description">
+                Creo experiencias web modernas, responsivas y dinámicas utilizando las últimas tecnologías.
+                Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras.
+            </p>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Sobre Mí</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div class="about-text">
+                <p>Soy un desarrollador web apasionado con experiencia en la creación de aplicaciones web modernas y responsivas.</p>
+                <p>Durante mi trayectoria, he trabajado en diversos proyectos que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend.</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">🚀</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+        <h2 class="section-title">Mis Proyectos</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div style="height: 200px; background: linear-gradient(135deg, #5996C2, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">🛒</div>
+                <h3 style="color: #F5F5F5; margin: 1rem 0;">E-commerce Platform</h3>
+                <p style="color: #B0B0B0;">Plataforma completa con carrito de compras y procesamiento de pagos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Habilidades Técnicas</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div style="font-size: 3rem; color: #5996C2; margin-bottom: 1rem;">⚛️</div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">React</h3>
+                <div style="width: 100%; height: 8px; background: rgba(89, 150, 194, 0.2); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; background: linear-gradient(90deg, #5996C2, #7C3AED); border-radius: 4px; width: 90%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificados" class="section" style="background: linear-gradient(135deg, #1a1b26 0%, #0E0F13 100%);">
+        <h2 class="section-title">Mis Certificados</h2>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="color: #B0B0B0; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo web.
+            </p>
+        </div>
+
+        <div class="certificates-container">
+            <div class="certificates-fan">
+                <div class="certificate-card" data-cert="machine-learning" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🔧</div>
+                    <div class="certificate-title">Machine Learning Aplicado</div>
+                    <div class="certificate-description">Técnicas de Machine Learning</div>
+                </div>
+
+                <div class="certificate-card" data-cert="liderando-ia" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🤖</div>
+                    <div class="certificate-title">Liderando la IA</div>
+                    <div class="certificate-description">Programa de Inteligencia Artificial</div>
+                </div>
+
+                <div class="certificate-card" data-cert="diseno-web-avanzado" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">🎨</div>
+                    <div class="certificate-title">Diseño Web Avanzado</div>
+                    <div class="certificate-description">Técnicas Avanzadas de Diseño</div>
+                </div>
+
+                <div class="certificate-card" data-cert="diseno-web-basico" onclick="showCertificateDetails(this)">
+                    <div class="certificate-icon">📱</div>
+                    <div class="certificate-title">Diseño Web Básico</div>
+                    <div class="certificate-description">Fundamentos de Diseño Web</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área para mostrar información detallada de certificados -->
+        <div id="certificate-info-area" class="certificate-info-area" style="display: none;">
+            <div class="certificate-info-content">
+                <div class="certificate-info-header">
+                    <div class="certificate-info-icon" id="certificate-info-icon"></div>
+                    <h3 class="certificate-info-title" id="certificate-info-title"></h3>
+                </div>
+                <div class="certificate-info-body" id="certificate-info-body"></div>
+                <div class="certificate-info-footer">
+                    <p class="certificate-info-success">💡 Certificado obtenido satisfactoriamente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+        <h2 class="section-title">Contacto</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+            <div>
+                <h3 style="color: #F5F5F5; margin-bottom: 1rem;">Hablemos</h3>
+                <p style="color: #B0B0B0;">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Tu nombre" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <input type="email" placeholder="tu@email.com" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;">
+                <textarea rows="5" placeholder="Tu mensaje..." style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(14, 15, 19, 0.8); color: #F5F5F5; border: 2px solid rgba(89, 150, 194, 0.3); border-radius: 8px;"></textarea>
+                <button type="submit" class="btn" style="background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;">Enviar Mensaje</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- DRAGÓN ULTRA-ESTÁTICO -->
+    <div id="dragon" class="dragon" style="left: 50px; top: 200px;">
+        <svg class="dragon-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="40" cy="50" rx="25" ry="15" fill="url(#dragonGradient)"/>
+            <circle cx="40" cy="25" r="18" fill="url(#dragonGradient)"/>
+            <path d="M 25 15 Q 20 8 25 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <path d="M 55 15 Q 60 8 55 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <ellipse cx="35" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="45" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="36" cy="21" rx="1" ry="2" fill="#FFF"/>
+            <ellipse cx="46" cy="21" rx="1" ry="2" fill="#FFF"/>
+            <ellipse cx="40" cy="32" rx="8" ry="4" fill="url(#dragonGradient)"/>
+            <ellipse cx="40" cy="32" rx="4" ry="2" fill="#333"/>
+            <circle cx="37" cy="30" r="1" fill="#333"/>
+            <circle cx="43" cy="30" r="1" fill="#333"/>
+            <path d="M 15 45 Q 5 35 15 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+            <path d="M 65 45 Q 75 35 65 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+            <ellipse cx="30" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+            <ellipse cx="50" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+            <path d="M 28 68 L 26 72 L 30 72 Z" fill="#333"/>
+            <path d="M 32 68 L 30 72 L 34 72 Z" fill="#333"/>
+            <path d="M 48 68 L 46 72 L 50 72 Z" fill="#333"/>
+            <path d="M 52 68 L 50 72 L 54 72 Z" fill="#333"/>
+            <path d="M 65 55 Q 75 50 85 45 Q 80 40 75 45 Q 70 50 65 55" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+            <circle cx="70" cy="48" r="2" fill="#333"/>
+            <circle cx="75" cy="45" r="2" fill="#333"/>
+            <circle cx="80" cy="42" r="2" fill="#333"/>
+
+            <defs>
+                <linearGradient id="dragonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#5996C2"/>
+                    <stop offset="50%" style="stop-color:#7B68EE"/>
+                    <stop offset="100%" style="stop-color:#9D4EDD"/>
+                </linearGradient>
+                <linearGradient id="dragonWing" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#87CEEB"/>
+                    <stop offset="100%" style="stop-color:#5996C2"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <div class="dragon-tooltip">¡Hola, bienvenido a mi portfolio!  :)</div>
+    </div>
+
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Función para mostrar información detallada de certificados
+        function showCertificateDetails(card) {
+            const certKey = card.dataset.cert;
+            console.log('🎯 Mostrando información detallada del certificado:', certKey);
+
+            // Datos detallados de cada certificado
+            const certificatesData = {
+                'machine-learning': {
+                    title: 'Machine Learning Aplicado Usando Python',
+                    icon: '🔧',
+                    details: {
+                        'curso': 'IFCD093PO - Machine Learning aplicado usando Python',
+                        'codigo': 'F211080AA 004 006',
+                        'duracion': '150 horas (Teleformación)',
+                        'fecha': '01/04/2022 a 17/06/2022',
+                        'lugar': 'Málaga, 17 de junio de 2022'
+                    }
+                },
+                'liderando-ia': {
+                    title: 'Liderando la IA',
+                    icon: '🤖',
+                    details: {
+                        'entidad': 'IRONHACK SPAIN S.L.U.',
+                        'codigo_expediente': '2024/GDP_01/000017',
+                        'accion_formativa': 'Liderando la IA',
+                        'fecha_inicio': '2025-06-09',
+                        'fecha_fin': '2025-08-17',
+                        'horas_totales': '150 horas'
+                    }
+                },
+                'diseno-web-avanzado': {
+                    title: 'Diseño Web Avanzado',
+                    icon: '🎨',
+                    details: {
+                        'entidad': 'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)',
+                        'accion_formativa': '3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB',
+                        'modalidad': 'Teleformación',
+                        'duracion': '50 horas',
+                        'fecha_inicio': '10/05/2022',
+                        'fecha_fin': '13/06/2022'
+                    }
+                },
+                'diseno-web-basico': {
+                    title: 'Diseño Web Básico',
+                    icon: '📱',
+                    details: {
+                        'entidad_certificadora': 'BEST PEOPLE SOLUTIONS, S.L.',
+                        'cif_entidad': 'B87316022',
+                        'accion_formativa': '3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB',
+                        'modalidad': 'Teleformación',
+                        'duracion': '25.00 horas',
+                        'fecha_inicio': '01-04-2022',
+                        'fecha_fin': '09-05-2022'
+                    }
+                }
+            };
+
+            const certData = certificatesData[certKey];
+            if (!certData) {
+                console.error('❌ Datos de certificado no encontrados:', certKey);
+                return;
+            }
+
+            // Ocultar el área de información si ya está visible
+            hideCertificateInfo();
+
+            // Obtener elementos del área de información
+            const infoArea = document.getElementById('certificate-info-area');
+            const infoIcon = document.getElementById('certificate-info-icon');
+            const infoTitle = document.getElementById('certificate-info-title');
+            const infoBody = document.getElementById('certificate-info-body');
+
+            if (!infoArea || !infoIcon || !infoTitle || !infoBody) {
+                console.error('❌ Elementos del área de información no encontrados');
+                return;
+            }
+
+            // Actualizar contenido del área de información
+            infoIcon.textContent = certData.icon;
+            infoTitle.textContent = certData.title;
+
+            // Crear contenido del body
+            let content = '';
+            for (const [key, value] of Object.entries(certData.details)) {
+                const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                content += `
+                    <div class="certificate-info-item">
+                        <div class="certificate-info-label">${label}:</div>
+                        <div class="certificate-info-value">${value}</div>
+                    </div>
+                `;
+            }
+
+            infoBody.innerHTML = content;
+
+            // Mostrar el área de información con animación
+            infoArea.style.display = 'block';
+            setTimeout(() => {
+                infoArea.classList.add('show');
+            }, 10);
+
+            console.log('✅ Información detallada mostrada exitosamente');
+        }
+
+        function hideCertificateInfo() {
+            const infoArea = document.getElementById('certificate-info-area');
+            if (infoArea) {
+                infoArea.classList.remove('show');
+                setTimeout(() => {
+                    infoArea.style.display = 'none';
+                }, 300);
+            }
+            console.log('🔒 Información de certificado ocultada');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.addEventListener('click', (event) => {
+            const modal = document.getElementById('certificate-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        function openImageInNewTab() {
+            console.log('🔗 Función eliminada - no se abren ventanas nuevas');
+        }
+
+        function downloadCurrentImage() {
+            console.log('📥 Función eliminada - no se descargan imágenes');
+        }
+
+        console.log('🚀 Portfolio cargado completamente');
+        console.log('💡 Sistema de certificados funcionando');
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dragón Tooltip</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #0E0F13;
+            color: white;
+        }
+
+        .dragon {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            left: 50px;
+            top: 100px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .dragon-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .dragon-tooltip {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: #FFD700;
+            padding: 12px 16px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            border: 2px solid #FFD700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            z-index: 1001;
+            animation: tooltipPulse 2s ease-in-out infinite;
+        }
+
+        .dragon-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: #FFD700;
+        }
+
+        .dragon:hover .dragon-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        @keyframes tooltipPulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .test-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #FFD700;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h3>Test del Tooltip del Dragón</h3>
+        <p>✅ Servidor funcionando</p>
+        <p>🎯 Pon el cursor sobre el dragón</p>
+        <p>💬 Deberías ver "¡Hola!" arriba</p>
+        <p>🌟 El tooltip es dorado brillante</p>
+    </div>
+
+    <div class="dragon">
+        <svg class="dragon-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="40" cy="50" rx="25" ry="15" fill="#4A90E2"/>
+            <circle cx="40" cy="25" r="18" fill="#4A90E2"/>
+            <path d="M 25 15 Q 20 8 25 5" fill="#4A90E2" stroke="#333" stroke-width="2"/>
+            <path d="M 55 15 Q 60 8 55 5" fill="#4A90E2" stroke="#333" stroke-width="2"/>
+            <ellipse cx="35" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="45" cy="22" rx="3" ry="4" fill="#333"/>
+            <ellipse cx="36" cy="21" rx="1" ry="2" fill="#FFF"/>
+            <ellipse cx="46" cy="21" rx="1" ry="2" fill="#FFF"/>
+        </svg>
+        <div class="dragon-tooltip">¡Hola!</div>
+    </div>
+
+    <script>
+        console.log('🐲 Dragón tooltip test cargado');
+        console.log('🎯 Pon el cursor sobre el dragón azul para ver el tooltip');
+
+        // Test básico del hover
+        const dragon = document.querySelector('.dragon');
+        const tooltip = document.querySelector('.dragon-tooltip');
+
+        dragon.addEventListener('mouseenter', () => {
+            console.log('🖱️ Mouse sobre el dragón - tooltip debería aparecer');
+        });
+
+        dragon.addEventListener('mouseleave', () => {
+            console.log('👋 Mouse fuera del dragón - tooltip debería desaparecer');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Archivo - Certificado Machine Learning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);
+            color: white;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(89, 150, 194, 0.3);
+        }
+        h1 {
+            color: #5996C2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: rgba(89, 150, 194, 0.1);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #5996C2;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #5996C2, #7C3AED);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+            font-weight: 500;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(89, 150, 194, 0.4);
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+        .success {
+            background: rgba(89, 150, 194, 0.2);
+            color: #5996C2;
+            border-left: 4px solid #5996C2;
+        }
+        .error {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border-left: 4px solid #ff6b6b;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            color: #B0B0B0;
+            border-left: 4px solid #B0B0B0;
+        }
+        .url {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        .image-test {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #5996C2;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico de Archivo - Certificado Machine Learning</h1>
+
+        <div class="test-section">
+            <h3>📋 Información del Archivo Buscado</h3>
+            <p><strong>Nombre:</strong> Imagen_maching_lerning_aplicado.jpg</p>
+            <p><strong>Ubicaciones posibles:</strong></p>
+            <ul>
+                <li>📁 /Certificados/Imagen_maching_lerning_aplicado.jpg</li>
+                <li>📁 ./Certificados/Imagen_maching_lerning_aplicado.jpg</li>
+                <li>📁 Certificados/Imagen_maching_lerning_aplicado.jpg</li>
+                <li>📁 portfolio-react/public/Certificados/Imagen_maching_lerning_aplicado.jpg</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🧪 Prueba 1: Carga Directa de Imagen</h3>
+            <button class="test-button" onclick="testDirectLoad()">Probar Carga Directa</button>
+            <div id="direct-result" class="result" style="display: none;"></div>
+            <img id="test-image" class="image-test" style="display: none;" alt="Imagen de prueba">
+        </div>
+
+        <div class="test-section">
+            <h3>🔍 Prueba 2: Verificación con Fetch</h3>
+            <button class="test-button" onclick="testFetch()">Verificar con Fetch</button>
+            <div id="fetch-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Prueba 3: Rutas Alternativas</h3>
+            <button class="test-button" onclick="testAlternativePaths()">Probar Rutas Alternativas</button>
+            <div id="alternative-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🌐 Prueba 4: Acceso Directo desde Navegador</h3>
+            <div class="info">
+                <p><strong>URLs para probar manualmente:</strong></p>
+                <div class="url">http://localhost:8000/Certificados/Imagen_maching_lerning_aplicado.jpg</div>
+                <div class="url">http://localhost:8000/portfolio-react/public/Certificados/Imagen_maching_lerning_aplicado.jpg</div>
+                <div class="url">http://localhost:8000/Certificados/Imagen%20maching%20lerning%20aplicado.jpg</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>💡 Prueba 5: Información del Sistema</h3>
+            <button class="test-button" onclick="showSystemInfo()">Mostrar Información del Sistema</button>
+            <div id="system-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testDirectLoad() {
+            const resultDiv = document.getElementById('direct-result');
+            const testImage = document.getElementById('test-image');
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<p>🔄 Probando carga directa...</p>';
+
+            testImage.style.display = 'none';
+
+            const imagePath = '/Certificados/Imagen_maching_lerning_aplicado.jpg';
+            console.log('🖼️ Probando carga directa:', imagePath);
+
+            testImage.onload = () => {
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <h4>✅ Imagen Cargada Exitosamente</h4>
+                    <p><strong>Dimensiones:</strong> ${testImage.naturalWidth}x${testImage.naturalHeight}</p>
+                    <p><strong>Ruta que funcionó:</strong> ${imagePath}</p>
+                    <p><strong>✅ El servidor puede servir el archivo correctamente</p>
+                `;
+                testImage.style.display = 'block';
+            };
+
+            testImage.onerror = (error) => {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h4>❌ Error Cargando Imagen</h4>
+                    <p><strong>Error:</strong> ${error.type}</p>
+                    <p><strong>Ruta probada:</strong> ${imagePath}</p>
+                    <p><strong>💡 Posibles causas:</strong></p>
+                    <ul>
+                        <li>Archivo no existe en la ubicación especificada</li>
+                        <li>Permisos de archivo insuficientes</li>
+                        <li>Configuración del servidor incorrecta</li>
+                        <li>Error de tipeo en el nombre del archivo</li>
+                    </ul>
+                `;
+
+                // Probar rutas alternativas automáticamente
+                testAlternativePaths();
+            };
+
+            testImage.src = imagePath;
+        }
+
+        async function testFetch() {
+            const resultDiv = document.getElementById('fetch-result');
+            resultDiv.style.display = 'block';
+
+            const paths = [
+                '/Certificados/Imagen_maching_lerning_aplicado.jpg',
+                './Certificados/Imagen_maching_lerning_aplicado.jpg',
+                'Certificados/Imagen_maching_lerning_aplicado.jpg'
+            ];
+
+            let results = [];
+
+            for (const path of paths) {
+                try {
+                    console.log('🔍 Probando fetch:', path);
+                    const response = await fetch(path);
+
+                    results.push({
+                        path: path,
+                        status: response.status,
+                        statusText: response.statusText,
+                        contentType: response.headers.get('content-type'),
+                        size: response.headers.get('content-length'),
+                        ok: response.ok
+                    });
+                } catch (error) {
+                    results.push({
+                        path: path,
+                        error: error.message
+                    });
+                }
+            }
+
+            // Mostrar resultados
+            let html = '<h4>📊 Resultados de Fetch:</h4>';
+            results.forEach(result => {
+                if (result.ok) {
+                    html += `
+                        <div style="margin: 10px 0; padding: 10px; background: rgba(89, 150, 194, 0.2); border-radius: 5px;">
+                            <strong>✅ ${result.path}</strong><br>
+                            Estado: ${result.status} ${result.statusText}<br>
+                            Tipo MIME: ${result.contentType}<br>
+                            Tamaño: ${result.size} bytes
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div style="margin: 10px 0; padding: 10px; background: rgba(255, 107, 107, 0.2); border-radius: 5px;">
+                            <strong>❌ ${result.path}</strong><br>
+                            Error: ${result.error || `Estado: ${result.status}`}
+                        </div>
+                    `;
+                }
+            });
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = html;
+        }
+
+        async function testAlternativePaths() {
+            const resultDiv = document.getElementById('alternative-result');
+            resultDiv.style.display = 'block';
+
+            const alternativePaths = [
+                '/Certificados/Imagen_maching_lerning_aplicado.jpg',
+                './Certificados/Imagen_maching_lerning_aplicado.jpg',
+                'Certificados/Imagen_maching_lerning_aplicado.jpg',
+                '/portfolio-react/public/Certificados/Imagen_maching_lerning_aplicado.jpg'
+            ];
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<p>🔄 Probando rutas alternativas...</p>';
+
+            for (const path of alternativePaths) {
+                try {
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.startsWith('image/')) {
+                            resultDiv.className = 'result success';
+                            resultDiv.innerHTML = `
+                                <h4>✅ Ruta Funcional Encontrada</h4>
+                                <p><strong>Ruta correcta:</strong> ${path}</p>
+                                <p><strong>Tipo MIME:</strong> ${contentType}</p>
+                                <p><strong>Estado:</strong> ${response.status} ${response.statusText}</p>
+                                <p><strong>💡 Usa esta ruta en el código</strong></p>
+                            `;
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`❌ Error con ruta ${path}:`, error.message);
+                }
+            }
+
+            resultDiv.className = 'result error';
+            resultDiv.innerHTML = `
+                <h4>❌ Ninguna Ruta Funcional Encontrada</h4>
+                <p><strong>💡 Posibles soluciones:</strong></p>
+                <ul>
+                    <li>Verificar que el archivo existe en el directorio correcto</li>
+                    <li>Comprobar permisos del archivo</li>
+                    <li>Verificar configuración del servidor HTTP</li>
+                    <li>Confirmar nombre exacto del archivo</li>
+                </ul>
+            `;
+        }
+
+        function showSystemInfo() {
+            const resultDiv = document.getElementById('system-result');
+            resultDiv.style.display = 'block';
+
+            const info = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                language: navigator.language,
+                currentUrl: window.location.href,
+                referrer: document.referrer || 'Ninguno'
+            };
+
+            let html = '<h4>💻 Información del Sistema:</h4>';
+            for (const [key, value] of Object.entries(info)) {
+                html += `<p><strong>${key}:</strong> ${value}</p>`;
+            }
+
+            html += `
+                <h4>🔧 Información Técnica:</h4>
+                <p><strong>Navegador soporta fetch:</strong> ${typeof fetch !== 'undefined' ? '✅ Sí' : '❌ No'}</p>
+                <p><strong>Navegador soporta FileReader:</strong> ${typeof FileReader !== 'undefined' ? '✅ Sí' : '❌ No'}</p>
+                <p><strong>Navegador soporta URL.createObjectURL:</strong> ${typeof URL !== 'undefined' && URL.createObjectURL ? '✅ Sí' : '❌ No'}</p>
+            `;
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = html;
+        }
+
+        // Auto-ejecutar pruebas básicas
+        window.addEventListener('load', () => {
+            console.log('🚀 Página de diagnóstico cargada');
+            console.log('🔍 Iniciando diagnóstico automático...');
+
+            // Ejecutar pruebas automáticamente después de 2 segundos
+            setTimeout(() => {
+                testFetch();
+                setTimeout(testAlternativePaths, 1000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

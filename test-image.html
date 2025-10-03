@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Imagen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1b26;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #5996C2;
+            margin: 20px 0;
+        }
+        .info {
+            background: rgba(89, 150, 194, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Prueba de Carga de Imagen</h1>
+
+    <div class="info">
+        <h3>📋 Información de la Prueba</h3>
+        <p><strong>Archivo:</strong> Imagen maching lerning aplicado.png</p>
+        <p><strong>Ruta:</strong> ./Certificados/Imagen maching lerning aplicado.png</p>
+        <p><strong>URL esperada:</strong> http://localhost:8000/Certificados/Imagen%20maching%20lerning%20aplicado.png</p>
+    </div>
+
+    <div class="info">
+        <h3>🖼️ Imagen de Prueba</h3>
+        <img src="./Certificados/Imagen maching lerning aplicado.png"
+             alt="Imagen de certificado Machine Learning"
+             class="test-image"
+             onload="this.nextElementSibling.textContent='✅ Imagen cargada correctamente'"
+             onerror="this.nextElementSibling.textContent='❌ Error cargando imagen'">
+        <p id="image-status">Cargando imagen...</p>
+    </div>
+
+    <div class="info">
+        <h3>🔍 Diagnóstico</h3>
+        <p>Si la imagen se muestra arriba correctamente, el archivo existe y es accesible.</p>
+        <p>Si no se muestra, puede haber un problema con:</p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>📁 El archivo no existe en la ubicación esperada</li>
+            <li>🔒 Permisos de archivo</li>
+            <li>🌐 Configuración del servidor</li>
+            <li>🔗 Ruta de archivo incorrecta</li>
+        </ul>
+    </div>
+
+    <script>
+        console.log('🔍 Iniciando diagnóstico de imagen...');
+
+        const img = document.querySelector('.test-image');
+        console.log('📁 Intentando cargar:', img.src);
+
+        img.onload = () => {
+            console.log('✅ Imagen cargada exitosamente');
+            console.log('📏 Dimensiones:', img.naturalWidth + 'x' + img.naturalHeight);
+        };
+
+        img.onerror = () => {
+            console.error('❌ Error cargando imagen');
+            console.error('🔍 Verificando accesibilidad del archivo...');
+
+            // Verificar si el archivo existe mediante fetch
+            fetch('./Certificados/Imagen maching lerning aplicado.png')
+                .then(response => {
+                    console.log('🌐 Respuesta del servidor:', response.status, response.statusText);
+                    if (response.ok) {
+                        console.log('✅ Archivo accesible desde el servidor');
+                    } else {
+                        console.error('❌ Archivo no accesible. Código de respuesta:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error de conexión:', error.message);
+                });
+        };
+    </script>
+</body>
+</html>

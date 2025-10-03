@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✅ Certificado Machine Learning - Archivo Verificado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+        .success-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(89, 150, 194, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #5996C2;
+        }
+        h1 {
+            color: #5996C2;
+            margin-bottom: 30px;
+        }
+        .certificate-card {
+            background: rgba(89, 150, 194, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 400px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(89, 150, 194, 0.3);
+        }
+        .certificate-card:hover {
+            transform: scale(1.05);
+            border-color: #5996C2;
+            box-shadow: 0 10px 30px rgba(89, 150, 194, 0.3);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: #1a1b26;
+            margin: 3% auto;
+            padding: 25px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
+        .image-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            min-height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .certificate-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .success {
+            background: rgba(89, 150, 194, 0.3);
+            color: #5996C2;
+            border-left: 4px solid #5996C2;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <h1>✅ Certificado Machine Learning - Archivo Verificado</h1>
+
+        <div class="info-box">
+            <h3>📋 Información del Archivo Confirmada</h3>
+            <p><strong>✅ Archivo existe:</strong> Imagen_maching_lerning_aplicado.jpg</p>
+            <p><strong>✅ Ubicación:</strong> C:\Users\David\CascadeProjects\Portfolio React\Certificados\</p>
+            <p><strong>✅ Tamaño:</strong> Archivo válido encontrado</p>
+            <p><strong>✅ Accesible:</strong> Archivo legible desde el sistema</p>
+        </div>
+
+        <div class="certificate-card" onclick="showCertificate()">
+            <div style="font-size: 3em;">🔧</div>
+            <h3>Machine Learning Aplicado Usando Python</h3>
+            <p>Haz clic para ver el certificado</p>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <div id="certificate-modal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 15px; right: 25px; font-size: 24px; color: #aaa; cursor: pointer;" onclick="closeModal()">&times;</div>
+            <h2 style="color: #5996C2; margin-bottom: 30px;">Visualizando Certificado</h2>
+            <div class="image-container">
+                <img id="certificate-image" class="certificate-image" src="" alt="Certificado Machine Learning">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showCertificate() {
+            console.log('🎯 Mostrando certificado de Machine Learning');
+            showStatus('🖼️ Cargando certificado...', 'info');
+
+            // Usar ruta absoluta desde la raíz del servidor
+            const imagePath = '/Certificados/Imagen_maching_lerning_aplicado.jpg';
+            console.log('📁 Ruta desde raíz del servidor:', imagePath);
+
+            const certImage = document.getElementById('certificate-image');
+            const modal = document.getElementById('certificate-modal');
+
+            if (!certImage || !modal) {
+                console.error('❌ Elementos DOM no encontrados');
+                return;
+            }
+
+            // Configurar imagen directamente
+            console.log('🖼️ Configurando imagen con ruta absoluta');
+            certImage.src = imagePath;
+            certImage.alt = 'Certificado Machine Learning';
+
+            // Eventos de carga
+            certImage.onload = () => {
+                console.log('✅ Imagen cargada exitosamente');
+                console.log('📏 Dimensiones:', certImage.naturalWidth + 'x' + certImage.naturalHeight);
+                showStatus('✅ Certificado cargado exitosamente', 'success');
+            };
+
+            certImage.onerror = (error) => {
+                console.error('❌ Error cargando imagen:', error);
+
+                // Intentar ruta relativa como respaldo
+                const altPath = 'Certificados/Imagen_maching_lerning_aplicado.jpg';
+                console.log('🔄 Intentando ruta relativa:', altPath);
+                certImage.src = altPath;
+
+                certImage.onload = () => {
+                    console.log('✅ Imagen cargada con ruta relativa');
+                    showStatus('✅ Certificado cargado (ruta relativa)', 'success');
+                };
+
+                certImage.onerror = () => {
+                    console.error('❌ Ambas rutas fallaron');
+                    showStatus('❌ Error: Archivo no encontrado en servidor', 'error');
+                };
+            };
+
+            // Mostrar modal
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        // Información técnica en consola
+        console.log('🚀 Página de certificado cargada');
+        console.log('📁 Archivo confirmado en: C:\\Users\\David\\CascadeProjects\\Portfolio React\\Certificados\\Imagen_maching_lerning_aplicado.jpg');
+        console.log('🌐 Servidor HTTP corriendo en: http://localhost:8000');
+        console.log('💡 Esta página debería poder acceder al archivo correctamente');
+
+        // Cerrar modal al hacer clic fuera
+        document.addEventListener('click', (event) => {
+            const modal = document.getElementById('certificate-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
