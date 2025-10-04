@@ -1,24 +1,1080 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Portfolio Profesional - David Valero Roman</title>
-    <style>
-      html,body{height:100%;margin:0;background:#0E0F13}
-      .wrap{position:fixed;inset:0}
-      iframe{width:100%;height:100%;border:0;display:block;background:#0E0F13}
-      .fallback{position:absolute;inset:auto 0 0 0;text-align:center;padding:12px;color:#E0E0E0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-      .fallback a{color:#9DCCF5}
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <iframe src="portfolio-original-con-certificados-funcionales-limpio.html" title="Portfolio David Valero Roman" loading="eager"></iframe>
-      <div class="fallback">
-        Si no ves el contenido, abre
-        <a href="portfolio-original-con-certificados-funcionales-limpio.html">portfolio-original-con-certificados-funcionales-limpio.html</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Profesional - David Valero Roman</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #F5F5F5; background: #0E0F13; overflow-x: hidden; }
+
+    .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(14,15,19,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(89,150,194,0.2); z-index: 1000; padding: 1rem 2rem; }
+    .nav-brand { font-size: 1.5rem; font-weight: 700; color: #5996C2; }
+    .nav-menu { display: flex; list-style: none; gap: 2rem; justify-content: center; margin-top: .75rem; }
+    .nav-link { text-decoration: none; color: #E0E0E0; font-weight: 500; padding: .5rem 1rem; border-radius: 6px; transition: all .3s; }
+    .nav-link:hover,.nav-link.active { color: #5996C2; background: rgba(89,150,194,.1); }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; background: linear-gradient(135deg,#0E0F13 0%,#1a1b26 50%,#2d1b69 100%); position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at 20% 80%, rgba(89,150,194,.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(124,58,237,.1) 0%, transparent 50%); pointer-events:none; }
+    .hero-content { max-width: 800px; position: relative; z-index: 2; }
+    .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-subtitle { font-size: 1.5rem; margin-bottom: 1rem; opacity: .9; color: #E0E0E0; }
+    .hero-description { font-size: 1.2rem; margin-bottom: 2rem; opacity: .8; color: #B0B0B0; }
+
+    .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 3rem; color: #F5F5F5; }
+
+    /* Dragón ultra-estático */
+    .dragon { position: fixed; width: 80px; height: 80px; pointer-events: auto; z-index: 9999; transition: all .8s cubic-bezier(.25,.46,.45,.94); cursor: pointer; }
+    .dragon-svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 12px rgba(89,150,194,.4)); }
+    .dragon-tooltip { position:absolute; top:-70px; left:50%; transform: translateX(-50%); background: linear-gradient(135deg,#5996C2,#7C3AED); color:#fff; padding:10px 18px; border-radius:12px; font-size:16px; font-weight:600; white-space: pre-line; opacity:0; pointer-events:none; transition:all .3s; backdrop-filter: blur(15px); border:2px solid rgba(89,150,194,.4); box-shadow: 0 8px 25px rgba(89,150,194,.3); z-index:10001; width: 260px; max-width: 90vw; text-align: center; line-height: 1.25; overflow-wrap: anywhere; }
+    .dragon:hover .dragon-tooltip, .dragon-tooltip.show { opacity:1; transform: translateX(-50%) translateY(-5px); }
+
+    /* Pendular idle animation for dragon */
+    @keyframes dragonHover {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .dragon.resting { animation: dragonHover 3s ease-in-out infinite; }
+
+    /* Abanico de certificados (4 tarjetas girando) */
+    .certificates-container { display:flex; justify-content:center; align-items:center; min-height:400px; perspective:1200px; perspective-origin:center center; overflow:visible; }
+    .certificates-fan { position:relative; width:600px; height:300px; transform-style:preserve-3d; transform-origin:center center; animation: fanRotation 25s linear infinite; }
+    .certificates-fan.paused { animation-play-state: paused; }
+
+    .certificate-card { position:absolute; width:200px; height:140px; background: linear-gradient(135deg,#5996C2,#7C3AED); border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition: all .4s ease; box-shadow:0 8px 25px rgba(89,150,194,.3); border:2px solid rgba(255,255,255,.1); transform-origin:center center; left:50%; top:50%; margin-left:-100px; margin-top:-70px; }
+    .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(150px); }
+    .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(150px); }
+    .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(150px); }
+    .certificate-card:nth-child(4){ transform: rotateY(270deg) translateZ(150px); }
+    .certificate-card:hover, .certificate-card.enlarged { transform: rotateY(var(--rotation,0deg)) translateZ(150px) scale(1.2); z-index:10; box-shadow:0 15px 40px rgba(89,150,194,.5); }
+    .certificate-card.enlarged{ animation-play-state: paused; }
+
+    @keyframes fanRotation { 0%{ transform: rotateY(0deg);} 100%{ transform: rotateY(360deg);} }
+
+    .certificate-preview{ text-align:center; color:#fff; padding:.8rem; }
+    .certificate-icon{ font-size:2rem; margin-bottom:.4rem; }
+    .certificate-title{ font-size:.9rem; font-weight:600; margin-bottom:.2rem; }
+    .certificate-description{ font-size:.7rem; opacity:.8; }
+
+    /* Área de información de certificados - estilo profesional */
+    .certificate-info-area {
+      position: relative;
+      background: radial-gradient(120% 120% at 0% 0%, rgba(89,150,194,.08) 0%, rgba(124,58,237,.06) 60%, rgba(0,0,0,.0) 100%), rgba(14,15,19,.65);
+      border: 1px solid rgba(89,150,194,.28);
+      border-radius: 16px;
+      margin: 2.5rem auto;
+      padding: 2.25rem;
+      max-width: 980px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+      transition: transform .35s ease, opacity .35s ease, box-shadow .35s ease;
+      opacity: 0;
+      transform: translateY(18px) scale(.99);
+    }
+    .certificate-info-area.show { opacity: 1; transform: translateY(0) scale(1); }
+
+    .certificate-info-header { display: flex; align-items: center; justify-content: center; gap: .9rem; margin-bottom: 1.5rem; }
+    .certificate-info-icon { width: 40px; height: 40px; display: grid; place-items: center; font-size: 1.6rem; border-radius: 12px; background: linear-gradient(135deg,#5996C2,#7C3AED); box-shadow: 0 6px 16px rgba(124,58,237,.35); }
+    .certificate-info-title { font-size: 1.9rem; font-weight: 800; margin: 0; background: linear-gradient(135deg,#6fb4db,#9D4EDD); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: .3px; }
+    /* Compatibilidad estándar */
+    .certificate-info-title { background-clip: text; color: transparent; }
+
+    .certificate-info-body { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px 22px; margin: 1.25rem 0 1.75rem; text-align: left; }
+    .certificate-info-item { background: rgba(15,16,22,.78); border: 1px solid rgba(89,150,194,.18); border-radius: 12px; padding: 1rem 1.1rem; box-shadow: 0 10px 24px rgba(0,0,0,.25); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .certificate-info-item:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,.35); border-color: rgba(124,58,237,.28); }
+    .certificate-info-label { color: #88bfe0; font-weight: 700; font-size: .78rem; letter-spacing: .8px; text-transform: uppercase; opacity: .95; margin-bottom: .4rem; display: block; }
+    .certificate-info-value { color: #E8EEF6; font-size: 1.02rem; line-height: 1.45; }
+
+    /* Pequeños acentos para códigos / fechas */
+    .certificate-info-value code { background: rgba(89,150,194,.12); padding: .12rem .38rem; border-radius: 6px; border: 1px solid rgba(89,150,194,.22); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; color:#cfe9fb; }
+    /* Modal eliminado: la información se muestra en el recuadro inferior */
+
+    /* Hover sutil para project cards */
+    .project-card{ transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+    .project-card:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(89,150,194,.35); }
+    .project-card a:hover{ transform: translateY(-1px); }
+
+    /* Miniatura de proyecto */
+    .project-thumb{ width:100%; height: 180px; border-radius: 8px; object-fit: cover; display:block; box-shadow: 0 8px 20px rgba(0,0,0,.35); margin-bottom: 1rem; background: #10121a; cursor: zoom-in; }
+    @media (max-width:768px){ .project-thumb{ height:150px; } }
+
+    /* Lightbox para imágenes de proyectos */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 10000; opacity: 0; transition: opacity .25s ease; }
+    .lightbox.show { display: flex; opacity: 1; }
+    .lightbox-content { max-width: min(92vw, 1100px); max-height: 86vh; border-radius: 12px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08) inset; background: #0e0f13; }
+    .lightbox-img { display:block; width: 100%; height: auto; object-fit: contain; }
+    .lightbox-caption { color:#E8EEF6; font-size:.95rem; padding:.6rem .9rem; border-top:1px solid rgba(255,255,255,.08); opacity:.9; }
+
+    /* Habilidades - tarjetas y badges */
+    .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem; }
+    .skills-category{ background: rgba(26,27,38,.82); border:1px solid rgba(89,150,194,.18); border-radius:14px; padding:1.25rem 1.25rem 1rem; box-shadow: 0 14px 36px rgba(0,0,0,.35); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .skills-category:hover{ transform: translateY(-4px); box-shadow: 0 18px 44px rgba(89,150,194,.28); border-color: rgba(124,58,237,.28); }
+    .skills-header{ display:flex; align-items:center; gap:.6rem; margin-bottom:.8rem; }
+    .skills-icon{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background: linear-gradient(135deg,#5996C2,#7C3AED); box-shadow: 0 6px 16px rgba(124,58,237,.35); font-size:1.2rem; }
+    .skills-title{ margin:0; font-weight:800; letter-spacing:.3px; color:#EAF2FB; }
+    .skills-sub{ color:#9fbad0; font-size:.9rem; margin:0 0 .6rem; }
+    .skill-badges{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.75rem 0 .25rem; }
+    .skill-badge{ background: rgba(16,18,26,.85); color:#dfeaf6; border:1px solid rgba(89,150,194,.26); padding:.38rem .6rem; border-radius:10px; font-size:.9rem; line-height:1; }
+    .skills-list{ margin:.4rem 0 0; padding-left:1.1rem; color:#CFE2F7; }
+    .skills-list li{ margin:.3rem 0; }
+
+    /* Sobre mí - tarjeta estética */
+    .about-card{ background: rgba(26,27,38,.82); border:1px solid rgba(89,150,194,.25); border-radius:16px; padding:1.4rem 1.6rem; box-shadow: 0 18px 48px rgba(0,0,0,.35); backdrop-filter: blur(8px); }
+    .about-lead{ color:#EAF2FB; font-size:1.08rem; line-height:1.6; margin:0 0 .8rem; }
+    .about-micro{ color:#B8C9DE; font-size:1.02rem; line-height:1.6; margin:0; }
+    .about-badges{ display:flex; gap:.5rem; flex-wrap:wrap; margin:.6rem 0 .2rem; }
+    .badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.32rem .6rem; border-radius:999px; font-size:.85rem; color:#e9f2ff; border:1px solid rgba(255,255,255,.15); background: rgba(16,18,26,.85); }
+    .badge-gradient{ background: linear-gradient(135deg,#5996C2,#7C3AED); border-color: transparent; }
+    .badge-outline{ background: rgba(16,18,26,.75); border-color: rgba(89,150,194,.35); }
+
+    /* Avatar en Sobre mí */
+    .about-avatar-wrap{ display:inline-block; position:relative; }
+    .about-avatar-ring{ position:absolute; inset:-6px; border-radius:50%; background: conic-gradient(from 140deg, #5996C2, #7C3AED, #9D4EDD, #5996C2); filter: blur(0.5px); opacity:.8; }
+    .about-avatar{ position:relative; width:200px; height:200px; border-radius:50%; object-fit:cover; display:block; border:2px solid rgba(255,255,255,.08); box-shadow: 0 16px 40px rgba(0,0,0,.45); background:#0F1117; }
+    .about-avatar:hover{ transform: translateY(-2px); transition: transform .25s ease; }
+
+    /* Layout: Sobre mí */
+    .about-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+    .about-text{ max-width: 640px; }
+    @media (max-width: 900px){
+      .about-grid{ grid-template-columns: 1fr; gap: 2rem; }
+      .about-text{ max-width: 100%; }
+      .about-avatar{ width: 180px; height: 180px; }
+    }
+
+    /* Ajustes generales para móvil */
+    @media (max-width: 768px){
+      html, body { overflow-x: hidden; }
+      .section-title{ font-size: 1.6rem; }
+      .projects-grid{ gap: 1.2rem !important; }
+      .project-card{ padding: 1rem !important; }
+      .project-thumb{ aspect-ratio: 16/9; height: auto; }
+      .skills-grid{ grid-template-columns: 1fr; gap: 1rem; }
+      .skills-category{ padding: 1rem; }
+      .skill-badge{ font-size: .85rem; }
+      .certificate-info-area{ padding: 1.1rem; }
+      .hero-title{ font-size: 1.9rem !important; }
+      .hero-subtitle{ font-size: 1.05rem !important; }
+      .hero-description{ font-size: 1rem !important; }
+      .dragon-svg{ width: 64px; height: 64px; }
+    }
+
+    @media (max-width: 480px){
+      .section-title{ font-size: 1.45rem; }
+      .about-card{ padding: 1.1rem 1.2rem; }
+      .about-lead{ font-size: 1rem; }
+      .about-micro{ font-size: .95rem; }
+      .about-avatar{ width: 160px; height: 160px; }
+      .project-card{ padding: .9rem !important; }
+      .skills-category{ padding: .9rem; }
+      .skill-badge{ font-size: .8rem; padding: .3rem .5rem; }
+      .certificate-info-title{ font-size: 1.6rem; }
+    }
+
+    /* Título de sección activo (iluminado) */
+    .section-title{ position: relative; display: inline-block; transition: color .25s ease, text-shadow .25s ease; }
+    .section-title.active{
+      color: #EAF2FF;
+      text-shadow: 0 0 10px rgba(153, 102, 255, .45), 0 0 22px rgba(89,150,194,.35);
+    }
+
+    /* Navbar: enlace activo sincronizado con la sección */
+    .nav-link{ transition: color .2s ease, text-shadow .2s ease; }
+    .nav-link.active{ color:#EAF2FF !important; text-shadow: 0 0 10px rgba(153,102,255,.35); }
+
+    @media (max-width:768px){
+      .certificates-fan{ width:400px; height:200px; }
+      .certificate-card{ width:140px; height:100px; margin-left:-70px; margin-top:-50px; }
+      .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(120px); }
+      .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(120px); }
+      .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(120px); }
+      .certificate-card:nth-child(4){ transform: rotateY(270deg) translateZ(120px); }
+      .certificate-card:hover,.certificate-card.enlarged{ transform: rotateY(var(--rotation,0deg)) translateZ(160px) scale(1.2); }
+      .certificate-info-area{ padding: 1.4rem; }
+      .certificate-info-body{ grid-template-columns:1fr; gap: 14px; }
+      .certificate-info-header{ flex-direction:column; gap:.6rem; }
+      .certificate-info-icon{ margin-right:0; margin-bottom:1rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">Portfolio David Valero Roman</div>
+    <ul class="nav-menu">
+      <li><a href="#inicio" class="nav-link">Inicio</a></li>
+      <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+      <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+      <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+      <li><a href="#certificados" class="nav-link">Certificados</a></li>
+      <li><a href="#contacto" class="nav-link">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <section id="inicio" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Hola, soy David Valero Roman</h1>
+      <p class="hero-subtitle">Desarrollador Vibe Coding</p>
+      <p class="hero-description">Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.</p>
+    </div>
+  </section>
+
+  <section id="sobre-mi" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
+    <h2 class="section-title">Sobre Mí</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;">
+      <div class="about-text">
+        <div class="about-card">
+          <p class="about-lead">Soy un desarrollador de aplicaciones apasionado, llevo varios años formándome tanto de forma autodidacta como con cursos. Actualmente estoy cursando el Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).</p>
+          <div class="about-badges">
+            <span class="badge badge-gradient">🎓 DAM</span>
+            <span class="badge badge-outline">⚡ VibeCoding</span>
+          </div>
+          <p class="about-micro">En este tiempo he trabajado en diversos proyectos propios que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend. Actualmente programo con VibeCoding porque pienso que es una capacitación técnica que está en la vanguardia de la programación.</p>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <div class="about-avatar-wrap">
+          <div class="about-avatar-ring"></div>
+          <img class="about-avatar" src="Certificados/LOGO DABOBEATS.jpeg" alt="Logo personal de David Valero Roman" loading="lazy" />
+        </div>
       </div>
     </div>
-  </body>
+  </section>
+
+  <section id="proyectos" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
+    <h2 class="section-title">Mis Proyectos</h2>
+    <div class="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      <!-- Proyecto 1: Enviador de Facturas -->
+      <div class="project-card" style="background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+        <img class="project-thumb" src="Certificados/Imagen_envio_facturas_1.jpg" alt="Enviador de Facturas Automatizado - Captura" loading="lazy" />
+        <h3 style="color: #F5F5F5; margin: 1rem 0;">Enviador de Facturas Automatizado</h3>
+        <p style="color: #B0B0B0;">Aplicación para enviar facturas PDF por email de forma masiva, automatizando el mapeo de destinatarios desde Excel y reduciendo errores manuales. Resuelve discrepancias en formatos de nombres y emails, con trazabilidad completa mediante logs y reportes.</p>
+        <h4 style="color: #5996C2; margin: 1rem 0 0.5rem;">Tecnologías clave:</h4>
+        <ul style="color: #B0B0B0; list-style-type: disc; padding-left: 1.5rem; font-size: 0.9rem;">
+          <li>GUI con Tkinter (interfaz, treeview, logs).</li>
+          <li>Multihilo (threading) para envíos no bloqueantes.</li>
+          <li>Pandas/Openpyxl para procesamiento de Excel multi-hoja.</li>
+          <li>Regex y Unicodedata para normalización de texto.</li>
+          <li>SMTPlib y email.mime para correos con adjuntos (Gmail TLS).</li>
+        </ul>
+        <a href="https://github.com/rapzell/Enviador-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+      </div>
+
+      <!-- Proyecto 2: Editor de Facturas Automatizado -->
+      <div class="project-card" style="background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+        <img class="project-thumb" src="Certificados/Imagen_Editor_de_Factura.jpg" alt="Editor de Facturas Automatizado - Captura" loading="lazy" />
+        <h3 style="color: #F5F5F5; margin: 1rem 0;">Editor de Facturas Automatizado</h3>
+        <p style="color: #B0B0B0;">Herramienta de escritorio para generar facturas PDF desde plantillas Word, cargando datos de Excel y procesando lotes. Preserva formatos, calcula totales automáticamente y maneja numeración secuencial, resolviendo errores manuales y heterogeneidad de datos.</p>
+        <h4 style="color: #5996C2; margin: 1rem 0 0.5rem;">Tecnologías clave:</h4>
+        <ul style="color: #B0B0B0; list-style-type: disc; padding-left: 1.5rem; font-size: 0.9rem;">
+          <li>Tkinter para interfaz de usuario práctica con logs.</li>
+          <li>Pandas/Openpyxl/Xlwings para lectura robusta de Excel con fallbacks.</li>
+          <li>Python-docx y Lxml para reemplazo de marcadores preservando estilos.</li>
+          <li>Win32com para conversión a PDF y cálculos precisos con Decimal.</li>
+          <li>Procesamiento por lotes con reportes de éxitos/fallos.</li>
+        </ul>
+        <a href="https://github.com/rapzell/Editor-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+      </div>
+
+      <!-- Proyecto 3: Visor 3D Normativa Galicia -->
+      <div class="project-card" style="background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+        <img class="project-thumb" src="Certificados/Imagen_NormativaGalicia.jpg" alt="Visor 3D de Normativa Urbanística (Galicia) - Captura" loading="lazy" />
+        <h3 style="color: #F5F5F5; margin: 1rem 0;">Visor 3D de Normativa Urbanística (Galicia)</h3>
+        <p style="color: #B0B0B0;">Demo para evaluar normativa urbanística (Ley 2/2016 Galicia) en mapas 3D, generando informes y volúmenes edificables. Integra chat IA para consultas y exporta modelos 3D, resolviendo análisis geolocalizados y visualización de impactos.</p>
+        <h4 style="color: #5996C2; margin: 1rem 0 0.5rem;">Tecnologías clave:</h4>
+        <ul style="color: #B0B0B0; list-style-type: disc; padding-left: 1.5rem; font-size: 0.9rem;">
+          <li>FastAPI/Python para backend con endpoints de evaluación y exportación.</li>
+          <li>FAISS y LLMs (GGUF) para chat IA con búsqueda semántica y fallback legal.</li>
+          <li>Three.js/MapLibre para visor 3D con carga OSM y extrusión dinámica.</li>
+          <li>CityJSON/GLTF/GLB para exportación de volúmenes 3D robusta.</li>
+          <li>CSV/Mock providers para datos municipales y heurísticas normativas.</li>
+        </ul>
+        <a href="https://github.com/rapzell/NORMATIVA-URBANISTICA-3D" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+      </div>
+
+      <!-- Proyecto 4: Portfolio Profesional Interactivo -->
+      <div class="project-card" style="background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+        <img class="project-thumb" src="Certificados/Imagen_Portfolio.jpg" alt="Portfolio Profesional Interactivo - Captura" loading="lazy" />
+        <h3 style="color: #F5F5F5; margin: 1rem 0;">Portfolio Profesional Interactivo</h3>
+        <p style="color: #B0B0B0;">Sitio web personal con impacto visual, mostrando proyectos y certificados con UX dinámica. Incluye un "dragón" asistente para interacciones contextuales, resolviendo presentación estática y migración futura a React para escalabilidad.</p>
+        <h4 style="color: #5996C2; margin: 1rem 0 0.5rem;">Tecnologías clave:</h4>
+        <ul style="color: #B0B0B0; list-style-type: disc; padding-left: 1.5rem; font-size: 0.9rem;">
+          <li>HTML/CSS para layouts responsivos, gradientes y efectos 3D/hover.</li>
+          <li>JavaScript vanilla para gestión de estados y animaciones no intrusivas.</li>
+          <li>IntersectionObserver para comportamientos contextuales por sección.</li>
+          <li>Accesibilidad con lazy loading y cierre por teclado.</li>
+          <li>Estructura de datos centralizada para render dinámico de certificados.</li>
+        </ul>
+        <a href="https://github.com/rapzell/Portfolio" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="habilidades" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
+    <h2 class="section-title">Habilidades Técnicas</h2>
+    <div class="skills-grid">
+      <!-- Lenguajes de Programación -->
+      <div class="skills-category">
+        <div class="skills-header"><div class="skills-icon">💻</div><h3 class="skills-title">Lenguajes de Programación</h3></div>
+        <p class="skills-sub">Base sólida para automatización, front/back y scripting.</p>
+        <div class="skill-badges">
+          <span class="skill-badge">Python</span>
+          <span class="skill-badge">JavaScript</span>
+          <span class="skill-badge">HTML</span>
+          <span class="skill-badge">CSS</span>
+          <span class="skill-badge">PowerShell</span>
+        </div>
+        <ul class="skills-list">
+          <li><strong>Python</strong>: automatización, GUI, datos y APIs.</li>
+          <li><strong>JavaScript</strong>: interacciones y UX contextual.</li>
+          <li><strong>HTML/CSS</strong>: layouts responsivos, gradientes, 3D/hover.</li>
+          <li><strong>PowerShell</strong>: scripts para packaging y operaciones.</li>
+        </ul>
+      </div>
+
+      <!-- Frameworks y Bibliotecas -->
+      <div class="skills-category">
+        <div class="skills-header"><div class="skills-icon">🧩</div><h3 class="skills-title">Frameworks y Bibliotecas</h3></div>
+        <p class="skills-sub">Stack usado en proyectos de escritorio, web e IA.</p>
+        <div class="skill-badges">
+          <span class="skill-badge">React</span>
+          <span class="skill-badge">Tkinter</span>
+          <span class="skill-badge">Pandas</span>
+          <span class="skill-badge">Openpyxl</span>
+          <span class="skill-badge">Xlwings</span>
+          <span class="skill-badge">FastAPI</span>
+          <span class="skill-badge">Three.js</span>
+          <span class="skill-badge">MapLibre</span>
+          <span class="skill-badge">python-docx</span>
+          <span class="skill-badge">lxml</span>
+          <span class="skill-badge">Win32com</span>
+          <span class="skill-badge">FAISS</span>
+          <span class="skill-badge">GGUF (LLMs)</span>
+        </div>
+        <ul class="skills-list">
+          <li><strong>React</strong>: componentes, estado y migración a SPA.</li>
+          <li><strong>Tkinter</strong>: GUIs de escritorio con logs y progreso.</li>
+          <li><strong>Pandas/Openpyxl/Xlwings</strong>: Excel robusto y cálculos.</li>
+          <li><strong>FastAPI</strong>: APIs para evaluación/exportación.</li>
+          <li><strong>Three.js/MapLibre</strong>: visor 3D y mapas.</li>
+          <li><strong>python-docx/lxml/Win32com</strong>: documentos y PDF.</li>
+          <li><strong>FAISS/GGUF</strong>: búsqueda semántica y chat IA.</li>
+        </ul>
+      </div>
+
+      <!-- Herramientas y Conceptos -->
+      <div class="skills-category">
+        <div class="skills-header"><div class="skills-icon">🧠</div><h3 class="skills-title">Herramientas y Conceptos</h3></div>
+        <p class="skills-sub">Buenas prácticas, rendimiento y formatos 3D.</p>
+        <div class="skill-badges">
+          <span class="skill-badge">Threading</span>
+          <span class="skill-badge">Regex</span>
+          <span class="skill-badge">Unicode</span>
+          <span class="skill-badge">SMTP (TLS)</span>
+          <span class="skill-badge">CityJSON</span>
+          <span class="skill-badge">GLTF/GLB</span>
+          <span class="skill-badge">IntersectionObserver</span>
+          <span class="skill-badge">Animaciones CSS/JS</span>
+          <span class="skill-badge">Accesibilidad</span>
+          <span class="skill-badge">Lazy Loading</span>
+        </div>
+        <ul class="skills-list">
+          <li><strong>Threading</strong>: envíos no bloqueantes.</li>
+          <li><strong>Regex/Unicodedata</strong>: normalización fiable.</li>
+          <li><strong>SMTP/Email</strong>: envíos seguros con adjuntos.</li>
+          <li><strong>CityJSON/GLTF</strong>: exportación interoperable 3D.</li>
+          <li><strong>IntersectionObserver</strong>: UX contextual (dragón).</li>
+          <li><strong>Accesibilidad/Rendimiento</strong>: lazy y teclado.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificados" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
+    <h2 class="section-title">Mis Certificados</h2>
+    <div style="text-align:center; margin-bottom:3rem;">
+      <p style="color:#B0B0B0; font-size:1.2rem; max-width:600px; margin:0 auto;">Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.</p>
+    </div>
+
+    <div class="certificates-container">
+      <div class="certificates-fan" id="certificatesFan">
+        <div class="certificate-card" data-cert="Diploma.pdf">
+          <div class="certificate-preview"><div class="certificate-icon">📜</div><div class="certificate-title">Diseño Básico de Páginas Web</div><div class="certificate-description">Técnicas básicas de desarrollo web</div></div>
+        </div>
+        <div class="certificate-card" data-cert="Diploma web avanazado.pdf">
+          <div class="certificate-preview"><div class="certificate-icon">🚀</div><div class="certificate-title">Diseño Avanzado de Páginas Web</div><div class="certificate-description">Técnicas avanzadas de desarrollo web</div></div>
+        </div>
+        <div class="certificate-card" data-cert="Modelo_certificado_final_GDPymes_-_EX.pdf">
+          <div class="certificate-preview"><div class="certificate-icon">💼</div><div class="certificate-title">Liderando la IA</div><div class="certificate-description">Uso de la IA para empresas</div></div>
+        </div>
+        <div class="certificate-card" data-cert="machine-learning">
+          <div class="certificate-preview"><div class="certificate-icon">🔧</div><div class="certificate-title">Machine Learning Aplicado Usando Python</div><div class="certificate-description">Técnicas de Machine Learning</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área para mostrar información detallada de certificados -->
+    <div id="certificate-info-area" class="certificate-info-area" style="display:none;">
+      <div class="certificate-info-content">
+        <div class="certificate-info-header">
+          <div class="certificate-info-icon" id="certificate-info-icon"></div>
+          <h3 class="certificate-info-title" id="certificate-info-title"></h3>
+        </div>
+        <div class="certificate-info-body" id="certificate-info-body"></div>
+        <div class="certificate-info-footer">
+          <p class="certificate-info-success">💡 Certificado obtenido satisfactoriamente</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="section" style="background: linear-gradient(135deg,#0E0F13 0%,#1a1b26 100%);">
+    <h2 class="section-title">Contacto</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem;">
+      <div>
+        <h3 style="color:#F5F5F5; margin-bottom:1rem;">Hablemos</h3>
+        <p style="color:#B0B0B0;">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
+      </div>
+      <form id="contactForm" class="contact-form" style="background: rgba(26,27,38,.8); padding:2rem; border-radius:12px;" autocomplete="on" novalidate>
+        <input type="text" name="name" id="cf-name" placeholder="Tu nombre" aria-label="Nombre" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
+        <input type="email" name="email" id="cf-email" placeholder="tu@email.com" aria-label="Email" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
+        <textarea rows="5" name="message" id="cf-message" placeholder="Tu mensaje..." aria-label="Mensaje" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;"></textarea>
+        <!-- honeypot -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; top:auto; width:1px; height:1px; opacity:0;" />
+        <!-- subject/caption -->
+        <input type="hidden" name="_subject" value="Nuevo mensaje desde el portfolio" />
+        <div id="contactStatus" aria-live="polite" style="min-height:1.25rem; color:#B0B0B0; margin:.25rem 0 .75rem;"></div>
+        <button id="contactSubmit" type="submit" class="btn" style="background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border:none; padding:.8rem 2rem; border-radius:8px;">Enviar Mensaje</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Dragón -->
+  <div id="dragon" class="dragon" style="left: 50px; top: 200px;">
+    <svg class="dragon-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="50" rx="25" ry="15" fill="url(#dragonGradient)"/>
+      <circle cx="40" cy="25" r="18" fill="url(#dragonGradient)"/>
+      <path d="M 25 15 Q 20 8 25 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+      <path d="M 55 15 Q 60 8 55 5" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+      <ellipse cx="35" cy="22" rx="3" ry="4" fill="#333"/>
+      <ellipse cx="45" cy="22" rx="3" ry="4" fill="#333"/>
+      <ellipse cx="36" cy="21" rx="1" ry="2" fill="#FFF"/>
+      <ellipse cx="46" cy="21" rx="1" ry="2" fill="#FFF"/>
+      <ellipse cx="40" cy="32" rx="8" ry="4" fill="url(#dragonGradient)"/>
+      <ellipse cx="40" cy="32" rx="4" ry="2" fill="#333"/>
+      <circle cx="37" cy="30" r="1" fill="#333"/>
+      <circle cx="43" cy="30" r="1" fill="#333"/>
+      <path d="M 15 45 Q 5 35 15 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+      <path d="M 65 45 Q 75 35 65 40" fill="url(#dragonWing)" stroke="#333" stroke-width="1"/>
+      <ellipse cx="30" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+      <ellipse cx="50" cy="62" rx="4" ry="6" fill="url(#dragonGradient)"/>
+      <path d="M 28 68 L 26 72 L 30 72 Z" fill="#333"/>
+      <path d="M 32 68 L 30 72 L 34 72 Z" fill="#333"/>
+      <path d="M 48 68 L 46 72 L 50 72 Z" fill="#333"/>
+      <path d="M 52 68 L 50 72 L 54 72 Z" fill="#333"/>
+      <path d="M 65 55 Q 75 50 85 45 Q 80 40 75 45 Q 70 50 65 55" fill="url(#dragonGradient)" stroke="#333" stroke-width="2"/>
+      <circle cx="70" cy="48" r="2" fill="#333"/>
+      <circle cx="75" cy="45" r="2" fill="#333"/>
+      <circle cx="80" cy="42" r="2" fill="#333"/>
+      <defs>
+        <linearGradient id="dragonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#5996C2"/>
+          <stop offset="50%" style="stop-color:#7B68EE"/>
+          <stop offset="100%" style="stop-color:#9D4EDD"/>
+        </linearGradient>
+        <linearGradient id="dragonWing" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#87CEEB"/>
+          <stop offset="100%" style="stop-color:#5996C2"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="dragon-tooltip">¡Hola, bienvenido a mi portfolio! :)</div>
+  </div>
+
+
+  <script>
+    // Navegación suave
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault(); const t=document.querySelector(a.getAttribute('href')); t&&t.scrollIntoView({behavior:'smooth'});});});
+
+    // Datos de certificados mostrados en el área informativa
+    const certificatesData = {
+      'machine-learning': { title:'Machine Learning Aplicado Usando Python', icon:'🔧', details: { curso:'IFCD093PO - Machine Learning aplicado usando Python', codigo:'F211080AA 004 006', duracion:'150 horas (Teleformación)', fecha:'01/04/2022 a 17/06/2022', lugar:'Málaga, 17 de junio de 2022' } },
+      'Modelo_certificado_final_GDPymes_-_EX.pdf': { title:'Liderando la IA', icon:'🤖', details: { entidad:'IRONHACK SPAIN S.L.U.', codigo_expediente:'2024/GDP_01/000017', accion_formativa:'Liderando la IA', fecha_inicio:'2025-06-09', fecha_fin:'2025-08-17', horas_totales:'150 horas' } },
+      'Diploma web avanazado.pdf': { title:'Diseño Web Avanzado', icon:'🎨', details: { entidad:'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)', accion_formativa:'3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB', modalidad:'Teleformación', duracion:'50 horas', fecha_inicio:'10/05/2022', fecha_fin:'13/06/2022' } },
+      'Diploma.pdf': { title:'Diseño Web Básico', icon:'📱', details: { entidad_certificadora:'BEST PEOPLE SOLUTIONS, S.L.', cif_entidad:'B87316022', accion_formativa:'3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB', modalidad:'Teleformación', duracion:'25.00 horas', fecha_inicio:'01-04-2022', fecha_fin:'09-05-2022' } }
+    };
+
+    function showCertificateDetails(card){
+      const key = card.dataset.cert; const data = certificatesData[key] || certificatesData['machine-learning'];
+      const infoArea = document.getElementById('certificate-info-area');
+      const infoIcon = document.getElementById('certificate-info-icon');
+      const infoTitle = document.getElementById('certificate-info-title');
+      const infoBody = document.getElementById('certificate-info-body');
+      infoIcon.textContent = data.icon; infoTitle.textContent = data.title;
+      let html=''; for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
+      infoBody.innerHTML = html; infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
+    }
+
+    // Pausar el giro del abanico cuando se hace hover sobre él (opcional)
+    const fan = document.getElementById('certificatesFan');
+    if(fan){ fan.addEventListener('mouseenter',()=>fan.classList.add('paused')); fan.addEventListener('mouseleave',()=>fan.classList.remove('paused')); }
+
+    // Dragón con movimiento inteligente
+    (function(){
+      const dragon = document.getElementById('dragon');
+      if(!dragon) return;
+      const tooltip = dragon.querySelector('.dragon-tooltip');
+
+      class DragonSmart {
+        constructor(el){
+          this.el = el;
+          this.tooltip = tooltip;
+          this.tooltipDefault = this.tooltip ? this.tooltip.textContent : '';
+          this.margin = 100; // margen amplio respecto a los bordes para que el tooltip se lea
+          this.tooltipClearance = 100; // separación mínima superior para mostrar el globo
+          this.idleTimer = null;
+          this.currentTarget = null;
+          this.isLocked = false; // bloqueado en sección certificados
+          this.firstCertShown = false; // mostrar mensaje solo la primera vez
+          this.inContact = false; // indicador de sección contacto
+          this.inCertificates = false; // indicador de sección certificados
+          this.firstContactShown = false; // mostrar contacto solo la primera vez automáticamente
+          this.inProjects = false; // indicador de sección proyectos
+          this.inSkills = false; // indicador de sección habilidades
+          this.isDeparted = false; // dragón fuera de escena
+          this.textNodes = () => document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, .nav-link');
+          this.init();
+        }
+
+        init(){
+          // Tooltip contextual en hover
+          this.el.addEventListener('mouseenter',()=>{
+            if(!this.tooltip) return;
+            if(this.isLocked){
+              this.tooltip.textContent = 'Actualmente estoy cursando\nel grado de DAM.';
+            } else if(this.inContact){
+              this.tooltip.textContent = '¡Contactame!';
+            } else {
+              this.tooltip.textContent = this.tooltipDefault;
+            }
+            this.showTooltip();
+          });
+          this.el.addEventListener('mouseleave',()=> this.hideTooltip());
+
+          // Seguir elementos interactivos al hacer hover
+          const interactive = document.querySelectorAll('.interactive-element, .btn, .skill-card, .project-card, .certificate-card, .nav-link');
+          interactive.forEach(el=>{
+            el.addEventListener('mouseenter',()=>{ if(this.isLocked) return; this.currentTarget = el; this.flyNear(el); });
+            el.addEventListener('mouseleave',()=>{ if(this.isLocked) return; if(this.currentTarget===el){ this.currentTarget=null; this.returnToResting(); } });
+          });
+
+          // Movimiento idle suave
+          this.startIdle();
+          window.addEventListener('resize',()=> this.constrainToViewport());
+
+          // Observar la sección de certificados
+          const certSection = document.getElementById('certificados');
+          if(certSection && 'IntersectionObserver' in window){
+            const io = new IntersectionObserver((entries)=>{
+              const e = entries[0];
+              if(e && e.isIntersecting && e.intersectionRatio > 0.3){
+                this.inCertificates = true;
+                // Si venimos de proyectos/habilidades y está fuera de escena, hacer que entre
+                if(this.isDeparted){ this.arrive('left'); }
+                this.lockInCertificates(certSection);
+              } else {
+                this.inCertificates = false;
+                this.unlockFromCertificates();
+              }
+            }, { threshold:[0,0.3,0.6,1], rootMargin: '0px 0px -20% 0px' });
+            io.observe(certSection);
+          }
+
+          // Ocultar (salir por el borde) en sección de proyectos
+          const projectsSection = document.getElementById('proyectos');
+          if(projectsSection && 'IntersectionObserver' in window){
+            const ioP = new IntersectionObserver((entries)=>{
+              const e = entries[0];
+              if(e && e.isIntersecting && e.intersectionRatio > 0.35){
+                this.inProjects = true;
+                this.depart('left');
+              } else {
+                this.inProjects = false;
+                // No mostrar inmediatamente si certificados está activo; se gestionará por sus observers
+              }
+            }, { threshold:[0,0.35,0.6,1] });
+            ioP.observe(projectsSection);
+          }
+
+          // Ocultar (salir por el borde) en sección de habilidades
+          const skillsSection = document.getElementById('habilidades');
+          if(skillsSection && 'IntersectionObserver' in window){
+            const ioH = new IntersectionObserver((entries)=>{
+              const e = entries[0];
+              if(e && e.isIntersecting && e.intersectionRatio > 0.3){
+                // al entrar en habilidades, salir del escenario
+                this.inSkills = true;
+                this.depart('right');
+              } else {
+                // al salir de habilidades, si no estamos en otras secciones especiales, reaparecer
+                this.inSkills = false;
+                if(!this.inProjects && !this.inCertificates && !this.inContact){
+                  if(this.isLocked) this.unlockFromCertificates();
+                  this.arrive('left');
+                }
+              }
+            }, { threshold:[0,0.3,0.6,1] });
+            ioH.observe(skillsSection);
+          }
+
+          // Observar sección de contacto (parte de abajo)
+          const contactSection = document.getElementById('contacto');
+          if(contactSection && 'IntersectionObserver' in window){
+            const io2 = new IntersectionObserver((entries)=>{
+              const e = entries[0];
+              if(e && e.isIntersecting && e.intersectionRatio > 0.6){
+                if(this.inCertificates) return; // no activar contacto si certificados aún visible
+                this.inContact = true;
+                // Asegurar que no siga bloqueado por certificados
+                if(this.isLocked) this.unlockFromCertificates();
+                if(this.tooltip){
+                  this.tooltip.textContent = '¡Contactame!';
+                  // Mostrar automáticamente solo la primera vez
+                  if(!this.firstContactShown){
+                    this.firstContactShown = true;
+                    this.showTooltip();
+                    setTimeout(()=>{ if(this.inContact && !this.isLocked) this.hideTooltip(); }, 2500);
+                  }
+                }
+                // Mover el dragón a la parte baja para que sea visible cerca de contacto
+                const x = this.margin + 60; // margen izquierdo
+                const y = Math.max(this.margin + this.tooltipClearance, window.innerHeight - this.margin - 120);
+                this.moveTo(x, y);
+                this.setResting(true);
+              } else {
+                this.inContact = false;
+                if(!this.isLocked && this.tooltip){
+                  this.tooltip.textContent = this.tooltipDefault;
+                }
+              }
+            }, { threshold:[0,0.6,1] });
+            io2.observe(contactSection);
+          }
+
+          // Fallback: detectar cuando se llega al final de la página como "Contacto"
+          const onScrollBottom = ()=>{
+            const doc = document.documentElement;
+            const atBottom = (window.innerHeight + window.scrollY) >= (doc.scrollHeight - 24);
+            if(atBottom){
+              if(this.inCertificates) return; // no mezclar con certificados
+              this.inContact = true;
+              if(this.isLocked) this.unlockFromCertificates();
+              if(this.tooltip){
+                this.tooltip.textContent = '¡Contactame!';
+                if(!this.firstContactShown){
+                  this.firstContactShown = true;
+                  this.showTooltip();
+                  setTimeout(()=>{ if(this.inContact && !this.isLocked) this.hideTooltip(); }, 2500);
+                }
+              }
+              // posicionar abajo-izquierda
+              const x = this.margin + 60;
+              const y = Math.max(this.margin + this.tooltipClearance, window.innerHeight - this.margin - 120);
+              this.moveTo(x, y);
+              this.setResting(true);
+            }
+          };
+          window.addEventListener('scroll', onScrollBottom, { passive: true });
+
+          // Detección robusta por scroll de secciones (prioriza Contacto)
+          const updateSectionStates = ()=>{
+            const cert = document.getElementById('certificados');
+            const contact = document.getElementById('contacto');
+            const vh = window.innerHeight || 800;
+            if(contact){
+              const rc = contact.getBoundingClientRect();
+              // Consideramos contacto activo cuando su parte superior entra bien en viewport
+              // y además su mitad inferior es visible
+              const contactActive = rc.top < vh*0.85 && rc.bottom > vh*0.45;
+              if(contactActive){
+                if(this.isLocked) this.unlockFromCertificates();
+                this.inContact = true;
+                // posicionar abajo-izquierda estable
+                this.moveTo(this.margin + 60, Math.max(this.margin + this.tooltipClearance, vh - this.margin - 120));
+                this.setResting(true);
+                if(this.tooltip){
+                  this.tooltip.textContent = '¡Contactame!';
+                  if(!this.firstContactShown){
+                    this.firstContactShown = true;
+                    this.showTooltip();
+                    setTimeout(()=>{ if(this.inContact && !this.isLocked) this.hideTooltip(); }, 2500);
+                  }
+                }
+                return; // prioridad contacto
+              } else {
+                this.inContact = false;
+              }
+            }
+
+            // Si no es contacto, evaluar certificados
+            if(cert){
+              const rs = cert.getBoundingClientRect();
+              const certActive = rs.top < vh*0.55 && rs.bottom > vh*0.25;
+              if(certActive){
+                // Asegurar que el dragón es visible en certificados
+                if(this.isDeparted){ this.arrive('left'); }
+                if(!this.isLocked) this.lockInCertificates(cert);
+                return;
+              } else if(this.isLocked) {
+                this.unlockFromCertificates();
+              }
+            }
+          };
+
+          window.addEventListener('scroll', updateSectionStates, { passive: true });
+          window.addEventListener('resize', updateSectionStates);
+          // Llamada inicial para posicionar correctamente si se abre en medio
+          setTimeout(updateSectionStates, 50);
+        }
+
+        showTooltip(){ this.tooltip && this.tooltip.classList.add('show'); }
+        hideTooltip(){ this.tooltip && this.tooltip.classList.remove('show'); }
+
+        setResting(on){
+          if(!this.el) return;
+          this.el.classList.toggle('resting', !!on);
+        }
+
+        // Salir por el borde (animado)
+        depart(direction='left'){
+          if(this.isDeparted) return;
+          this.hideTooltip();
+          this.setResting(false);
+          if(this.idleTimer){ clearTimeout(this.idleTimer); this.idleTimer = null; }
+          const rect = this.el.getBoundingClientRect();
+          const w = window.innerWidth, h = window.innerHeight;
+          let x = rect.left, y = rect.top;
+          // asegurar y dentro de viewport razonable
+          y = this.clamp(y, this.margin, h - this.margin - 80);
+          if(direction==='right') x = w + 120; else if(direction==='top') { y = -120; } else if(direction==='bottom'){ y = h + 120; } else { x = -120; }
+          this.el.style.pointerEvents = 'none';
+          this.el.style.opacity = '1';
+          this.moveTo(x, y);
+          // fade out al final del deslizamiento
+          setTimeout(()=>{ this.el.style.opacity = '0'; this.isDeparted = true; }, 700);
+        }
+
+        // Entrar desde el borde (animado)
+        arrive(direction='left'){
+          if(!this.isDeparted) return;
+          const w = window.innerWidth, h = window.innerHeight;
+          const targetY = Math.max(this.margin + this.tooltipClearance + 40, Math.min(h - this.margin - 80, 220));
+          let startX = -120, startY = targetY, endX = this.margin + 60, endY = targetY;
+          if(direction==='right'){ startX = w + 120; endX = Math.min(w - this.margin - 80, w - 140); }
+          if(direction==='top'){ startY = -120; endY = this.margin + 80; startX = this.margin + 60; endX = this.margin + 60; }
+          if(direction==='bottom'){ startY = h + 120; endY = Math.min(h - this.margin - 80, h - 180); }
+          this.el.style.display = 'block';
+          this.el.style.pointerEvents = 'auto';
+          this.el.style.opacity = '0';
+          this.moveTo(startX, startY);
+          setTimeout(()=>{
+            this.el.style.opacity = '1';
+            this.moveTo(endX, endY);
+            this.setResting(true);
+            this.isDeparted = false;
+            if(!this.isLocked){ this.startIdle(); }
+          }, 50);
+        }
+
+        startIdle(){
+          clearInterval(this.idleTimer);
+          const tick = ()=>{
+            if(this.isLocked || this.currentTarget) return; // no moverse si está bloqueado o siguiendo algo
+            const { innerWidth:w, innerHeight:h } = window;
+            // Sesgo hacia el centro para un movimiento más natural
+            const cx = w/2, cy = h/2;
+            const spreadX = Math.max(160, w*0.35);
+            const spreadY = Math.max(160, h*0.35);
+            const x = this.clamp(cx + this.rand(-spreadX, spreadX), this.margin, w - this.margin - 80);
+            const y = this.clamp(cy + this.rand(-spreadY, spreadY), this.margin + this.tooltipClearance, h - this.margin - 80);
+            const p = this.findSafe({x,y});
+            this.moveTo(p.x, p.y);
+            this.setResting(true);
+            // Intervalo ligeramente aleatorio (5–9s)
+            const next = this.rand(5000, 9000);
+            this.idleTimer = setTimeout(tick, next);
+          };
+          this.idleTimer = setTimeout(tick, 2000);
+        }
+
+        returnToResting(){
+          const { innerWidth:w, innerHeight:h } = window;
+          // Punto de reposo: arriba-izquierda pero con gran margen para no pegarse a los bordes
+          const x = this.margin + 60;
+          const y = Math.max(this.margin + this.tooltipClearance + 40, Math.min(h - this.margin - 80, 220));
+          const p = this.findSafe({x,y});
+          this.moveTo(p.x, p.y);
+          this.setResting(true);
+        }
+
+        flyNear(el){
+          if(this.isLocked) return; // no seguir cuando está bloqueado en certificados
+          this.setResting(false);
+          const r = el.getBoundingClientRect();
+          // Intentar posiciones alrededor del elemento (arriba-izquierda, arriba-derecha, izquierda, derecha)
+          const offset = 80; // distancia natural respecto al objetivo
+          const candidates = [
+            { x: r.left - offset,           y: r.top - (offset + 20) },
+            { x: r.right + 24,              y: r.top - (offset + 20) },
+            { x: r.left - (offset + 20),    y: r.top + r.height/2 - 40 },
+            { x: r.right + 24,              y: r.top + r.height/2 - 40 },
+            { x: r.left + r.width/2 - 40,   y: r.top - (offset + 30) }
+          ];
+          for(const c of candidates){
+            const p = this.findSafe(c);
+            if(p){ this.moveTo(p.x, p.y); return; }
+          }
+          // fallback: resting
+          this.returnToResting();
+        }
+
+        moveTo(x,y){
+          const pos = this.constrain({x,y});
+          this.el.style.left = pos.x + 'px';
+          this.el.style.top  = pos.y + 'px';
+        }
+
+        constrainToViewport(){
+          const rect = this.el.getBoundingClientRect();
+          const pos = this.constrain({x:rect.left, y:rect.top});
+          this.moveTo(pos.x, pos.y);
+        }
+
+        constrain({x,y}){
+          const { innerWidth:w, innerHeight:h } = window;
+          const maxX = w - 80 - this.margin;
+          const maxY = h - 80 - this.margin;
+          const clamped = { 
+            x: this.clamp(x, this.margin, maxX), 
+            y: this.clamp(y, this.margin + this.tooltipClearance, maxY) 
+          };
+          return clamped;
+        }
+
+        findSafe({x,y}){
+          // evitar superposición con textos y UI
+          const dragonRect = { left:x, top:y, right:x+80, bottom:y+80 };
+          const nodes = this.textNodes();
+          for(const n of nodes){
+            const r = n.getBoundingClientRect();
+            if(this.overlap(dragonRect, r)){
+              // Desplazar ligeramente
+              const dx = (dragonRect.right - r.left) + 16;
+              const dy = (dragonRect.bottom - r.top) + 16;
+              return this.constrain({ x: x - dx, y: y - dy });
+            }
+          }
+          return this.constrain({x,y});
+        }
+
+        overlap(a,b){
+          return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+        }
+
+        rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+        clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+        // Bloqueo en la sección de certificados
+        lockInCertificates(section){
+          if(this.isLocked) return;
+          this.isLocked = true;
+          this.inContact = false; // si entra en certificados, no estamos en contacto
+          // Fijar al margen izquierdo y una altura cómoda
+          const y = Math.max(this.margin + this.tooltipClearance + 20, 220);
+          this.moveTo(this.margin, y);
+          this.setResting(true); // mantener vaivén suave en certificados
+          // Establecer texto específico de la sección
+          if(this.tooltip){
+            this.tooltip.textContent = 'Actualmente estoy cursando\nel grado de DAM.'; // 2 líneas
+            if(!this.firstCertShown){
+              this.firstCertShown = true;
+              this.showTooltip();
+              setTimeout(()=>{ this.hideTooltip(); }, 4000);
+            }
+          }
+        }
+
+        // Desbloquear al salir de certificados
+        unlockFromCertificates(){
+          if(!this.isLocked) return;
+          this.isLocked = false;
+          // Restaurar texto por defecto
+          if(this.tooltip){ this.tooltip.textContent = this.tooltipDefault; }
+          this.returnToResting();
+        }
+      }
+
+      // Inicializar
+      new DragonSmart(dragon);
+    })();
+
+    // Interacción unificada de certificados: pausa el abanico y agranda la tarjeta pulsada
+    (function(){
+      const fan = document.getElementById('certificatesFan');
+      const cards = fan ? fan.querySelectorAll('.certificate-card') : [];
+      if(!fan || !cards.length) return;
+
+      // Asignar la rotación base a cada tarjeta para que mantenga su orientación al agrandarse
+      const rotations = ['0deg','90deg','180deg','270deg'];
+      cards.forEach((card, idx)=>{
+        const rot = rotations[idx % rotations.length];
+        card.style.setProperty('--rotation', rot);
+      });
+
+      let enlargedCard = null;
+
+      function enlargeCard(card){
+        cards.forEach(c=>c.classList.remove('enlarged'));
+        card.classList.add('enlarged');
+        fan.classList.add('paused');
+        enlargedCard = card;
+        // Mostrar detalles del certificado seleccionado
+        try { showCertificateDetails(card); } catch(e) { /* no-op */ }
+      }
+
+      function resetEnlarge(){
+        cards.forEach(c=>c.classList.remove('enlarged'));
+        fan.classList.remove('paused');
+        enlargedCard = null;
+      }
+
+      cards.forEach(card=>{
+        card.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          // Toggle: si ya está agrandada, volver a estado normal; si no, agrandar
+          if(enlargedCard === card){
+            resetEnlarge();
+          } else {
+            enlargeCard(card);
+          }
+        });
+      });
+
+      // Al hacer click fuera de las tarjetas, reanudar animación y restaurar tamaño
+      document.addEventListener('click', (e)=>{
+        if(!fan.contains(e.target)){
+          resetEnlarge();
+        }
+      });
+    })();
+
+    // Lightbox para imágenes de proyectos (creación y eventos)
+    (function(){
+      let lb = document.getElementById('project-lightbox');
+      if(!lb){
+        lb = document.createElement('div');
+        lb.id = 'project-lightbox';
+        lb.className = 'lightbox';
+        lb.innerHTML = '<div class="lightbox-content"><img class="lightbox-img" alt="Vista de proyecto" /><div class="lightbox-caption"></div></div>';
+        document.body.appendChild(lb);
+      }
+      const lbImg = lb.querySelector('.lightbox-img');
+      const lbCap = lb.querySelector('.lightbox-caption');
+
+      function openLB(src, caption){ lbImg.src = src; lbCap.textContent = caption || ''; lb.classList.add('show'); }
+      function closeLB(){ lb.classList.remove('show'); setTimeout(()=>{ lbImg.src=''; lbCap.textContent=''; }, 150); }
+
+      document.addEventListener('click', (e)=>{
+        const img = e.target.closest('.project-thumb');
+        if(img){
+          const card = img.closest('.project-card');
+          const title = card ? (card.querySelector('h3')?.textContent || '') : '';
+          openLB(img.getAttribute('src'), title);
+        }
+      });
+      lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
+    })();
+
+    // Activar título de sección cuando está en vista
+    (function(){
+      const sections = document.querySelectorAll('section.section');
+      if(!('IntersectionObserver' in window) || !sections.length) return;
+      const getTitle = (sec)=> sec.querySelector('.section-title');
+      const navLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
+      const linkFor = (id)=> navLinks.find(a=> a.getAttribute('href') === `#${id}`);
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          const t = getTitle(e.target);
+          if(!t) return;
+          if(e.isIntersecting && e.intersectionRatio > 0.35){
+            t.classList.add('active');
+            const l = linkFor(e.target.id); if(l){ l.classList.add('active'); }
+          } else {
+            t.classList.remove('active');
+            const l = linkFor(e.target.id); if(l){ l.classList.remove('active'); }
+          }
+        });
+      }, { threshold:[0,0.35,0.6,1], rootMargin: '0px 0px -10% 0px' });
+      sections.forEach(sec=> io.observe(sec));
+    })();
+
+    // Envío de formulario de contacto con Formspree (sin backend propio)
+    (function(){
+      const form = document.getElementById('contactForm');
+      if(!form) return;
+      const status = document.getElementById('contactStatus');
+      const btn = document.getElementById('contactSubmit');
+
+      // Endpoint real de Formspree (proporcionado por el usuario)
+      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeorkdol';
+
+      function setStatus(msg, ok=false){ if(status){ status.style.color = ok ? '#8BE28B' : '#B0B0B0'; status.textContent = msg; } }
+
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const name = (document.getElementById('cf-name')||{}).value?.trim();
+        const email = (document.getElementById('cf-email')||{}).value?.trim();
+        const message = (document.getElementById('cf-message')||{}).value?.trim();
+        if(!name || !email || !message){ setStatus('Por favor, completa todos los campos obligatorios.'); return; }
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ setStatus('Introduce un email válido.'); return; }
+
+        btn.disabled = true; btn.textContent = 'Enviando...'; setStatus('Enviando mensaje...');
+
+        // Fallback seguro: si no has configurado Formspree aún, usa mailto directo
+        if(FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')){
+          const subject = `Nuevo mensaje del portfolio — de ${name}`;
+          const body = `${message}\n\nNombre: ${name}\nEmail de contacto: ${email}`;
+          const mailto = `mailto:davidvr1994@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+          window.location.href = mailto;
+          setStatus('Abriendo tu cliente de correo para enviar el mensaje…', true);
+          btn.disabled = false; btn.textContent = 'Enviar Mensaje';
+          return;
+        }
+
+        try{
+          const payload = new FormData();
+          payload.append('name', name);
+          payload.append('email', email);
+          payload.append('message', message + '\n\n— Enviado desde el portfolio');
+          payload.append('_subject', `Nuevo mensaje del portfolio para davidvr1994@gmail.com — de ${name}`);
+          payload.append('_replyto', email);
+
+          const res = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', body: payload, headers: { 'Accept':'application/json' } });
+          const data = await res.json().catch(()=>({}));
+          if(res.ok){
+            setStatus('¡Gracias! Tu mensaje ha sido enviado correctamente.', true);
+            form.reset();
+          } else {
+            setStatus(data?.error || 'No se pudo enviar el mensaje. Intenta de nuevo más tarde.');
+          }
+        } catch(err){
+          setStatus('Se produjo un error de red. Inténtalo de nuevo más tarde.');
+        } finally {
+          btn.disabled = false; btn.textContent = 'Enviar Mensaje';
+        }
+      });
+    })();
+  </script>
+</body>
 </html>
