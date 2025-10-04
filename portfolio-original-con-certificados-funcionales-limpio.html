@@ -77,6 +77,8 @@
     .certificate-info-header { display: flex; align-items: center; justify-content: center; gap: .9rem; margin-bottom: 1.5rem; }
     .certificate-info-icon { width: 40px; height: 40px; display: grid; place-items: center; font-size: 1.6rem; border-radius: 12px; background: linear-gradient(135deg,#5996C2,#7C3AED); box-shadow: 0 6px 16px rgba(124,58,237,.35); }
     .certificate-info-title { font-size: 1.9rem; font-weight: 800; margin: 0; background: linear-gradient(135deg,#6fb4db,#9D4EDD); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: .3px; }
+    /* Compatibilidad estándar */
+    .certificate-info-title { background-clip: text; color: transparent; }
 
     .certificate-info-body { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px 22px; margin: 1.25rem 0 1.75rem; text-align: left; }
     .certificate-info-item { background: rgba(15,16,22,.78); border: 1px solid rgba(89,150,194,.18); border-radius: 12px; padding: 1rem 1.1rem; box-shadow: 0 10px 24px rgba(0,0,0,.25); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
@@ -140,6 +142,46 @@
       .about-text{ max-width: 100%; }
       .about-avatar{ width: 180px; height: 180px; }
     }
+
+    /* Ajustes generales para móvil */
+    @media (max-width: 768px){
+      html, body { overflow-x: hidden; }
+      .section-title{ font-size: 1.6rem; }
+      .projects-grid{ gap: 1.2rem !important; }
+      .project-card{ padding: 1rem !important; }
+      .project-thumb{ aspect-ratio: 16/9; height: auto; }
+      .skills-grid{ grid-template-columns: 1fr; gap: 1rem; }
+      .skills-category{ padding: 1rem; }
+      .skill-badge{ font-size: .85rem; }
+      .certificate-info-area{ padding: 1.1rem; }
+      .hero-title{ font-size: 1.9rem !important; }
+      .hero-subtitle{ font-size: 1.05rem !important; }
+      .hero-description{ font-size: 1rem !important; }
+      .dragon-svg{ width: 64px; height: 64px; }
+    }
+
+    @media (max-width: 480px){
+      .section-title{ font-size: 1.45rem; }
+      .about-card{ padding: 1.1rem 1.2rem; }
+      .about-lead{ font-size: 1rem; }
+      .about-micro{ font-size: .95rem; }
+      .about-avatar{ width: 160px; height: 160px; }
+      .project-card{ padding: .9rem !important; }
+      .skills-category{ padding: .9rem; }
+      .skill-badge{ font-size: .8rem; padding: .3rem .5rem; }
+      .certificate-info-title{ font-size: 1.6rem; }
+    }
+
+    /* Título de sección activo (iluminado) */
+    .section-title{ position: relative; display: inline-block; transition: color .25s ease, text-shadow .25s ease; }
+    .section-title.active{
+      color: #EAF2FF;
+      text-shadow: 0 0 10px rgba(153, 102, 255, .45), 0 0 22px rgba(89,150,194,.35);
+    }
+
+    /* Navbar: enlace activo sincronizado con la sección */
+    .nav-link{ transition: color .2s ease, text-shadow .2s ease; }
+    .nav-link.active{ color:#EAF2FF !important; text-shadow: 0 0 10px rgba(153,102,255,.35); }
 
     @media (max-width:768px){
       .certificates-fan{ width:400px; height:200px; }
@@ -215,7 +257,7 @@
           <li>Regex y Unicodedata para normalización de texto.</li>
           <li>SMTPlib y email.mime para correos con adjuntos (Gmail TLS).</li>
         </ul>
-        <a href="https://github.com/davidvaleroroman/enviador-facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Enviador-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 2: Editor de Facturas Automatizado -->
@@ -231,7 +273,7 @@
           <li>Win32com para conversión a PDF y cálculos precisos con Decimal.</li>
           <li>Procesamiento por lotes con reportes de éxitos/fallos.</li>
         </ul>
-        <a href="https://github.com/davidvaleroroman/editor-facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Editor-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 3: Visor 3D Normativa Galicia -->
@@ -247,7 +289,7 @@
           <li>CityJSON/GLTF/GLB para exportación de volúmenes 3D robusta.</li>
           <li>CSV/Mock providers para datos municipales y heurísticas normativas.</li>
         </ul>
-        <a href="https://github.com/davidvaleroroman/visor-3d-normativa-galicia" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/NORMATIVA-URBANISTICA-3D" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 4: Portfolio Profesional Interactivo -->
@@ -263,7 +305,7 @@
           <li>Accesibilidad con lazy loading y cierre por teclado.</li>
           <li>Estructura de datos centralizada para render dinámico de certificados.</li>
         </ul>
-        <a href="https://github.com/davidvaleroroman/portfolio-react" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Portfolio" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
     </div>
   </section>
@@ -498,6 +540,7 @@
           this.inCertificates = false; // indicador de sección certificados
           this.firstContactShown = false; // mostrar contacto solo la primera vez automáticamente
           this.inProjects = false; // indicador de sección proyectos
+          this.inSkills = false; // indicador de sección habilidades
           this.isDeparted = false; // dragón fuera de escena
           this.textNodes = () => document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, .nav-link');
           this.init();
@@ -536,6 +579,8 @@
               const e = entries[0];
               if(e && e.isIntersecting && e.intersectionRatio > 0.3){
                 this.inCertificates = true;
+                // Si venimos de proyectos/habilidades y está fuera de escena, hacer que entre
+                if(this.isDeparted){ this.arrive('left'); }
                 this.lockInCertificates(certSection);
               } else {
                 this.inCertificates = false;
@@ -561,14 +606,19 @@
             ioP.observe(projectsSection);
           }
 
-          // Reaparecer (entrar desde el borde) en sección de habilidades
+          // Ocultar (salir por el borde) en sección de habilidades
           const skillsSection = document.getElementById('habilidades');
           if(skillsSection && 'IntersectionObserver' in window){
             const ioH = new IntersectionObserver((entries)=>{
               const e = entries[0];
               if(e && e.isIntersecting && e.intersectionRatio > 0.3){
-                if(!this.inProjects){
-                  // si no estamos en proyectos, reaparecer con comportamiento normal (no bloqueado)
+                // al entrar en habilidades, salir del escenario
+                this.inSkills = true;
+                this.depart('right');
+              } else {
+                // al salir de habilidades, si no estamos en otras secciones especiales, reaparecer
+                this.inSkills = false;
+                if(!this.inProjects && !this.inCertificates && !this.inContact){
                   if(this.isLocked) this.unlockFromCertificates();
                   this.arrive('left');
                 }
@@ -671,6 +721,8 @@
               const rs = cert.getBoundingClientRect();
               const certActive = rs.top < vh*0.55 && rs.bottom > vh*0.25;
               if(certActive){
+                // Asegurar que el dragón es visible en certificados
+                if(this.isDeparted){ this.arrive('left'); }
                 if(!this.isLocked) this.lockInCertificates(cert);
                 return;
               } else if(this.isLocked) {
@@ -942,6 +994,29 @@
       });
       lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
+    })();
+
+    // Activar título de sección cuando está en vista
+    (function(){
+      const sections = document.querySelectorAll('section.section');
+      if(!('IntersectionObserver' in window) || !sections.length) return;
+      const getTitle = (sec)=> sec.querySelector('.section-title');
+      const navLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
+      const linkFor = (id)=> navLinks.find(a=> a.getAttribute('href') === `#${id}`);
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          const t = getTitle(e.target);
+          if(!t) return;
+          if(e.isIntersecting && e.intersectionRatio > 0.35){
+            t.classList.add('active');
+            const l = linkFor(e.target.id); if(l){ l.classList.add('active'); }
+          } else {
+            t.classList.remove('active');
+            const l = linkFor(e.target.id); if(l){ l.classList.remove('active'); }
+          }
+        });
+      }, { threshold:[0,0.35,0.6,1], rootMargin: '0px 0px -10% 0px' });
+      sections.forEach(sec=> io.observe(sec));
     })();
 
     // Envío de formulario de contacto con Formspree (sin backend propio)
