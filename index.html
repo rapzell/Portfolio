@@ -410,6 +410,9 @@
         <div class="certificate-card" data-cert="machine-learning">
           <div class="certificate-preview"><div class="certificate-icon">🔧</div><div class="certificate-title">Machine Learning Aplicado Usando Python</div><div class="certificate-description">Técnicas de Machine Learning</div></div>
         </div>
+        <div class="certificate-card" data-cert="software_engineer certificate.pdf">
+          <div class="certificate-preview"><div class="certificate-icon">🧑‍💻</div><div class="certificate-title">Software Engineer Certificate</div><div class="certificate-description">Formación en ingeniería de software</div></div>
+        </div>
       </div>
     </div>
 
@@ -501,7 +504,8 @@
       'machine-learning': { title:'Machine Learning Aplicado Usando Python', icon:'🔧', details: { curso:'IFCD093PO - Machine Learning aplicado usando Python', codigo:'F211080AA 004 006', duracion:'150 horas (Teleformación)', fecha:'01/04/2022 a 17/06/2022', lugar:'Málaga, 17 de junio de 2022' } },
       'Modelo_certificado_final_GDPymes_-_EX.pdf': { title:'Liderando la IA', icon:'🤖', details: { entidad:'IRONHACK SPAIN S.L.U.', codigo_expediente:'2024/GDP_01/000017', accion_formativa:'Liderando la IA', fecha_inicio:'2025-06-09', fecha_fin:'2025-08-17', horas_totales:'150 horas' } },
       'Diploma web avanazado.pdf': { title:'Diseño Web Avanzado', icon:'🎨', details: { entidad:'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)', accion_formativa:'3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB', modalidad:'Teleformación', duracion:'50 horas', fecha_inicio:'10/05/2022', fecha_fin:'13/06/2022' } },
-      'Diploma.pdf': { title:'Diseño Web Básico', icon:'📱', details: { entidad_certificadora:'BEST PEOPLE SOLUTIONS, S.L.', cif_entidad:'B87316022', accion_formativa:'3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB', modalidad:'Teleformación', duracion:'25.00 horas', fecha_inicio:'01-04-2022', fecha_fin:'09-05-2022' } }
+      'Diploma.pdf': { title:'Diseño Web Básico', icon:'📱', details: { entidad_certificadora:'BEST PEOPLE SOLUTIONS, S.L.', cif_entidad:'B87316022', accion_formativa:'3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB', modalidad:'Teleformación', duracion:'25.00 horas', fecha_inicio:'01-04-2022', fecha_fin:'09-05-2022' } },
+      'software_engineer certificate.pdf': { title:'Software Engineer Certificate', icon:'🧑‍💻', details: { archivo:'software_engineer certificate.pdf' } }
     };
 
     function showCertificateDetails(card){
@@ -921,14 +925,16 @@
     // Interacción unificada de certificados: pausa el abanico y agranda la tarjeta pulsada
     (function(){
       const fan = document.getElementById('certificatesFan');
-      const cards = fan ? fan.querySelectorAll('.certificate-card') : [];
+      const cards = fan ? Array.from(fan.querySelectorAll('.certificate-card')) : [];
       if(!fan || !cards.length) return;
 
-      // Asignar la rotación base a cada tarjeta para que mantenga su orientación al agrandarse
-      const rotations = ['0deg','90deg','180deg','270deg'];
+      // Posicionar dinámicamente todas las tarjetas alrededor de 360°
+      const n = cards.length;
+      const z = Math.min(150, Math.max(100, Math.floor((fan.clientWidth || 600)/4)));
       cards.forEach((card, idx)=>{
-        const rot = rotations[idx % rotations.length];
-        card.style.setProperty('--rotation', rot);
+        const angle = (360 / n) * idx;
+        card.style.setProperty('--rotation', angle + 'deg');
+        card.style.transform = `rotateY(${angle}deg) translateZ(${z}px)`;
       });
 
       let enlargedCard = null;
