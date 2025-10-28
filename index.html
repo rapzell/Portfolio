@@ -513,7 +513,7 @@
       'Modelo_certificado_final_GDPymes_-_EX.pdf': { title:'Liderando la IA', icon:'🤖', details: { entidad:'IRONHACK SPAIN S.L.U.', codigo_expediente:'2024/GDP_01/000017', accion_formativa:'Liderando la IA', fecha_inicio:'2025-06-09', fecha_fin:'2025-08-17', horas_totales:'150 horas' } },
       'Diploma web avanazado.pdf': { title:'Diseño Web Avanzado', icon:'🎨', details: { entidad:'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)', accion_formativa:'3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB', modalidad:'Teleformación', duracion:'50 horas', fecha_inicio:'10/05/2022', fecha_fin:'13/06/2022' } },
       'Diploma.pdf': { title:'Diseño Web Básico', icon:'📱', details: { entidad_certificadora:'BEST PEOPLE SOLUTIONS, S.L.', cif_entidad:'B87316022', accion_formativa:'3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB', modalidad:'Teleformación', duracion:'25.00 horas', fecha_inicio:'01-04-2022', fecha_fin:'09-05-2022' } },
-      'software_engineer certificate.pdf': { title:'Software Engineer Certificate', icon:'🧑‍💻', details: { archivo:'software_engineer certificate.pdf' } },
+      'software_engineer certificate.pdf': { title:'Software Engineer Certificate', icon:'🧑‍💻', details: { archivo:'software_engineer certificate.pdf', descripcion:'Ingeniero de software. Cubre temas como resolución de problemas, SQL y API REST.' } },
       'sql-certificates': {
         title:'Certificados SQL',
         icon:'🗄️',
@@ -541,6 +541,7 @@
 <div class="certificate-info-label">Visor:</div>\
 <div class="certificate-info-value">\
   <iframe id="sql-pdf-viewer" title="Visor de certificado" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;" loading="lazy"></iframe>\
+  <div id="sql-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
   <div style="margin-top:.6rem; display:flex; gap:.6rem; flex-wrap:wrap;">\
     <a id="sql-pdf-download" href="#" target="_blank" style="display:inline-block; padding:.45rem .9rem; background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border-radius:8px; text-decoration:none;">Abrir/Descargar</a>\
   </div>\
@@ -550,7 +551,22 @@
         infoBody.innerHTML = tabs + viewer + detailsHtml;
         const iframe = document.getElementById('sql-pdf-viewer');
         const dl = document.getElementById('sql-pdf-download');
-        const applySrc = (idx)=>{ const it = data.group[idx]; if(!it) return; iframe.src = it.file; dl.href = it.file; };
+        const statusEl = document.getElementById('sql-pdf-status');
+        let loadTimer = null;
+        const applySrc = (idx)=>{
+          const it = data.group[idx]; if(!it) return;
+          const url = encodeURI(it.file);
+          if(statusEl){ statusEl.textContent = `Cargando “${it.label}”…`; }
+          try{ iframe.src = ''; }catch(_){ /* noop */ }
+          // manejar onload/onerror básicos
+          const onLoad = ()=>{ if(statusEl){ statusEl.textContent = ''; } clearTimeout(loadTimer); };
+          iframe.onload = onLoad;
+          // timeout por si el navegador no puede embeber PDF
+          clearTimeout(loadTimer);
+          loadTimer = setTimeout(()=>{ if(statusEl){ statusEl.textContent = 'Si no ves el certificado en el visor, pulsa “Abrir/Descargar”.'; } }, 3000);
+          iframe.src = url;
+          dl.href = url;
+        };
         // activar primera pestaña
         const tabButtons = Array.from(infoBody.querySelectorAll('.sql-tab'));
         if(tabButtons.length){ tabButtons[0].classList.add('active'); }
