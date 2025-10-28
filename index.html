@@ -413,6 +413,9 @@
         <div class="certificate-card" data-cert="software_engineer certificate.pdf">
           <div class="certificate-preview"><div class="certificate-icon">🧑‍💻</div><div class="certificate-title">Software Engineer Certificate</div><div class="certificate-description">Formación en ingeniería de software</div></div>
         </div>
+        <div class="certificate-card" data-cert="sql-certificates">
+          <div class="certificate-preview"><div class="certificate-icon">🗄️</div><div class="certificate-title">Certificados SQL</div><div class="certificate-description">Básico, Intermedio y Avanzado</div></div>
+        </div>
       </div>
     </div>
 
@@ -505,7 +508,17 @@
       'Modelo_certificado_final_GDPymes_-_EX.pdf': { title:'Liderando la IA', icon:'🤖', details: { entidad:'IRONHACK SPAIN S.L.U.', codigo_expediente:'2024/GDP_01/000017', accion_formativa:'Liderando la IA', fecha_inicio:'2025-06-09', fecha_fin:'2025-08-17', horas_totales:'150 horas' } },
       'Diploma web avanazado.pdf': { title:'Diseño Web Avanzado', icon:'🎨', details: { entidad:'BEST PEOPLE SOLUTIONS, S.L. (CIF: B87316022)', accion_formativa:'3900 / 12082 - TÉCNICAS AVANZADAS DE DISEÑO WEB', modalidad:'Teleformación', duracion:'50 horas', fecha_inicio:'10/05/2022', fecha_fin:'13/06/2022' } },
       'Diploma.pdf': { title:'Diseño Web Básico', icon:'📱', details: { entidad_certificadora:'BEST PEOPLE SOLUTIONS, S.L.', cif_entidad:'B87316022', accion_formativa:'3899/12080 DISEÑO BÁSICO DE PÁGINAS WEB', modalidad:'Teleformación', duracion:'25.00 horas', fecha_inicio:'01-04-2022', fecha_fin:'09-05-2022' } },
-      'software_engineer certificate.pdf': { title:'Software Engineer Certificate', icon:'🧑‍💻', details: { archivo:'software_engineer certificate.pdf' } }
+      'software_engineer certificate.pdf': { title:'Software Engineer Certificate', icon:'🧑‍💻', details: { archivo:'software_engineer certificate.pdf' } },
+      'sql-certificates': {
+        title:'Certificados SQL',
+        icon:'🗄️',
+        group: [
+          { label:'SQL Básico', file:'Certificados/sql_basic certificate (1).pdf' },
+          { label:'SQL Intermedio', file:'Certificados/sql_intermediate certificate.pdf' },
+          { label:'SQL Avanzado', file:'Certificados/sql_advanced certificate.pdf' }
+        ],
+        details: { descripcion: 'Conjunto de certificaciones en SQL: fundamentos, consultas intermedias y optimización avanzada.' }
+      }
     };
 
     function showCertificateDetails(card){
@@ -515,8 +528,33 @@
       const infoTitle = document.getElementById('certificate-info-title');
       const infoBody = document.getElementById('certificate-info-body');
       infoIcon.textContent = data.icon; infoTitle.textContent = data.title;
-      let html=''; for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
-      infoBody.innerHTML = html; infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
+      if(Array.isArray(data.group)){
+        let tabs = '<div class="certificate-info-item" style="grid-column:1/-1; padding:0; border:none; background:transparent; box-shadow:none;"><div style="display:flex; gap:.5rem; flex-wrap:wrap;">';
+        data.group.forEach((g,i)=>{ tabs += `<button class="sql-tab" data-idx="${i}" style="background: rgba(16,18,26,.85); color:#e9f2ff; border:1px solid rgba(89,150,194,.26); padding:.5rem .8rem; border-radius:10px; cursor:pointer;">${g.label}</button>`; });
+        tabs += '</div></div>';
+        const viewer = '<div class="certificate-info-item" style="grid-column:1/-1;">\
+<div class="certificate-info-label">Visor:</div>\
+<div class="certificate-info-value">\
+  <iframe id="sql-pdf-viewer" title="Visor de certificado" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;" loading="lazy"></iframe>\
+  <div style="margin-top:.6rem; display:flex; gap:.6rem; flex-wrap:wrap;">\
+    <a id="sql-pdf-download" href="#" target="_blank" style="display:inline-block; padding:.45rem .9rem; background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border-radius:8px; text-decoration:none;">Abrir/Descargar</a>\
+  </div>\
+</div>\
+</div>';
+        let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; } }
+        infoBody.innerHTML = tabs + viewer + detailsHtml;
+        const iframe = document.getElementById('sql-pdf-viewer');
+        const dl = document.getElementById('sql-pdf-download');
+        const applySrc = (idx)=>{ const it = data.group[idx]; if(!it) return; iframe.src = it.file; dl.href = it.file; };
+        applySrc(0);
+        infoBody.querySelectorAll('.sql-tab').forEach(btn=>{
+          btn.addEventListener('click',()=>{ infoBody.querySelectorAll('.sql-tab').forEach(b=> b.style.outline='none'); applySrc(parseInt(btn.dataset.idx||'0')); });
+        });
+      } else {
+        let html=''; for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
+        infoBody.innerHTML = html;
+      }
+      infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
     }
 
     // Pausar el giro del abanico cuando se hace hover sobre él (opcional)
