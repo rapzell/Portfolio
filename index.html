@@ -270,7 +270,7 @@
       <div style="text-align:center;">
         <div class="about-avatar-wrap">
           <div class="about-avatar-ring"></div>
-          <img class="about-avatar" src="Certificados/Foto profesional DAvid.jpg?v=2" alt="Foto profesional de David Valero Roman" loading="lazy" />
+          <img class="about-avatar" src="Certificados/Foto%20profesional%20DAvid.jpg?v=3" alt="Foto profesional de David Valero Roman" loading="lazy" />
         </div>
       </div>
     </div>
@@ -292,7 +292,7 @@
           <li data-i18n="projects.p1.li4">Regex y Unicodedata para normalización de texto.</li>
           <li data-i18n="projects.p1.li5">SMTPlib y email.mime para correos con adjuntos (Gmail TLS).</li>
         </ul>
-        <a href="https://github.com/rapzell/Enviador-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Enviador-de-Facturas" target="_blank" data-i18n="projects.view" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 2: Editor de Facturas Automatizado -->
@@ -308,7 +308,7 @@
           <li data-i18n="projects.p2.li4">Win32com para conversión a PDF y cálculos precisos con Decimal.</li>
           <li data-i18n="projects.p2.li5">Procesamiento por lotes con reportes de éxitos/fallos.</li>
         </ul>
-        <a href="https://github.com/rapzell/Editor-de-Facturas" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Editor-de-Facturas" target="_blank" data-i18n="projects.view" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 3: Visor 3D Normativa Galicia -->
@@ -324,7 +324,7 @@
           <li data-i18n="projects.p3.li4">CityJSON/GLTF/GLB para exportación de volúmenes 3D robusta.</li>
           <li data-i18n="projects.p3.li5">CSV/Mock providers para datos municipales y heurísticas normativas.</li>
         </ul>
-        <a href="https://github.com/rapzell/NORMATIVA-URBANISTICA-3D" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/NORMATIVA-URBANISTICA-3D" target="_blank" data-i18n="projects.view" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
 
       <!-- Proyecto 4: Portfolio Profesional Interactivo -->
@@ -340,7 +340,7 @@
           <li data-i18n="projects.p4.li4">Accesibilidad con lazy loading y cierre por teclado.</li>
           <li data-i18n="projects.p4.li5">Estructura de datos centralizada para render dinámico de certificados.</li>
         </ul>
-        <a href="https://github.com/rapzell/Portfolio" target="_blank" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
+        <a href="https://github.com/rapzell/Portfolio" target="_blank" data-i18n="projects.view" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); color: white; border-radius: 6px; text-decoration: none; transition: transform 0.3s ease;">Ver en GitHub</a>
       </div>
     </div>
   </section>
@@ -582,6 +582,7 @@
           'projects.p4.li4':'Accesibilidad con carga diferida y descartar teclado.',
           'projects.p4.li5':'Estructura de datos centralizada para representación dinámica de certificados.',
           'contact.subject':'Nuevo mensaje desde el portfolio',
+          'projects.view':'Ver en GitHub',
           'badges.animations':'Animaciones CSS/JS',
           'badges.accessibility':'Accesibilidad',
           'badges.lazy_loading':'Lazy Loading'
@@ -641,6 +642,7 @@
           'projects.p4.li4':'Accessibility with lazy loading and keyboard dismissal.',
           'projects.p4.li5':'Centralized data structure for dynamic certificate rendering.',
           'contact.subject':'New message from portfolio',
+          'projects.view':'View on GitHub',
           'badges.animations':'CSS/JS Animations',
           'badges.accessibility':'Accessibility',
           'badges.lazy_loading':'Lazy Loading'
@@ -650,7 +652,11 @@
 
       const btnES = document.getElementById('lang-es');
       const btnEN = document.getElementById('lang-en');
-      let current = localStorage.getItem('lang') || 'es';
+      const params = new URLSearchParams(location.search);
+      const paramLang = params.get('lang');
+      const stored = localStorage.getItem('lang');
+      let current = stored || (navigator.language && navigator.language.toLowerCase().startsWith('en') ? 'en' : 'es');
+      if(paramLang && (paramLang==='es' || paramLang==='en')){ current = paramLang; localStorage.setItem('lang', current); }
 
       function t(key){ const dict = translations[current]||{}; return dict[key]||null; }
       function applyI18n(){
