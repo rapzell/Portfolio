@@ -541,9 +541,17 @@
 <div class="certificate-info-label">Visor:</div>\
 <div class="certificate-info-value">\
   <iframe id="sql-pdf-viewer" title="Visor de certificado" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;" loading="lazy"></iframe>\
+  <div id="sql-fallback" style="display:none; padding:1rem; margin-top:.5rem; background: rgba(16,18,26,.85); border:1px solid rgba(89,150,194,.22); border-radius:10px;">\
+    <div style="color:#E8EEF6; margin-bottom:.5rem;">No se puede mostrar el PDF embebido en este navegador. Usa los botones para abrir o descargar.</div>\
+    <div style="display:flex; gap:.6rem; flex-wrap:wrap;">\
+      <a id="sql-fallback-open" href="#" target="_blank" style="display:inline-block; padding:.45rem .9rem; background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border-radius:8px; text-decoration:none;">Abrir/Descargar</a>\
+    </div>\
+  </div>\
   <div id="sql-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
   <div style="margin-top:.6rem; display:flex; gap:.6rem; flex-wrap:wrap;">\
     <a id="sql-pdf-download" href="#" target="_blank" style="display:inline-block; padding:.45rem .9rem; background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border-radius:8px; text-decoration:none;">Abrir/Descargar</a>\
+    <button id="sql-toggle-embed" class="sql-tab" style="padding:.45rem .9rem;">Modo compatibilidad</button>\
+    <button id="sql-copy-link" class="sql-tab" style="padding:.45rem .9rem;">Copiar enlace</button>\
   </div>\
 </div>\
 </div>';
@@ -552,21 +560,37 @@
         const iframe = document.getElementById('sql-pdf-viewer');
         const dl = document.getElementById('sql-pdf-download');
         const statusEl = document.getElementById('sql-pdf-status');
+        const fb = document.getElementById('sql-fallback');
+        const fbOpen = document.getElementById('sql-fallback-open');
+        const btnToggle = document.getElementById('sql-toggle-embed');
+        const btnCopy = document.getElementById('sql-copy-link');
+        let embedEnabled = localStorage.getItem('pdfEmbedEnabled') !== 'false';
         let loadTimer = null;
         const applySrc = (idx)=>{
           const it = data.group[idx]; if(!it) return;
-          const url = encodeURI(it.file);
+          const base = encodeURI(it.file);
+          const url = base + (base.includes('?') ? '&' : '?') + 'v=' + Date.now();
+          dl.href = url;
+          if(fbOpen) fbOpen.href = url;
+          if(btnCopy){ btnCopy.onclick = async ()=>{ try{ await navigator.clipboard.writeText(window.location.origin + '/' + url); btnCopy.textContent='¡Copiado!'; setTimeout(()=>btnCopy.textContent='Copiar enlace',1200);}catch(_){ btnCopy.textContent='Error al copiar'; setTimeout(()=>btnCopy.textContent='Copiar enlace',1200);} }; }
+          if(!embedEnabled){
+            if(statusEl) statusEl.textContent = 'Modo compatibilidad activo. Usa “Abrir/Descargar”.';
+            if(fb) fb.style.display = 'block';
+            if(iframe) iframe.style.display = 'none';
+            return;
+          }
           if(statusEl){ statusEl.textContent = `Cargando “${it.label}”…`; }
-          try{ iframe.src = ''; }catch(_){ /* noop */ }
-          // manejar onload/onerror básicos
+          if(fb) fb.style.display = 'none';
+          if(iframe) iframe.style.display = 'block';
+          try{ iframe.src = 'about:blank'; }catch(_){ /* noop */ }
+          try{ void iframe.offsetHeight; }catch(_){ /* noop */ }
           const onLoad = ()=>{ if(statusEl){ statusEl.textContent = ''; } clearTimeout(loadTimer); };
           iframe.onload = onLoad;
-          // timeout por si el navegador no puede embeber PDF
           clearTimeout(loadTimer);
-          loadTimer = setTimeout(()=>{ if(statusEl){ statusEl.textContent = 'Si no ves el certificado en el visor, pulsa “Abrir/Descargar”.'; } }, 3000);
+          loadTimer = setTimeout(()=>{ if(statusEl){ statusEl.textContent = 'No se pudo embeber el PDF. Activa “Modo compatibilidad” o pulsa “Abrir/Descargar”.'; } if(fb) fb.style.display = 'block'; }, 3000);
           iframe.src = url;
-          dl.href = url;
         };
+        if(btnToggle){ btnToggle.onclick = ()=>{ embedEnabled = !embedEnabled; localStorage.setItem('pdfEmbedEnabled', embedEnabled ? 'true' : 'false'); btnToggle.textContent = embedEnabled ? 'Modo compatibilidad' : 'Usar visor integrado'; const active = infoBody.querySelector('.sql-tab.active'); const idx = active ? parseInt(active.dataset.idx||'0') : 0; applySrc(idx); }; btnToggle.textContent = embedEnabled ? 'Modo compatibilidad' : 'Usar visor integrado'; }
         // activar primera pestaña
         const tabButtons = Array.from(infoBody.querySelectorAll('.sql-tab'));
         if(tabButtons.length){ tabButtons[0].classList.add('active'); }
