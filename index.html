@@ -551,6 +551,11 @@
           'projects.p4.title':'Portfolio Profesional Interactivo',
           'projects.p4.desc':'Sitio web personal con impacto visual, mostrando proyectos y certificados con UX dinámica. Incluye un "dragón" asistente para interacciones contextuales, resolviendo presentación estática y migración futura a React para escalabilidad.',
           'projects.p4.tech':'Tecnologías clave:'
+          ,
+          'skills.cat1.title':'Lenguajes de Programación','skills.cat1.sub':'Base sólida para automatización, front/back y scripting.',
+          'skills.cat2.title':'Frameworks y Bibliotecas','skills.cat2.sub':'Stack usado en proyectos de escritorio, web e IA.',
+          'skills.cat3.title':'Herramientas y Conceptos','skills.cat3.sub':'Buenas prácticas, rendimiento y formatos 3D.',
+          'labels.curso':'Curso','labels.codigo':'Código','labels.duracion':'Duración','labels.fecha':'Fecha','labels.lugar':'Lugar','labels.entidad':'Entidad','labels.codigo_expediente':'Código de expediente','labels.accion_formativa':'Acción formativa','labels.fecha_inicio':'Fecha de inicio','labels.fecha_fin':'Fecha de fin','labels.horas_totales':'Horas totales','labels.modalidad':'Modalidad','labels.entidad_certificadora':'Entidad certificadora','labels.cif_entidad':'CIF entidad','labels.descripcion':'Descripción','labels.archivo':'Archivo'
         },
         en: {
           'nav.inicio':'Home', 'nav.sobre_mi':'About Me', 'nav.proyectos':'Projects', 'nav.habilidades':'Skills', 'nav.certificados':'Certificates', 'nav.contacto':'Contact',
@@ -586,6 +591,11 @@
           'projects.p4.title':'Interactive Professional Portfolio',
           'projects.p4.desc':'Personal website with visual impact, showcasing projects and certificates with dynamic UX. Includes an assistant “dragon” for contextual interactions and future migration to React.',
           'projects.p4.tech':'Key technologies:'
+          ,
+          'skills.cat1.title':'Programming Languages','skills.cat1.sub':'Solid base for automation, front/back and scripting.',
+          'skills.cat2.title':'Frameworks and Libraries','skills.cat2.sub':'Stack used in desktop, web and AI projects.',
+          'skills.cat3.title':'Tools and Concepts','skills.cat3.sub':'Best practices, performance and 3D formats.',
+          'labels.curso':'Course','labels.codigo':'Code','labels.duracion':'Duration','labels.fecha':'Date','labels.lugar':'Place','labels.entidad':'Organization','labels.codigo_expediente':'Dossier code','labels.accion_formativa':'Training action','labels.fecha_inicio':'Start date','labels.fecha_fin':'End date','labels.horas_totales':'Total hours','labels.modalidad':'Modality','labels.entidad_certificadora':'Certifying entity','labels.cif_entidad':'Entity VAT','labels.descripcion':'Description','labels.archivo':'File'
         }
       };
 
@@ -660,7 +670,7 @@
   <div id="sql-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
 </div>\
 </div>';
-        let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; } }
+        let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; } }
         infoBody.innerHTML = tabs + viewer + detailsHtml;
         const iframe = document.getElementById('sql-pdf-viewer');
         const statusEl = document.getElementById('sql-pdf-status');
@@ -670,14 +680,14 @@
           const it = data.group[idx]; if(!it) return;
           const base = encodeURI(it.file);
           const url = base + (base.includes('?') ? '&' : '?') + 'v=' + Date.now();
-          if(statusEl){ statusEl.textContent = `Cargando “${it.label}”…`; }
+          if(statusEl){ const tmpl = window.I18N?.get('viewer.loading_named','Cargando…'); statusEl.textContent = (tmpl||'').replace('{label}', it.label); }
           if(fb) fb.style.display = 'none';
           if(iframe) iframe.style.display = 'block';
           // Limpiar y forzar reflow
           try{ iframe.setAttribute('data',''); }catch(_){ /* noop */ }
           try{ void iframe.offsetHeight; }catch(_){ /* noop */ }
           clearTimeout(loadTimer);
-          loadTimer = setTimeout(()=>{ if(statusEl){ statusEl.textContent = 'No se pudo embeber el PDF en este navegador.'; } if(fb) fb.style.display = 'block'; }, 3000);
+          loadTimer = setTimeout(()=>{ if(statusEl){ statusEl.textContent = window.I18N?.get('viewer.fail_embed','No se pudo embeber el PDF en este navegador.'); } if(fb) fb.style.display = 'block'; }, 3000);
           // Asignar destino (con intento de ocultar toolbars donde se soporte)
           const finalUrl = url + '#toolbar=0&navpanes=0&scrollbar=1';
           try{ iframe.setAttribute('data', finalUrl); }catch(_){ /* noop */ }
@@ -709,18 +719,18 @@
   </div>\
 </div>';
         }
-        let html=''; for(const [k,v] of Object.entries(details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
+        let html=''; for(const [k,v] of Object.entries(details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
         infoBody.innerHTML = viewer + html;
         if(file){
           const obj = document.getElementById('single-pdf-viewer');
           const st = document.getElementById('single-pdf-status');
           const fb = document.getElementById('single-fallback');
-          if(st) st.textContent = 'Cargando…';
+          if(st) st.textContent = (window.I18N?.get('viewer.loading','Cargando…'));
           try{ obj.setAttribute('data',''); }catch(_){ /* noop */ }
           try{ void obj.offsetHeight; }catch(_){ /* noop */ }
           const url = file + (file.includes('?') ? '&' : '?') + 'v=' + Date.now() + '#toolbar=0&navpanes=0&scrollbar=1';
           try{ obj.setAttribute('data', url); }catch(_){ /* noop */ }
-          setTimeout(()=>{ if(st) st.textContent=''; if(fb && !obj.getAttribute('data')) fb.style.display='block'; }, 500);
+          setTimeout(()=>{ if(st) st.textContent=''; if(fb && !obj.getAttribute('data')){ fb.style.display='block'; const msg = window.I18N?.get('viewer.fail_embed','No se pudo embeber el PDF en este navegador.'); if(fb.firstElementChild) fb.firstElementChild.textContent = msg; } }, 500);
         }
       }
       infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
