@@ -662,13 +662,33 @@
       window.I18N = {
         get: (key, fallback='')=>{ const v = t(key); return (v===null||v===undefined)? fallback : v; },
         setLang,
-        getLang: ()=> current
+        getLang: ()=> current,
+        apply: ()=> applyI18n()
       };
     })();
     // Navegación suave
     document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault(); const t=document.querySelector(a.getAttribute('href')); t&&t.scrollIntoView({behavior:'smooth'});});});
 
     // Datos de certificados mostrados en el área informativa
+    function translateDetailValue(key, value){
+      try{
+        if(!window.I18N || window.I18N.getLang() !== 'en'){ return value; }
+        let v = String(value);
+        // Common terms
+        v = v.replace(/\bTeleformación\b/gi,'Online learning');
+        v = v.replace(/\bhoras\b/gi,'hours');
+        v = v.replace(/\bMálaga\b/gi,'Malaga');
+        // Date ranges: dd/mm/yyyy or dd-mm-yyyy 'a' dd/mm/yyyy or dd-mm-yyyy
+        v = v.replace(/(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})\s+a\s+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})/g,'$1 to $2');
+        // Spanish long date: 17 de junio de 2022 -> June 17, 2022
+        const months = {enero:'January',febrero:'February',marzo:'March',abril:'April',mayo:'May',junio:'June',julio:'July',agosto:'August',septiembre:'September',octubre:'October',noviembre:'November',diciembre:'December'};
+        v = v.replace(/(\b\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+de\s+(\d{4})/gi, (_m, d, mon, y)=>{
+          const M = months[mon.toLowerCase()]||mon; return `${M} ${d}, ${y}`;
+        });
+        return v;
+      }catch(_){ return value; }
+    }
+
     const certificatesData = {
       'machine-learning': { title:'Machine Learning Aplicado Usando Python', icon:'🔧', details: { curso:'IFCD093PO - Machine Learning aplicado usando Python', codigo:'F211080AA 004 006', duracion:'150 horas (Teleformación)', fecha:'01/04/2022 a 17/06/2022', lugar:'Málaga, 17 de junio de 2022', archivo:'Certificados/1569765_4827_727473_75753_C2102004006-efsjp727470.pdf' } },
       'Modelo_certificado_final_GDPymes_-_EX.pdf': { title:'Liderando la IA', icon:'🤖', details: { entidad:'IRONHACK SPAIN S.L.U.', codigo_expediente:'2024/GDP_01/000017', accion_formativa:'Liderando la IA', fecha_inicio:'2025-06-09', fecha_fin:'2025-08-17', horas_totales:'150 horas', archivo:'Certificados/Modelo_certificado_final_GDPymes_-_EX.pdf' } },
@@ -717,7 +737,7 @@
   </div>\
 </div>\
 </div>';
-        let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; } }
+        let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); const val = translateDetailValue(k, v); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${val}</div></div>`; } }
         infoBody.innerHTML = tabs + viewer + detailsHtml;
         const iframe = document.getElementById('sql-pdf-viewer');
         const statusEl = document.getElementById('sql-pdf-status');
@@ -728,7 +748,7 @@
           const it = data.group[idx]; if(!it) return;
           const base = encodeURI(it.file);
           const url = base + (base.includes('?') ? '&' : '?') + 'v=' + Date.now();
-          if(statusEl){ const tmpl = window.I18N?.get('viewer.loading_named','Cargando…'); statusEl.textContent = (tmpl||'').replace('{label}', it.label); }
+          if(statusEl){ const keyLabel = idx===0? 'certs.sql.basic' : (idx===1? 'certs.sql.intermediate' : 'certs.sql.advanced'); const display = (window.I18N?.get(keyLabel, it.label) || it.label); const tmpl = window.I18N?.get('viewer.loading_named','Cargando…'); statusEl.textContent = (tmpl||'').replace('{label}', display); }
           if(fb) fb.style.display = 'none';
           if(iframe) iframe.style.display = 'block';
           // Limpiar y forzar reflow
@@ -771,7 +791,7 @@
   </div>\
 </div>';
         }
-        let html=''; for(const [k,v] of Object.entries(details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
+        let html=''; for(const [k,v] of Object.entries(details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); const val = translateDetailValue(k, v); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${val}</div></div>`; }
         infoBody.innerHTML = viewer + html;
         if(file){
           const obj = document.getElementById('single-pdf-viewer');
@@ -788,7 +808,7 @@
           setTimeout(()=>{ if(st) st.textContent=''; if(fb && !obj.getAttribute('data')){ fb.style.display='block'; const msg = window.I18N?.get('viewer.fail_embed','No se pudo embeber el PDF en este navegador.'); if(fb.firstElementChild) fb.firstElementChild.textContent = msg; } }, 500);
         }
       }
-      infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
+      infoArea.style.display='block'; requestAnimationFrame(()=>{ infoArea.classList.add('show'); try{ window.I18N && window.I18N.apply(); }catch(_){/*noop*/} });
     }
 
     // Pausar el giro del abanico cuando se hace hover sobre él (opcional)
