@@ -270,7 +270,7 @@
       <div style="text-align:center;">
         <div class="about-avatar-wrap">
           <div class="about-avatar-ring"></div>
-          <img class="about-avatar" src="Certificados/Foto profesional DAvid.jpg" alt="Foto profesional de David Valero Roman" loading="lazy" />
+          <img class="about-avatar" src="Certificados/Foto profesional DAvid.jpg?v=2" alt="Foto profesional de David Valero Roman" loading="lazy" />
         </div>
       </div>
     </div>
@@ -409,9 +409,9 @@
           <span class="skill-badge">CityJSON</span>
           <span class="skill-badge">GLTF/GLB</span>
           <span class="skill-badge">IntersectionObserver</span>
-          <span class="skill-badge">Animaciones CSS/JS</span>
-          <span class="skill-badge">Accesibilidad</span>
-          <span class="skill-badge">Lazy Loading</span>
+          <span class="skill-badge" data-i18n="badges.animations">Animaciones CSS/JS</span>
+          <span class="skill-badge" data-i18n="badges.accessibility">Accesibilidad</span>
+          <span class="skill-badge" data-i18n="badges.lazy_loading">Lazy Loading</span>
         </div>
         <ul class="skills-list">
           <li data-i18n="skills.cat3.li1">Threading: envíos no bloqueantes.</li>
@@ -581,7 +581,10 @@
           'projects.p4.li3':'IntersectionObserver para comportamientos conscientes de sección.',
           'projects.p4.li4':'Accesibilidad con carga diferida y descartar teclado.',
           'projects.p4.li5':'Estructura de datos centralizada para representación dinámica de certificados.',
-          'contact.subject':'Nuevo mensaje desde el portfolio'
+          'contact.subject':'Nuevo mensaje desde el portfolio',
+          'badges.animations':'Animaciones CSS/JS',
+          'badges.accessibility':'Accesibilidad',
+          'badges.lazy_loading':'Lazy Loading'
         },
         en: {
           'nav.inicio':'Home', 'nav.sobre_mi':'About Me', 'nav.proyectos':'Projects', 'nav.habilidades':'Skills', 'nav.certificados':'Certificates', 'nav.contacto':'Contact',
@@ -637,8 +640,12 @@
           'projects.p4.li3':'IntersectionObserver for section-aware behaviors.',
           'projects.p4.li4':'Accessibility with lazy loading and keyboard dismissal.',
           'projects.p4.li5':'Centralized data structure for dynamic certificate rendering.',
-          'contact.subject':'New message from portfolio'
-        }
+          'contact.subject':'New message from portfolio',
+          'badges.animations':'CSS/JS Animations',
+          'badges.accessibility':'Accessibility',
+          'badges.lazy_loading':'Lazy Loading'
+        },
+        
       };
 
       const btnES = document.getElementById('lang-es');
