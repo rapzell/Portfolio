@@ -196,6 +196,9 @@
     .lang-btn .flag{ width:18px; height:12px; display:inline-block; border-radius:2px; box-shadow: 0 0 0 1px rgba(0,0,0,.25) inset; }
     @media (max-width: 640px){ .lang-switch{ position:static; margin-left:auto; padding:.5rem 0; } }
 
+    /* Animación sutil para cambios de idioma */
+    .i18n-fade{ transition: opacity .18s ease, transform .18s ease; will-change: opacity, transform; }
+
     @media (max-width:768px){
       .certificates-fan{ width:400px; height:200px; }
       .certificate-card{ width:140px; height:100px; margin-left:-70px; margin-top:-50px; }
@@ -642,8 +645,22 @@
       function t(key){ const dict = translations[current]||{}; return dict[key]||null; }
       function applyI18n(){
         document.documentElement.setAttribute('lang', current);
-        // text nodes
-        document.querySelectorAll('[data-i18n]').forEach(el=>{ const key = el.getAttribute('data-i18n'); const val = t(key); if(val!==null){ el.textContent = val; }});
+        // text nodes with subtle animation
+        document.querySelectorAll('[data-i18n]').forEach(el=>{
+          const key = el.getAttribute('data-i18n');
+          const val = t(key);
+          if(val!==null){
+            if(!el.classList.contains('i18n-fade')) el.classList.add('i18n-fade');
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(-2px)';
+            // Update text, then fade in on next frame
+            el.textContent = val;
+            requestAnimationFrame(()=>{
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            });
+          }
+        });
         // placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const key = el.getAttribute('data-i18n-placeholder'); const val = t(key); if(val!==null){ el.setAttribute('placeholder', val); }});
         // toggle active state
