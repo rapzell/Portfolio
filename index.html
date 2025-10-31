@@ -188,6 +188,12 @@
     .sql-tab:hover{ transform: translateY(-1px); box-shadow: 0 8px 20px rgba(89,150,194,.25); }
     .sql-tab.active{ background: linear-gradient(135deg,#5996C2,#7C3AED) !important; color:#fff !important; border-color: transparent !important; box-shadow: 0 10px 26px rgba(124,58,237,.35); }
 
+    /* Selector de idioma */
+    .lang-switch{ position:absolute; right:1rem; top:.8rem; display:flex; gap:.4rem; align-items:center; }
+    .lang-btn{ border:1px solid rgba(89,150,194,.28); background: rgba(16,18,26,.8); color:#E8EEF6; padding:.25rem .5rem; border-radius:8px; cursor:pointer; font-size:.95rem; line-height:1; display:inline-flex; align-items:center; gap:.35rem; transition:all .2s ease; }
+    .lang-btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(89,150,194,.28); }
+    .lang-btn.active{ background: linear-gradient(135deg,#5996C2,#7C3AED); color:#fff; border-color: transparent; }
+
     @media (max-width:768px){
       .certificates-fan{ width:400px; height:200px; }
       .certificate-card{ width:140px; height:100px; margin-left:-70px; margin-top:-50px; }
@@ -206,26 +212,30 @@
 <body>
   <nav class="navbar">
     <div class="nav-brand">Portfolio David Valero Roman</div>
+    <div class="lang-switch">
+      <button class="lang-btn" id="lang-es" data-lang="es">🇪🇸 <span>ES</span></button>
+      <button class="lang-btn" id="lang-en" data-lang="en">🇬🇧 <span>EN</span></button>
+    </div>
     <ul class="nav-menu">
-      <li><a href="#inicio" class="nav-link">Inicio</a></li>
-      <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
-      <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
-      <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-      <li><a href="#certificados" class="nav-link">Certificados</a></li>
-      <li><a href="#contacto" class="nav-link">Contacto</a></li>
+      <li><a href="#inicio" class="nav-link" data-i18n="nav.inicio">Inicio</a></li>
+      <li><a href="#sobre-mi" class="nav-link" data-i18n="nav.sobre_mi">Sobre Mí</a></li>
+      <li><a href="#proyectos" class="nav-link" data-i18n="nav.proyectos">Proyectos</a></li>
+      <li><a href="#habilidades" class="nav-link" data-i18n="nav.habilidades">Habilidades</a></li>
+      <li><a href="#certificados" class="nav-link" data-i18n="nav.certificados">Certificados</a></li>
+      <li><a href="#contacto" class="nav-link" data-i18n="nav.contacto">Contacto</a></li>
     </ul>
   </nav>
 
   <section id="inicio" class="hero">
     <div class="hero-content">
-      <h1 class="hero-title">Hola, soy David Valero Roman</h1>
-      <p class="hero-subtitle">Desarrollador Vibe Coding</p>
-      <p class="hero-description">Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.</p>
+      <h1 class="hero-title" data-i18n="hero.title">Hola, soy David Valero Roman</h1>
+      <p class="hero-subtitle" data-i18n="hero.subtitle">Desarrollador Vibe Coding</p>
+      <p class="hero-description" data-i18n="hero.description">Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.</p>
     </div>
   </section>
 
   <section id="sobre-mi" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
-    <h2 class="section-title">Sobre Mí</h2>
+    <h2 class="section-title" data-i18n="sections.sobre_mi">Sobre Mí</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;">
       <div class="about-text">
         <div class="about-card">
@@ -247,7 +257,7 @@
   </section>
 
   <section id="proyectos" class="section" style="background: linear-gradient(135deg, #0E0F13 0%, #1a1b26 100%);">
-    <h2 class="section-title">Mis Proyectos</h2>
+    <h2 class="section-title" data-i18n="sections.proyectos">Mis Proyectos</h2>
     <div class="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
       <!-- Proyecto 1: Enviador de Facturas -->
       <div class="project-card" style="background: rgba(26, 27, 38, 0.8); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
@@ -316,7 +326,7 @@
   </section>
 
   <section id="habilidades" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
-    <h2 class="section-title">Habilidades Técnicas</h2>
+    <h2 class="section-title" data-i18n="sections.habilidades">Habilidades Técnicas</h2>
     <div class="skills-grid">
       <!-- Lenguajes de Programación -->
       <div class="skills-category">
@@ -396,30 +406,30 @@
   </section>
 
   <section id="certificados" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
-    <h2 class="section-title">Mis Certificados</h2>
+    <h2 class="section-title" data-i18n="sections.certificados">Mis Certificados</h2>
     <div style="text-align:center; margin-bottom:3rem;">
-      <p style="color:#B0B0B0; font-size:1.2rem; max-width:600px; margin:0 auto;">Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.</p>
+      <p style="color:#B0B0B0; font-size:1.2rem; max-width:600px; margin:0 auto;" data-i18n="certs.intro">Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.</p>
     </div>
 
     <div class="certificates-container">
       <div class="certificates-fan" id="certificatesFan">
         <div class="certificate-card" data-cert="Diploma.pdf">
-          <div class="certificate-preview"><div class="certificate-icon">📜</div><div class="certificate-title">Diseño Básico de Páginas Web</div><div class="certificate-description">Técnicas básicas de desarrollo web</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">📜</div><div class="certificate-title" data-i18n="certs.basic.title">Diseño Básico de Páginas Web</div><div class="certificate-description" data-i18n="certs.basic.desc">Técnicas básicas de desarrollo web</div></div>
         </div>
         <div class="certificate-card" data-cert="Diploma web avanazado.pdf">
-          <div class="certificate-preview"><div class="certificate-icon">🚀</div><div class="certificate-title">Diseño Avanzado de Páginas Web</div><div class="certificate-description">Técnicas avanzadas de desarrollo web</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">🚀</div><div class="certificate-title" data-i18n="certs.advanced.title">Diseño Avanzado de Páginas Web</div><div class="certificate-description" data-i18n="certs.advanced.desc">Técnicas avanzadas de desarrollo web</div></div>
         </div>
         <div class="certificate-card" data-cert="Modelo_certificado_final_GDPymes_-_EX.pdf">
-          <div class="certificate-preview"><div class="certificate-icon">💼</div><div class="certificate-title">Liderando la IA</div><div class="certificate-description">Uso de la IA para empresas</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">💼</div><div class="certificate-title" data-i18n="certs.ai.title">Liderando la IA</div><div class="certificate-description" data-i18n="certs.ai.desc">Uso de la IA para empresas</div></div>
         </div>
         <div class="certificate-card" data-cert="machine-learning">
-          <div class="certificate-preview"><div class="certificate-icon">🔧</div><div class="certificate-title">Machine Learning Aplicado Usando Python</div><div class="certificate-description">Técnicas de Machine Learning</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">🔧</div><div class="certificate-title" data-i18n="certs.ml.title">Machine Learning Aplicado Usando Python</div><div class="certificate-description" data-i18n="certs.ml.desc">Técnicas de Machine Learning</div></div>
         </div>
         <div class="certificate-card" data-cert="software_engineer certificate.pdf">
-          <div class="certificate-preview"><div class="certificate-icon">🧑‍💻</div><div class="certificate-title">Software Engineer Certificate</div><div class="certificate-description">Formación en ingeniería de software</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">🧑‍💻</div><div class="certificate-title" data-i18n="certs.se.title">Software Engineer Certificate</div><div class="certificate-description" data-i18n="certs.se.desc">Formación en ingeniería de software</div></div>
         </div>
         <div class="certificate-card" data-cert="sql-certificates">
-          <div class="certificate-preview"><div class="certificate-icon">🗄️</div><div class="certificate-title">Certificados SQL</div><div class="certificate-description">Básico, Intermedio y Avanzado</div></div>
+          <div class="certificate-preview"><div class="certificate-icon">🗄️</div><div class="certificate-title" data-i18n="certs.sql.title">Certificados SQL</div><div class="certificate-description" data-i18n="certs.sql.desc">Básico, Intermedio y Avanzado</div></div>
         </div>
       </div>
     </div>
@@ -440,22 +450,22 @@
   </section>
 
   <section id="contacto" class="section" style="background: linear-gradient(135deg,#0E0F13 0%,#1a1b26 100%);">
-    <h2 class="section-title">Contacto</h2>
+    <h2 class="section-title" data-i18n="sections.contacto">Contacto</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem;">
       <div>
-        <h3 style="color:#F5F5F5; margin-bottom:1rem;">Hablemos</h3>
-        <p style="color:#B0B0B0;">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
+        <h3 style="color:#F5F5F5; margin-bottom:1rem;" data-i18n="contact.heading">Hablemos</h3>
+        <p style="color:#B0B0B0;" data-i18n="contact.lead">¿Tienes un proyecto en mente? Me encantaría escuchar de ti.</p>
       </div>
       <form id="contactForm" class="contact-form" style="background: rgba(26,27,38,.8); padding:2rem; border-radius:12px;" autocomplete="on" novalidate>
-        <input type="text" name="name" id="cf-name" placeholder="Tu nombre" aria-label="Nombre" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
-        <input type="email" name="email" id="cf-email" placeholder="tu@email.com" aria-label="Email" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
-        <textarea rows="5" name="message" id="cf-message" placeholder="Tu mensaje..." aria-label="Mensaje" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;"></textarea>
+        <input type="text" name="name" id="cf-name" placeholder="Tu nombre" data-i18n-placeholder="contact.name" aria-label="Nombre" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
+        <input type="email" name="email" id="cf-email" placeholder="tu@email.com" data-i18n-placeholder="contact.email" aria-label="Email" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;" />
+        <textarea rows="5" name="message" id="cf-message" placeholder="Tu mensaje..." data-i18n-placeholder="contact.message" aria-label="Mensaje" required style="width:100%; padding:.8rem; margin-bottom:1rem; background: rgba(14,15,19,.8); color:#F5F5F5; border:2px solid rgba(89,150,194,.3); border-radius:8px;"></textarea>
         <!-- honeypot -->
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; top:auto; width:1px; height:1px; opacity:0;" />
         <!-- subject/caption -->
         <input type="hidden" name="_subject" value="Nuevo mensaje desde el portfolio" />
         <div id="contactStatus" aria-live="polite" style="min-height:1.25rem; color:#B0B0B0; margin:.25rem 0 .75rem;"></div>
-        <button id="contactSubmit" type="submit" class="btn" style="background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border:none; padding:.8rem 2rem; border-radius:8px;">Enviar Mensaje</button>
+        <button id="contactSubmit" type="submit" class="btn" data-i18n="contact.submit" style="background: linear-gradient(135deg,#5996C2,#7C3AED); color:white; border:none; padding:.8rem 2rem; border-radius:8px;">Enviar Mensaje</button>
       </form>
     </div>
   </section>
@@ -504,6 +514,59 @@
 
 
   <script>
+    // I18n básico ES/EN con persistencia
+    (function(){
+      const translations = {
+        es: {
+          'nav.inicio':'Inicio', 'nav.sobre_mi':'Sobre Mí', 'nav.proyectos':'Proyectos', 'nav.habilidades':'Habilidades', 'nav.certificados':'Certificados', 'nav.contacto':'Contacto',
+          'hero.title':'Hola, soy David Valero Roman', 'hero.subtitle':'Desarrollador Vibe Coding', 'hero.description':'Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.',
+          'sections.sobre_mi':'Sobre Mí', 'sections.proyectos':'Mis Proyectos', 'sections.habilidades':'Habilidades Técnicas', 'sections.certificados':'Mis Certificados', 'sections.contacto':'Contacto',
+          'certs.intro':'Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.',
+          'certs.basic.title':'Diseño Básico de Páginas Web','certs.basic.desc':'Técnicas básicas de desarrollo web',
+          'certs.advanced.title':'Diseño Avanzado de Páginas Web','certs.advanced.desc':'Técnicas avanzadas de desarrollo web',
+          'certs.ai.title':'Liderando la IA','certs.ai.desc':'Uso de la IA para empresas',
+          'certs.ml.title':'Machine Learning Aplicado Usando Python','certs.ml.desc':'Técnicas de Machine Learning',
+          'certs.se.title':'Software Engineer Certificate','certs.se.desc':'Formación en ingeniería de software',
+          'certs.sql.title':'Certificados SQL','certs.sql.desc':'Básico, Intermedio y Avanzado',
+          'contact.heading':'Hablemos','contact.lead':'¿Tienes un proyecto en mente? Me encantaría escuchar de ti.','contact.submit':'Enviar Mensaje',
+          'contact.name':'Tu nombre','contact.email':'tu@email.com','contact.message':'Tu mensaje...'
+        },
+        en: {
+          'nav.inicio':'Home', 'nav.sobre_mi':'About Me', 'nav.proyectos':'Projects', 'nav.habilidades':'Skills', 'nav.certificados':'Certificates', 'nav.contacto':'Contact',
+          'hero.title':'Hi, I\'m David Valero Roman', 'hero.subtitle':'Vibe Coding Developer', 'hero.description':'I build applications to solve real problems, dynamically. Passionate about clean code, intuitive interfaces, and cutting-edge solutions.',
+          'sections.sobre_mi':'About Me', 'sections.proyectos':'My Projects', 'sections.habilidades':'Technical Skills', 'sections.certificados':'My Certificates', 'sections.contacto':'Contact',
+          'certs.intro':'Professional certifications that back my experience and knowledge in application development.',
+          'certs.basic.title':'Basic Web Design','certs.basic.desc':'Foundational web development techniques',
+          'certs.advanced.title':'Advanced Web Design','certs.advanced.desc':'Advanced web development techniques',
+          'certs.ai.title':'Leading with AI','certs.ai.desc':'Using AI for business',
+          'certs.ml.title':'Applied Machine Learning with Python','certs.ml.desc':'Machine Learning techniques',
+          'certs.se.title':'Software Engineer Certificate','certs.se.desc':'Training in software engineering',
+          'certs.sql.title':'SQL Certificates','certs.sql.desc':'Basic, Intermediate and Advanced',
+          'contact.heading':'Let\'s Talk','contact.lead':'Do you have a project in mind? I\'d love to hear from you.','contact.submit':'Send Message',
+          'contact.name':'Your name','contact.email':'your@email.com','contact.message':'Your message...'
+        }
+      };
+
+      const btnES = document.getElementById('lang-es');
+      const btnEN = document.getElementById('lang-en');
+      let current = localStorage.getItem('lang') || 'es';
+
+      function t(key){ const dict = translations[current]||{}; return dict[key]||null; }
+      function applyI18n(){
+        document.documentElement.setAttribute('lang', current);
+        // text nodes
+        document.querySelectorAll('[data-i18n]').forEach(el=>{ const key = el.getAttribute('data-i18n'); const val = t(key); if(val!==null){ el.textContent = val; }});
+        // placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const key = el.getAttribute('data-i18n-placeholder'); const val = t(key); if(val!==null){ el.setAttribute('placeholder', val); }});
+        // toggle active state
+        if(btnES && btnEN){ btnES.classList.toggle('active', current==='es'); btnEN.classList.toggle('active', current==='en'); }
+      }
+
+      function setLang(lang){ current = lang; localStorage.setItem('lang', current); applyI18n(); }
+      if(btnES) btnES.addEventListener('click',()=> setLang('es'));
+      if(btnEN) btnEN.addEventListener('click',()=> setLang('en'));
+      applyI18n();
+    })();
     // Navegación suave
     document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault(); const t=document.querySelector(a.getAttribute('href')); t&&t.scrollIntoView({behavior:'smooth'});});});
 
@@ -532,7 +595,7 @@
       const infoIcon = document.getElementById('certificate-info-icon');
       const infoTitle = document.getElementById('certificate-info-title');
       const infoBody = document.getElementById('certificate-info-body');
-      infoIcon.textContent = data.icon; infoTitle.textContent = data.title;
+      infoIcon.textContent = data.icon; infoTitle.textContent = (card.querySelector('.certificate-title')?.textContent || data.title);
       if(Array.isArray(data.group)){
         let tabs = '<div class="certificate-info-item" style="grid-column:1/-1; padding:0; border:none; background:transparent; box-shadow:none;"><div style="display:flex; gap:.5rem; flex-wrap:wrap;">';
         data.group.forEach((g,i)=>{ tabs += `<button class="sql-tab" data-idx="${i}" style="background: rgba(16,18,26,.85); color:#e9f2ff; border:1px solid rgba(89,150,194,.26); padding:.5rem .8rem; border-radius:10px; cursor:pointer;">${g.label}</button>`; });
@@ -585,8 +648,32 @@
           });
         });
       } else {
-        let html=''; for(const [k,v] of Object.entries(data.details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
-        infoBody.innerHTML = html;
+        const details = data.details || {};
+        const file = details.archivo ? encodeURI(details.archivo) : '';
+        let viewer = '';
+        if(file){
+          viewer = '<div class="certificate-info-item" style="grid-column:1/-1;">\
+  <div class="certificate-info-label">Visor:</div>\
+  <div class="certificate-info-value">\
+    <object id="single-pdf-viewer" type="application/pdf" data="" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;"></object>\
+    <div id="single-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
+    <div id="single-fallback" style="display:none; padding:1rem; margin-top:.5rem; background: rgba(16,18,26,.85); border:1px solid rgba(89,150,194,.22); border-radius:10px; color:#E8EEF6;">No se puede mostrar el PDF embebido en este navegador.</div>\
+  </div>\
+</div>';
+        }
+        let html=''; for(const [k,v] of Object.entries(details)){ const label=k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase()); html += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; }
+        infoBody.innerHTML = viewer + html;
+        if(file){
+          const obj = document.getElementById('single-pdf-viewer');
+          const st = document.getElementById('single-pdf-status');
+          const fb = document.getElementById('single-fallback');
+          if(st) st.textContent = 'Cargando…';
+          try{ obj.setAttribute('data',''); }catch(_){ /* noop */ }
+          try{ void obj.offsetHeight; }catch(_){ /* noop */ }
+          const url = file + (file.includes('?') ? '&' : '?') + 'v=' + Date.now() + '#toolbar=0&navpanes=0&scrollbar=1';
+          try{ obj.setAttribute('data', url); }catch(_){ /* noop */ }
+          setTimeout(()=>{ if(st) st.textContent=''; if(fb && !obj.getAttribute('data')) fb.style.display='block'; }, 500);
+        }
       }
       infoArea.style.display='block'; requestAnimationFrame(()=>infoArea.classList.add('show'));
     }
