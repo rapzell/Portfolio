@@ -556,6 +556,7 @@
           'skills.cat1.title':'Lenguajes de Programación','skills.cat1.sub':'Base sólida para automatización, front/back y scripting.',
           'dragon.default':'¡Hola, bienvenido a mi portfolio! :)',
           'viewer.label':'Visor',
+          'viewer.open':'Abrir en nueva pestaña',
           'certs.success':'💡 Certificado obtenido satisfactoriamente',
           'certs.sql.basic':'SQL Básico', 'certs.sql.intermediate':'SQL Intermedio', 'certs.sql.advanced':'SQL Avanzado',
           'labels.curso':'Curso','labels.codigo':'Código','labels.duracion':'Duración','labels.fecha':'Fecha','labels.lugar':'Lugar','labels.entidad':'Entidad','labels.codigo_expediente':'Código de expediente','labels.accion_formativa':'Acción formativa','labels.fecha_inicio':'Fecha de inicio','labels.fecha_fin':'Fecha de fin','labels.horas_totales':'Horas totales','labels.modalidad':'Modalidad','labels.entidad_certificadora':'Entidad certificadora','labels.cif_entidad':'CIF entidad','labels.descripcion':'Descripción','labels.archivo':'Archivo'
@@ -707,16 +708,20 @@
   <object id="sql-pdf-viewer" type="application/pdf" data="" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;">\
     <!-- Fallback interno si no se puede embeber -->\
   </object>\
+  <div style="margin-top:.5rem; display:flex; gap:.75rem; align-items:center;">\
+    <a id="sql-open" href="#" target="_blank" rel="noopener" style="color:#8FC5FF; text-decoration:underline; font-size:.95rem;" data-i18n="viewer.open">Abrir en nueva pestaña</a>\
+    <div id="sql-pdf-status" style="margin-left:auto; color:#B0B0B0; font-size:.95rem;"></div>\
+  </div>\
   <div id="sql-fallback" style="display:none; padding:1rem; margin-top:.5rem; background: rgba(16,18,26,.85); border:1px solid rgba(89,150,194,.22); border-radius:10px;">\
     <div style="color:#E8EEF6;" data-i18n="viewer.fail_embed">No se puede mostrar el PDF embebido en este navegador.</div>\
   </div>\
-  <div id="sql-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
 </div>\
 </div>';
         let detailsHtml=''; if(data.details){ for(const [k,v] of Object.entries(data.details)){ const label = (window.I18N?.get(`labels.${k}`) || k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())); detailsHtml += `<div class="certificate-info-item"><div class="certificate-info-label">${label}:</div><div class="certificate-info-value">${v}</div></div>`; } }
         infoBody.innerHTML = tabs + viewer + detailsHtml;
         const iframe = document.getElementById('sql-pdf-viewer');
         const statusEl = document.getElementById('sql-pdf-status');
+        const openEl = document.getElementById('sql-open');
         const fb = document.getElementById('sql-fallback');
         let loadTimer = null;
         const applySrc = (idx)=>{
@@ -734,6 +739,7 @@
           // Asignar destino (con intento de ocultar toolbars donde se soporte)
           const finalUrl = url + '#toolbar=0&navpanes=0&scrollbar=1';
           try{ iframe.setAttribute('data', finalUrl); }catch(_){ /* noop */ }
+          if(openEl){ openEl.setAttribute('href', finalUrl); }
           // Quitar estado en próximo ciclo (no hay onload fiable en <object>), usar pequeño retraso
           setTimeout(()=>{ if(statusEl){ statusEl.textContent=''; } clearTimeout(loadTimer); }, 450);
         };
@@ -757,7 +763,10 @@
   <div class="certificate-info-label" data-i18n="viewer.label">Visor</div>\
   <div class="certificate-info-value">\
     <object id="single-pdf-viewer" type="application/pdf" data="" style="width:100%; height:420px; border:1px solid rgba(89,150,194,.22); border-radius:8px; background:#0f1117;"></object>\
-    <div id="single-pdf-status" style="margin-top:.5rem; color:#B0B0B0; font-size:.95rem;"></div>\
+    <div style="margin-top:.5rem; display:flex; gap:.75rem; align-items:center;">\
+      <a id="single-open" href="#" target="_blank" rel="noopener" style="color:#8FC5FF; text-decoration:underline; font-size:.95rem;" data-i18n="viewer.open">Abrir en nueva pestaña</a>\
+      <div id="single-pdf-status" style="margin-left:auto; color:#B0B0B0; font-size:.95rem;"></div>\
+    </div>\
     <div id="single-fallback" style="display:none; padding:1rem; margin-top:.5rem; background: rgba(16,18,26,.85); border:1px solid rgba(89,150,194,.22); border-radius:10px; color:#E8EEF6;" data-i18n="viewer.fail_embed">No se puede mostrar el PDF embebido en este navegador.</div>\
   </div>\
 </div>';
@@ -767,12 +776,15 @@
         if(file){
           const obj = document.getElementById('single-pdf-viewer');
           const st = document.getElementById('single-pdf-status');
+          const open = document.getElementById('single-open');
           const fb = document.getElementById('single-fallback');
           if(st) st.textContent = (window.I18N?.get('viewer.loading','Cargando…'));
           try{ obj.setAttribute('data',''); }catch(_){ /* noop */ }
           try{ void obj.offsetHeight; }catch(_){ /* noop */ }
           const url = file + (file.includes('?') ? '&' : '?') + 'v=' + Date.now() + '#toolbar=0&navpanes=0&scrollbar=1';
           try{ obj.setAttribute('data', url); }catch(_){ /* noop */ }
+          if(open){ try{ open.setAttribute('href', url); }catch(_){ /* noop */ }
+          }
           setTimeout(()=>{ if(st) st.textContent=''; if(fb && !obj.getAttribute('data')){ fb.style.display='block'; const msg = window.I18N?.get('viewer.fail_embed','No se pudo embeber el PDF en este navegador.'); if(fb.firstElementChild) fb.firstElementChild.textContent = msg; } }, 500);
         }
       }
