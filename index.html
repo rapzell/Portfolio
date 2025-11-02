@@ -1327,7 +1327,8 @@
           this.setResting(true); // mantener vaivén suave en certificados
           // Establecer texto específico de la sección
           if(this.tooltip){
-            this.tooltip.textContent = 'Actualmente estoy cursando\nel grado de DAM.'; // 2 líneas
+            const lockedMsg = (window.I18N?.get('dragon.locked','Actualmente estoy cursando\nel grado de DAM.')||'Actualmente estoy cursando\nel grado de DAM.');
+            this.tooltip.textContent = lockedMsg; // 2 líneas
             if(!this.firstCertShown){
               this.firstCertShown = true;
               this.showTooltip();
@@ -1340,8 +1341,11 @@
         unlockFromCertificates(){
           if(!this.isLocked) return;
           this.isLocked = false;
-          // Restaurar texto por defecto
-          if(this.tooltip){ this.tooltip.textContent = this.tooltipDefault; }
+          // Restaurar texto por defecto según idioma activo
+          if(this.tooltip){
+            const def = (window.I18N?.get('dragon.default', this.tooltipDefault) || this.tooltipDefault);
+            this.tooltip.textContent = def;
+          }
           this.returnToResting();
         }
       }
