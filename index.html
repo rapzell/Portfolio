@@ -766,6 +766,13 @@
             if(v) li.textContent = v;
           });
         });
+
+        // Dragón: actualizar tooltip por idioma cuando no está en contacto/bloqueado
+        const dragonEl = document.getElementById('dragon');
+        if(dragonEl){
+          const tip = dragonEl.querySelector('.dragon-tooltip');
+          if(tip){ const def = t('dragon.default'); if(def) tip.textContent = def; }
+        }
       }
 
       function setLang(lang){ current = lang; localStorage.setItem('lang', current); applyI18n(); }
