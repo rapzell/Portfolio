@@ -985,7 +985,7 @@
             } else if(this.inContact){
               this.tooltip.textContent = (window.I18N?.get('dragon.contact','¡Contactame!')||'¡Contactame!');
             } else {
-              this.tooltip.textContent = (window.I18N?.get('dragon.default', this.tooltipDefault) || this.tooltipDefault);
+              this.tooltip.textContent = (window.I18N?.get('dragon.default', this.tooltip ? this.tooltip.textContent : this.tooltipDefault) || this.tooltipDefault);
             }
             this.showTooltip();
           });
@@ -1084,7 +1084,9 @@
               } else {
                 this.inContact = false;
                 if(!this.isLocked && this.tooltip){
-                  this.tooltip.textContent = this.tooltipDefault;
+                  // Recalcular default en cada cambio de sección para respetar el idioma activo
+                  const def = (window.I18N?.get('dragon.default', this.tooltip.textContent) || this.tooltip.textContent);
+                  this.tooltip.textContent = def;
                 }
               }
             }, { threshold:[0,0.6,1] });
