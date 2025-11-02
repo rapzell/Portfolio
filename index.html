@@ -541,6 +541,26 @@
           'nav.inicio':'Inicio', 'nav.sobre_mi':'Sobre Mí', 'nav.proyectos':'Proyectos', 'nav.habilidades':'Habilidades', 'nav.certificados':'Certificados', 'nav.contacto':'Contacto',
           'hero.title':'Hola, soy David Valero Roman', 'hero.subtitle':'Desarrollador Vibe Coding', 'hero.description':'Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.',
           'sections.sobre_mi':'Sobre Mí', 'sections.proyectos':'Mis Proyectos', 'sections.habilidades':'Habilidades Técnicas', 'sections.certificados':'Mis Certificados', 'sections.contacto':'Contacto',
+          'skills.cat1.title':'Lenguajes de Programación','skills.cat1.sub':'Base sólida para automatización, front/back y scripting.',
+          'skills.cat2.title':'Frameworks y Bibliotecas','skills.cat2.sub':'Stack usado en proyectos de escritorio, web e IA.',
+          'skills.cat3.title':'Herramientas y Conceptos','skills.cat3.sub':'Buenas prácticas, rendimiento y formatos 3D.',
+          'skills.cat1.li1':'Python: automatización, GUI, datos y APIs.',
+          'skills.cat1.li2':'JavaScript: interacciones y UX contextual.',
+          'skills.cat1.li3':'HTML/CSS: layouts responsivos, gradientes, 3D/hover.',
+          'skills.cat1.li4':'PowerShell: scripts para packaging y operaciones.',
+          'skills.cat2.li1':'React: componentes, estado y migración a SPA.',
+          'skills.cat2.li2':'Tkinter: GUIs de escritorio con logs y progreso.',
+          'skills.cat2.li3':'Pandas/Openpyxl/Xlwings: Excel robusto y cálculos.',
+          'skills.cat2.li4':'FastAPI: APIs para evaluación/exportación.',
+          'skills.cat2.li5':'Three.js/MapLibre: visor 3D y mapas.',
+          'skills.cat2.li6':'python-docx/lxml/Win32com: documentos y PDF.',
+          'skills.cat2.li7':'FAISS/GGUF: búsqueda semántica y chat IA.',
+          'skills.cat3.li1':'Threading: envíos no bloqueantes.',
+          'skills.cat3.li2':'Regex/Unicodedata: normalización fiable.',
+          'skills.cat3.li3':'SMTP/Email: envíos seguros con adjuntos.',
+          'skills.cat3.li4':'CityJSON/GLTF: exportación interoperable 3D.',
+          'skills.cat3.li5':'IntersectionObserver: UX contextual (dragón).',
+          'skills.cat3.li6':'Accesibilidad/Rendimiento: lazy y teclado.',
           'about.lead':'Soy un desarrollador de aplicaciones apasionado, llevo varios años formándome tanto de forma autodidacta como con cursos. Actualmente estoy cursando el Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).',
           'about.body':'En este tiempo he trabajado en diversos proyectos propios que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend. Actualmente programo con VibeCoding porque pienso que es una capacitación técnica que está en la vanguardia de la programación.',
           'certs.intro':'Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.',
@@ -593,6 +613,26 @@
           'nav.inicio':'Home', 'nav.sobre_mi':'About Me', 'nav.proyectos':'Projects', 'nav.habilidades':'Skills', 'nav.certificados':'Certificates', 'nav.contacto':'Contact',
           'hero.title':'Hi, I\'m David Valero Roman', 'hero.subtitle':'Vibe Coding Developer', 'hero.description':'I build applications to solve real problems, dynamically. Passionate about clean code, intuitive interfaces, and cutting-edge solutions.',
           'sections.sobre_mi':'About Me', 'sections.proyectos':'My Projects', 'sections.habilidades':'Technical Skills', 'sections.certificados':'My Certificates', 'sections.contacto':'Contact',
+          'skills.cat1.title':'Programming Languages','skills.cat1.sub':'Solid base for automation, front/back and scripting.',
+          'skills.cat2.title':'Frameworks and Libraries','skills.cat2.sub':'Stack used in desktop, web and AI projects.',
+          'skills.cat3.title':'Tools and Concepts','skills.cat3.sub':'Best practices, performance and 3D formats.',
+          'skills.cat1.li1':'Python: automation, GUI, data and APIs.',
+          'skills.cat1.li2':'JavaScript: interactions and contextual UX.',
+          'skills.cat1.li3':'HTML/CSS: responsive layouts, gradients, 3D/hover.',
+          'skills.cat1.li4':'PowerShell: scripts for packaging and ops.',
+          'skills.cat2.li1':'React: components, state and SPA migration.',
+          'skills.cat2.li2':'Tkinter: desktop GUIs with logs and progress.',
+          'skills.cat2.li3':'Pandas/Openpyxl/Xlwings: robust Excel and calculations.',
+          'skills.cat2.li4':'FastAPI: APIs for evaluation/export.',
+          'skills.cat2.li5':'Three.js/MapLibre: 3D viewer and maps.',
+          'skills.cat2.li6':'python-docx/lxml/Win32com: documents and PDF.',
+          'skills.cat2.li7':'FAISS/GGUF: semantic search and AI chat.',
+          'skills.cat3.li1':'Threading: non-blocking operations.',
+          'skills.cat3.li2':'Regex/Unicodedata: reliable normalization.',
+          'skills.cat3.li3':'SMTP/Email: secure sending with attachments.',
+          'skills.cat3.li4':'CityJSON/GLTF: interoperable 3D export.',
+          'skills.cat3.li5':'IntersectionObserver: contextual UX (dragon).',
+          'skills.cat3.li6':'Accessibility/Performance: lazy and keyboard.',
           'about.lead':'I am a passionate applications developer, with several years of training both self-taught and through courses. I am currently studying the Higher Degree in Multiplatform Application Development (DAM).',
           'about.body':'During this time I have worked on various personal projects that helped me develop solid frontend and backend skills. I currently code with VibeCoding because I believe it is a cutting-edge technical training in programming.',
           'certs.intro':'Professional certifications that back my experience and knowledge in application development.',
@@ -711,6 +751,21 @@
           if(h){ const v=t('skills.cat3.title'); if(v) h.textContent=v; }
           if(p){ const v=t('skills.cat3.sub'); if(v) p.textContent=v; }
         }
+
+        // Bullets fallback by index for each category (in case some items lack data-i18n)
+        const keysByCat = [
+          ['skills.cat1.li1','skills.cat1.li2','skills.cat1.li3','skills.cat1.li4'],
+          ['skills.cat2.li1','skills.cat2.li2','skills.cat2.li3','skills.cat2.li4','skills.cat2.li5','skills.cat2.li6','skills.cat2.li7'],
+          ['skills.cat3.li1','skills.cat3.li2','skills.cat3.li3','skills.cat3.li4','skills.cat3.li5','skills.cat3.li6']
+        ];
+        cats.forEach((cat, idx)=>{
+          const items = Array.from(cat.querySelectorAll('.skills-list li'));
+          items.forEach((li, j)=>{
+            const key = li.getAttribute('data-i18n') || keysByCat[idx]?.[j];
+            const v = key ? t(key) : null;
+            if(v) li.textContent = v;
+          });
+        });
       }
 
       function setLang(lang){ current = lang; localStorage.setItem('lang', current); applyI18n(); }
