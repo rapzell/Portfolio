@@ -541,6 +541,8 @@
           'nav.inicio':'Inicio', 'nav.sobre_mi':'Sobre Mí', 'nav.proyectos':'Proyectos', 'nav.habilidades':'Habilidades', 'nav.certificados':'Certificados', 'nav.contacto':'Contacto',
           'hero.title':'Hola, soy David Valero Roman', 'hero.subtitle':'Desarrollador Vibe Coding', 'hero.description':'Creo aplicaciones para resolver problemas reales, de forma dinámica. Apasionado por el código limpio, las interfaces intuitivas y las soluciones innovadoras y de vanguardia.',
           'sections.sobre_mi':'Sobre Mí', 'sections.proyectos':'Mis Proyectos', 'sections.habilidades':'Habilidades Técnicas', 'sections.certificados':'Mis Certificados', 'sections.contacto':'Contacto',
+          'about.lead':'Soy un desarrollador de aplicaciones apasionado, llevo varios años formándome tanto de forma autodidacta como con cursos. Actualmente estoy cursando el Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).',
+          'about.body':'En este tiempo he trabajado en diversos proyectos propios que me han permitido desarrollar habilidades sólidas en desarrollo frontend y backend. Actualmente programo con VibeCoding porque pienso que es una capacitación técnica que está en la vanguardia de la programación.',
           'certs.intro':'Certificaciones profesionales que respaldan mi experiencia y conocimientos en desarrollo de aplicaciones.',
           'certs.basic.title':'Diseño Básico de Páginas Web','certs.basic.desc':'Técnicas básicas de desarrollo web',
           'certs.advanced.title':'Diseño Avanzado de Páginas Web','certs.advanced.desc':'Técnicas avanzadas de desarrollo web',
@@ -591,6 +593,8 @@
           'nav.inicio':'Home', 'nav.sobre_mi':'About Me', 'nav.proyectos':'Projects', 'nav.habilidades':'Skills', 'nav.certificados':'Certificates', 'nav.contacto':'Contact',
           'hero.title':'Hi, I\'m David Valero Roman', 'hero.subtitle':'Vibe Coding Developer', 'hero.description':'I build applications to solve real problems, dynamically. Passionate about clean code, intuitive interfaces, and cutting-edge solutions.',
           'sections.sobre_mi':'About Me', 'sections.proyectos':'My Projects', 'sections.habilidades':'Technical Skills', 'sections.certificados':'My Certificates', 'sections.contacto':'Contact',
+          'about.lead':'I am a passionate applications developer, with several years of training both self-taught and through courses. I am currently studying the Higher Degree in Multiplatform Application Development (DAM).',
+          'about.body':'During this time I have worked on various personal projects that helped me develop solid frontend and backend skills. I currently code with VibeCoding because I believe it is a cutting-edge technical training in programming.',
           'certs.intro':'Professional certifications that back my experience and knowledge in application development.',
           'certs.basic.title':'Basic Web Design','certs.basic.desc':'Foundational web development techniques',
           'certs.advanced.title':'Advanced Web Design','certs.advanced.desc':'Advanced web development techniques',
@@ -677,6 +681,12 @@
             });
           }
         });
+
+        // Force-apply for About section in case of late renders
+        const aboutLead = document.querySelector('#sobre-mi .about-lead');
+        const aboutBody = document.querySelector('#sobre-mi .about-micro');
+        if(aboutLead){ const v = t('about.lead'); if(v) aboutLead.textContent = v; }
+        if(aboutBody){ const v = t('about.body'); if(v) aboutBody.textContent = v; }
         // placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const key = el.getAttribute('data-i18n-placeholder'); const val = t(key); if(val!==null){ el.setAttribute('placeholder', val); }});
         // toggle active state
@@ -704,9 +714,16 @@
       }
 
       function setLang(lang){ current = lang; localStorage.setItem('lang', current); applyI18n(); }
-      if(btnES) btnES.addEventListener('click',()=> setLang('es'));
-      if(btnEN) btnEN.addEventListener('click',()=> setLang('en'));
-      applyI18n();
+      if(btnES) btnES.addEventListener('click',()=>{ current='es'; localStorage.setItem('lang','es'); applyI18n(); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
+      if(btnEN) btnEN.addEventListener('click',()=>{ current='en'; localStorage.setItem('lang','en'); applyI18n(); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
+
+      // aplicar en cuanto el DOM esté listo y tras carga completa
+      if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded', ()=>{ applyI18n(); setTimeout(applyI18n, 50); });
+      } else {
+        applyI18n();
+      }
+      window.addEventListener('load', ()=>{ setTimeout(applyI18n, 0); setTimeout(applyI18n, 150); setTimeout(applyI18n, 350); });
       // Exponer helper global para usar i18n fuera del IIFE
       window.I18N = {
         get: (key, fallback='')=>{ const v = t(key); return (v===null||v===undefined)? fallback : v; },
