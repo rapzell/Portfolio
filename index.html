@@ -146,6 +146,11 @@
     /* Ajustes generales para móvil */
     @media (max-width: 768px){
       html, body { overflow-x: hidden; }
+      .navbar{ padding: .7rem 1rem; }
+      .nav-menu{ gap: .8rem; flex-wrap: wrap; justify-content: center; }
+      .nav-link{ padding: .4rem .7rem; font-size: .95rem; }
+      .hero{ padding-top: 6rem; }
+      .hero-content{ max-width: 92vw; }
       .section-title{ font-size: 1.6rem; }
       .projects-grid{ gap: 1.2rem !important; }
       .project-card{ padding: 1rem !important; }
@@ -158,6 +163,24 @@
       .hero-subtitle{ font-size: 1.05rem !important; }
       .hero-description{ font-size: 1rem !important; }
       .dragon-svg{ width: 64px; height: 64px; }
+      .dragon-tooltip{ top:-58px; width: min(86vw, 260px); font-size: 14px; padding: 9px 14px; }
+      .certificate-info-body{ grid-template-columns: 1fr; }
+      .certificates-fan{ width: 88vw; height: 220px; }
+      .certificate-card{ width: 160px; height: 112px; margin-left:-80px; margin-top:-56px; }
+      .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(110px); }
+      .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(110px); }
+      .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(110px); }
+      .certificate-card:nth-child(4){ transform: rotateY(270deg) translateZ(110px); }
+    }
+
+    @media (max-width: 480px){
+      .nav-menu{ overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; gap: .6rem; justify-content: flex-start; padding-bottom:.25rem; }
+      .nav-menu::-webkit-scrollbar{ display:none; }
+      .section{ padding: 4rem 1rem; }
+      .about-avatar{ width: 150px; height: 150px; }
+      .skills-sub{ font-size: .85rem; }
+      .skills-list{ padding-left: .9rem; }
+      .project-card a{ display:inline-block; padding:.45rem .8rem !important; }
     }
 
     @media (max-width: 480px){
@@ -702,11 +725,20 @@
 
       const btnES = document.getElementById('lang-es');
       const btnEN = document.getElementById('lang-en');
-      const params = new URLSearchParams(location.search);
-      const paramLang = params.get('lang');
+      const getParams = ()=> new URLSearchParams(location.search);
+      const getParamLang = ()=> getParams().get('lang');
+      const setUrlLang = (lang)=>{
+        const url = new URL(location.href);
+        url.searchParams.set('lang', lang);
+        history.replaceState(null, '', url.toString());
+      };
       const stored = localStorage.getItem('lang');
-      let current = stored || (navigator.language && navigator.language.toLowerCase().startsWith('en') ? 'en' : 'es');
-      if(paramLang && (paramLang==='es' || paramLang==='en')){ current = paramLang; localStorage.setItem('lang', current); }
+      let current = (getParamLang() && (getParamLang()==='en' || getParamLang()==='es'))
+        ? getParamLang()
+        : (stored || (navigator.language && navigator.language.toLowerCase().startsWith('en') ? 'en' : 'es'));
+      // ensure URL always reflects current language for shareable links and caching scenarios
+      if(!getParamLang() || (getParamLang()!==current)) setUrlLang(current);
+      localStorage.setItem('lang', current);
 
       function t(key){ const dict = translations[current]||{}; return dict[key]||null; }
       function applyI18n(){
@@ -781,9 +813,14 @@
         }
       }
 
-      function setLang(lang){ current = lang; localStorage.setItem('lang', current); applyI18n(); }
-      if(btnES) btnES.addEventListener('click',()=>{ current='es'; localStorage.setItem('lang','es'); applyI18n(); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
-      if(btnEN) btnEN.addEventListener('click',()=>{ current='en'; localStorage.setItem('lang','en'); applyI18n(); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
+      function setLang(lang){
+        current = (lang==='en' || lang==='es') ? lang : 'es';
+        localStorage.setItem('lang', current);
+        setUrlLang(current);
+        applyI18n();
+      }
+      if(btnES) btnES.addEventListener('click',()=>{ setLang('es'); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
+      if(btnEN) btnEN.addEventListener('click',()=>{ setLang('en'); window.I18N&&window.I18N.apply&&window.I18N.apply(); });
 
       // aplicar en cuanto el DOM esté listo y tras carga completa
       if(document.readyState==='loading'){
