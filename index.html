@@ -244,8 +244,8 @@
     .i18n-fade{ transition: opacity .18s ease, transform .18s ease; will-change: opacity, transform; }
 
     @media (max-width:768px){
-      .certificates-fan{ width: 88vw; height: 560px !important; }
-      .certificate-card{ width: 230px; height: 340px !important; margin-left:-115px; margin-top:-170px; }
+      .certificates-fan{ width: 88vw; height: 380px !important; }
+      .certificate-card{ width: 230px; height: 220px !important; margin-left:-115px; margin-top:-110px; }
       .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(140px); }
       .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(140px); }
       .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(140px); }
@@ -504,19 +504,13 @@
       const cards=fan.querySelectorAll('.certificate-card');
       const vw=window.innerWidth||800;
       if(vw<=768){
-        let maxH=0;
+        const fixedH=vw<=390?210:220;
+        fan.style.height='380px';
         cards.forEach(c=>{
-          const prev=c.querySelector('.certificate-preview');
-          if(prev){
-            const contentH=prev.scrollHeight||200;
-            const h=Math.max(Math.ceil(contentH*0.65),180);
-            c.style.height=h+'px';
-            c.style.marginTop=(-h/2)+'px';
-            maxH=Math.max(maxH,h);
-          }
+          c.style.height=fixedH+'px';
+          c.style.marginTop=(-fixedH/2)+'px';
         });
-        fan.style.height=(maxH+120)+'px';
-        console.log('🔧 Cards sized:',maxH+'px @ '+vw+'px');
+        console.log('🔧 Cards fixed:',fixedH+'px @ '+vw+'px');
       }
     })();
     </script>
