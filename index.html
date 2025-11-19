@@ -140,9 +140,9 @@
     @media (max-width: 900px){
       .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; }
       /* Mostrar la foto arriba y el texto debajo */
-      .about-avatar-wrap{ grid-row: 1; justify-self: center; }
-      .about-text{ grid-row: 2; max-width: 100%; }
-      .about-card{ padding: 1.2rem 1.2rem; }
+      .about-avatar-wrap{ grid-row: 1; justify-self: center; text-align: center; width: 100%; }
+      .about-text{ grid-row: 2; max-width: 100%; width: 100%; }
+      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 92vw; margin: 0 auto; }
       .about-avatar{ width: 180px; height: 180px; }
     }
 
@@ -184,6 +184,8 @@
       .nav-menu::-webkit-scrollbar{ display:none; }
       .section{ padding: 4rem 1rem; }
       .about-avatar{ width: 150px; height: 150px; }
+      .about-card{ max-width: 94vw; }
+      .about-text{ padding: 0 .1rem; }
       .skills-sub{ font-size: .85rem; }
       .skills-list{ padding-left: .9rem; }
       .project-card a{ display:inline-block; padding:.45rem .8rem !important; }
