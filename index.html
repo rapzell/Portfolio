@@ -138,11 +138,11 @@
     .about-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
     .about-text{ max-width: 640px; }
     @media (max-width: 900px){
-      .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; }
+      .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; justify-items: center; }
       /* Mostrar la foto arriba y el texto debajo */
       .about-avatar-wrap{ grid-row: 1; justify-self: center; text-align: center; width: 100%; }
-      .about-text{ grid-row: 2; max-width: 100%; width: 100%; }
-      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 92vw; margin: 0 auto; }
+      .about-text{ grid-row: 2; max-width: 100%; width: 100%; display: flex; justify-content: center; }
+      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 96vw; margin: 0 auto; }
       .about-avatar{ width: 180px; height: 180px; }
     }
 
@@ -169,7 +169,7 @@
       .dragon-svg{ width: 64px; height: 64px; }
       .dragon-tooltip{ top:-58px; width: min(86vw, 260px); font-size: 14px; padding: 9px 14px; }
       /* evitar solape del tooltip con el hero en móviles: mantener margen superior */
-      .dragon{ margin-top: 8px; }
+      .dragon{ margin-top: 8px; right: 8px; }
       .certificate-info-body{ grid-template-columns: 1fr; }
       .certificates-fan{ width: 88vw; height: 220px; }
       .certificate-card{ width: 160px; height: 112px; margin-left:-80px; margin-top:-56px; }
