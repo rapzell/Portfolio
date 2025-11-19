@@ -243,6 +243,10 @@
     /* Animación sutil para cambios de idioma */
     .i18n-fade{ transition: opacity .18s ease, transform .18s ease; will-change: opacity, transform; }
 
+    /* Desplazamiento suave y margen superior al hacer scroll a secciones */
+    html{ scroll-behavior:smooth; }
+    .section{ scroll-margin-top: 110px; }
+
     @media (max-width:768px){
       .certificates-fan{ width: 88vw; height: 380px !important; }
       .certificate-card{ width: 230px; height: 220px !important; margin-left:-115px; margin-top:-110px; }
@@ -1635,6 +1639,30 @@
           btn.disabled = false; btn.textContent = 'Enviar Mensaje';
         }
       });
+    })();
+
+    // Scroll a secciones con offset para que el título quede más visible
+    (function(){
+      function getOffset(){ return (window.innerWidth||800) <= 768 ? 90 : 110; }
+      function scrollToId(id){
+        const el = document.getElementById(id);
+        if(!el) return;
+        const y = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - getOffset());
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+      // Enlaces de la barra de navegación
+      document.querySelectorAll('.nav-link[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          const hash = a.getAttribute('href');
+          if(!hash || hash === '#') return;
+          e.preventDefault();
+          const id = hash.slice(1);
+          history.pushState(null, '', hash);
+          scrollToId(id);
+        });
+      });
+      // Si ya viene con hash, ajustar tras montar
+      if(location.hash){ setTimeout(()=> scrollToId(location.hash.slice(1)), 60); }
     })();
   </script>
 </body>
