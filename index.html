@@ -8,7 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #F5F5F5; background: #0E0F13; overflow-x: hidden; }
 
-    .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(14,15,19,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(89,150,194,0.2); z-index: 1000; padding: 1rem 2rem; }
+    .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(14,15,19,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(89,150,194,0.2); z-index: 1000; padding: 1rem 2rem; display:flex; flex-direction: column; gap:.35rem; }
     .nav-brand { font-size: 1.5rem; font-weight: 700; color: #5996C2; }
     .nav-menu { display: flex; list-style: none; gap: 2rem; justify-content: center; margin-top: .75rem; }
     .nav-link { text-decoration: none; color: #E0E0E0; font-weight: 500; padding: .5rem 1rem; border-radius: 6px; transition: all .3s; }
@@ -16,10 +16,10 @@
 
     .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; background: linear-gradient(135deg,#0E0F13 0%,#1a1b26 50%,#2d1b69 100%); position: relative; overflow: hidden; }
     .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at 20% 80%, rgba(89,150,194,.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(124,58,237,.1) 0%, transparent 50%); pointer-events:none; }
-    .hero-content { max-width: 800px; position: relative; z-index: 2; }
-    .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero-subtitle { font-size: 1.5rem; margin-bottom: 1rem; opacity: .9; color: #E0E0E0; }
-    .hero-description { font-size: 1.2rem; margin-bottom: 2rem; opacity: .8; color: #B0B0B0; }
+    .hero-content { max-width: 800px; position: relative; z-index: 2; padding: 0 1rem; }
+    .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #5996C2, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; word-break: normal; overflow-wrap: anywhere; hyphens: auto; line-height: 1.15; }
+    .hero-subtitle { font-size: 1.5rem; margin-bottom: 1rem; opacity: .9; color: #E0E0E0; word-break: normal; overflow-wrap: anywhere; hyphens: auto; }
+    .hero-description { font-size: 1.2rem; margin-bottom: 2rem; opacity: .8; color: #B0B0B0; word-break: normal; overflow-wrap: anywhere; hyphens: auto; }
 
     .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
     .section-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 3rem; color: #F5F5F5; }
@@ -147,9 +147,10 @@
     @media (max-width: 768px){
       html, body { overflow-x: hidden; }
       .navbar{ padding: .7rem 1rem; }
-      .nav-menu{ gap: .8rem; flex-wrap: wrap; justify-content: center; }
+      .nav-menu{ gap: .8rem; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; padding-bottom:.25rem; }
+      .nav-menu::-webkit-scrollbar{ display:none; }
       .nav-link{ padding: .4rem .7rem; font-size: .95rem; }
-      .hero{ padding-top: 6rem; }
+      .hero{ padding-top: 6.5rem; }
       .hero-content{ max-width: 92vw; }
       .section-title{ font-size: 1.6rem; }
       .projects-grid{ gap: 1.2rem !important; }
@@ -164,6 +165,8 @@
       .hero-description{ font-size: 1rem !important; }
       .dragon-svg{ width: 64px; height: 64px; }
       .dragon-tooltip{ top:-58px; width: min(86vw, 260px); font-size: 14px; padding: 9px 14px; }
+      /* evitar solape del tooltip con el hero en móviles: mantener margen superior */
+      .dragon{ margin-top: 8px; }
       .certificate-info-body{ grid-template-columns: 1fr; }
       .certificates-fan{ width: 88vw; height: 220px; }
       .certificate-card{ width: 160px; height: 112px; margin-left:-80px; margin-top:-56px; }
