@@ -509,13 +509,13 @@
           const prev=c.querySelector('.certificate-preview');
           if(prev){
             const contentH=prev.scrollHeight||200;
-            const h=Math.max(Math.ceil(contentH*1.15),260);
+            const h=Math.max(Math.ceil(contentH*0.65),180);
             c.style.height=h+'px';
             c.style.marginTop=(-h/2)+'px';
             maxH=Math.max(maxH,h);
           }
         });
-        fan.style.height=(maxH+160)+'px';
+        fan.style.height=(maxH+120)+'px';
         console.log('🔧 Cards sized:',maxH+'px @ '+vw+'px');
       }
     })();
