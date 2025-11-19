@@ -595,38 +595,6 @@
 
 
   <script>
-    // FORZAR ALTURA DE TARJETAS DEL CARRUSEL EN MÓVIL (ejecutar primero)
-    (function(){
-      function forceCardSizes(){
-        const fan = document.getElementById('certificatesFan');
-        if(!fan) return;
-        const cards = fan.querySelectorAll('.certificate-card');
-        if(!cards.length) return;
-        const vw = window.innerWidth || 800;
-        const isMobile = vw <= 768;
-        if(isMobile){
-          const cardH = vw <= 390 ? 380 : 360;
-          const fanH = cardH + 200;
-          fan.style.height = fanH + 'px';
-          fan.style.minHeight = fanH + 'px';
-          cards.forEach(c=>{
-            c.style.height = cardH + 'px';
-            c.style.minHeight = cardH + 'px';
-            c.style.marginTop = (-Math.round(cardH/2)) + 'px';
-          });
-          console.log('✅ Tarjetas carrusel ajustadas:', cardH+'px', 'para', vw+'px viewport');
-        }
-      }
-      if(document.readyState==='loading'){
-        document.addEventListener('DOMContentLoaded', forceCardSizes);
-      } else {
-        forceCardSizes();
-      }
-      window.addEventListener('load', forceCardSizes);
-      setTimeout(forceCardSizes, 100);
-      setTimeout(forceCardSizes, 300);
-    })();
-
     // I18n básico ES/EN con persistencia
     (function(){
       const translations = {
