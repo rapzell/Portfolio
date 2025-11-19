@@ -138,8 +138,11 @@
     .about-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
     .about-text{ max-width: 640px; }
     @media (max-width: 900px){
-      .about-grid{ grid-template-columns: 1fr; gap: 2rem; }
-      .about-text{ max-width: 100%; }
+      .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; }
+      /* Mostrar la foto arriba y el texto debajo */
+      .about-avatar-wrap{ grid-row: 1; justify-self: center; }
+      .about-text{ grid-row: 2; max-width: 100%; }
+      .about-card{ padding: 1.2rem 1.2rem; }
       .about-avatar{ width: 180px; height: 180px; }
     }
 
