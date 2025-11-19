@@ -504,10 +504,19 @@
       const cards=fan.querySelectorAll('.certificate-card');
       const vw=window.innerWidth||800;
       if(vw<=768){
-        const h=vw<=390?400:380;
-        fan.style.height=(h+200)+'px';
-        cards.forEach(c=>{c.style.height=h+'px';c.style.marginTop=(-h/2)+'px';});
-        console.log('🔧 Cards forced:',h+'px @ '+vw+'px');
+        let maxH=0;
+        cards.forEach(c=>{
+          const prev=c.querySelector('.certificate-preview');
+          if(prev){
+            const contentH=prev.scrollHeight||200;
+            const h=Math.max(Math.ceil(contentH*1.15),260);
+            c.style.height=h+'px';
+            c.style.marginTop=(-h/2)+'px';
+            maxH=Math.max(maxH,h);
+          }
+        });
+        fan.style.height=(maxH+160)+'px';
+        console.log('🔧 Cards sized:',maxH+'px @ '+vw+'px');
       }
     })();
     </script>
