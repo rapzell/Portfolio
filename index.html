@@ -246,11 +246,11 @@
     @media (max-width:768px){
       .certificates-fan{ width: 88vw; height: 380px !important; }
       .certificate-card{ width: 230px; height: 220px !important; margin-left:-115px; margin-top:-110px; }
-      .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(140px); }
-      .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(140px); }
-      .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(140px); }
-      .certificate-card:nth-child(4){ transform: rotateY(270deg) translateZ(140px); }
-      .certificate-card:hover,.certificate-card.enlarged{ transform: rotateY(var(--rotation,0deg)) translateZ(140px) scale(1.2); }
+      .certificate-card:nth-child(1){ transform: rotateY(0deg) translateZ(160px); }
+      .certificate-card:nth-child(2){ transform: rotateY(90deg) translateZ(160px); }
+      .certificate-card:nth-child(3){ transform: rotateY(180deg) translateZ(160px); }
+      .certificate-card:nth-child(4){ transform: rotateY(270deg) translateZ(160px); }
+      .certificate-card:hover,.certificate-card.enlarged{ transform: rotateY(var(--rotation,0deg)) translateZ(160px) scale(1.2); }
       .certificate-info-area{ padding: 1.4rem; }
       .certificate-info-body{ grid-template-columns:1fr; gap: 14px; }
       .certificate-info-header{ flex-direction:column; gap:.6rem; }
@@ -1437,7 +1437,8 @@
 
       // Posicionar dinámicamente todas las tarjetas alrededor de 360°
       const n = cards.length;
-      const z = Math.min(150, Math.max(100, Math.floor((fan.clientWidth || 600)/4)));
+      const vw = window.innerWidth || 800;
+      const z = vw <= 768 ? 160 : Math.min(150, Math.max(100, Math.floor((fan.clientWidth || 600)/4)));
       // Overrides de tamaño vía query (?cardH=320&cardW=240&fanH=520&desc=.76rem&title=1rem)
       try{
         const usp = new URLSearchParams(location.search);
