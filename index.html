@@ -138,11 +138,11 @@
     .about-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
     .about-text{ max-width: 640px; }
     @media (max-width: 900px){
-      .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; justify-items: center; }
+      .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; justify-items: stretch; }
       /* Mostrar la foto arriba y el texto debajo */
-      .about-avatar-wrap{ grid-row: 1; justify-self: center; text-align: center; width: 100%; }
-      .about-text{ grid-row: 2; max-width: 100%; width: 100%; display: flex; justify-content: center; }
-      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 96vw; margin: 0 auto; }
+      .about-avatar-wrap{ grid-row: 1; justify-self: center; text-align: center; width: auto; }
+      .about-text{ grid-row: 2; max-width: 100%; width: 100%; }
+      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 100%; margin: 0; }
       .about-avatar{ width: 180px; height: 180px; }
     }
 
@@ -184,8 +184,8 @@
       .nav-menu::-webkit-scrollbar{ display:none; }
       .section{ padding: 4rem 1rem; }
       .about-avatar{ width: 150px; height: 150px; }
-      .about-card{ max-width: 94vw; }
-      .about-text{ padding: 0 .1rem; }
+      .about-card{ width: 100%; max-width: 100%; }
+      .about-text{ padding: 0; }
       .skills-sub{ font-size: .85rem; }
       .skills-list{ padding-left: .9rem; }
       .project-card a{ display:inline-block; padding:.45rem .8rem !important; }
