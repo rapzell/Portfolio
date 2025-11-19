@@ -141,8 +141,9 @@
       .about-grid{ grid-template-columns: 1fr; gap: 1.4rem; align-items: start; justify-items: stretch; }
       /* Mostrar la foto arriba y el texto debajo */
       .about-avatar-wrap{ grid-row: 1; justify-self: center; text-align: center; width: auto; }
-      .about-text{ grid-row: 2; max-width: 100%; width: 100%; }
-      .about-card{ padding: 1.2rem 1.2rem; width: 100%; max-width: 100%; margin: 0; }
+      .about-text{ grid-row: 2; max-width: 100%; width: 100%; display:block; }
+      .about-card{ display:block; box-sizing: border-box; padding: 1.2rem 1.2rem; width: 100% !important; max-width: 100% !important; margin: 0; }
+      .about-card p{ max-width: 100%; }
       .about-avatar{ width: 180px; height: 180px; }
     }
 
@@ -184,7 +185,7 @@
       .nav-menu::-webkit-scrollbar{ display:none; }
       .section{ padding: 4rem 1rem; }
       .about-avatar{ width: 150px; height: 150px; }
-      .about-card{ width: 100%; max-width: 100%; }
+      .about-card{ width: 100% !important; max-width: 100% !important; border-radius: 14px; }
       .about-text{ padding: 0; }
       .skills-sub{ font-size: .85rem; }
       .skills-list{ padding-left: .9rem; }
@@ -287,7 +288,7 @@
 
   <section id="sobre-mi" class="section" style="background: linear-gradient(135deg,#1a1b26 0%,#0E0F13 100%);">
     <h2 class="section-title" data-i18n="sections.sobre_mi">Sobre Mí</h2>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;">
+    <div class="about-grid">
       <div class="about-text">
         <div class="about-card">
           <p class="about-lead" data-i18n="about.lead">Soy un desarrollador de aplicaciones apasionado, llevo varios años formándome tanto de forma autodidacta como con cursos. Actualmente estoy cursando el Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).</p>
