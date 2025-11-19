@@ -497,6 +497,20 @@
         </div>
       </div>
     </div>
+    <script>
+    (function(){
+      const fan=document.getElementById('certificatesFan');
+      if(!fan)return;
+      const cards=fan.querySelectorAll('.certificate-card');
+      const vw=window.innerWidth||800;
+      if(vw<=768){
+        const h=vw<=390?400:380;
+        fan.style.height=(h+200)+'px';
+        cards.forEach(c=>{c.style.height=h+'px';c.style.marginTop=(-h/2)+'px';});
+        console.log('🔧 Cards forced:',h+'px @ '+vw+'px');
+      }
+    })();
+    </script>
 
     <!-- Área para mostrar información detallada de certificados -->
     <div id="certificate-info-area" class="certificate-info-area" style="display:none;">
