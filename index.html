@@ -1024,9 +1024,22 @@
       infoArea.style.display='block'; requestAnimationFrame(()=>{ infoArea.classList.add('show'); try{ window.I18N && window.I18N.apply(); }catch(_){/*noop*/} });
     }
 
-    // Pausar el giro del abanico cuando se hace hover sobre él (opcional)
+    // Pausar brevemente el giro del abanico en hover y reanudarlo automáticamente a los 2s
     const fan = document.getElementById('certificatesFan');
-    if(fan){ fan.addEventListener('mouseenter',()=>fan.classList.add('paused')); fan.addEventListener('mouseleave',()=>fan.classList.remove('paused')); }
+    if(fan){
+      let hoverTimer = null;
+      const clear = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } };
+      const resume = ()=>{ fan.classList.remove('paused'); clear(); };
+      fan.addEventListener('mouseenter',()=>{
+        clear();
+        fan.classList.add('paused');
+        hoverTimer = setTimeout(resume, 2000);
+      });
+      fan.addEventListener('mouseleave',()=>{
+        clear();
+        resume();
+      });
+    }
 
     // Dragón con movimiento inteligente
     (function(){
