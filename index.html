@@ -1500,7 +1500,6 @@
       function enlargeCard(card){
         cards.forEach(c=>c.classList.remove('enlarged'));
         card.classList.add('enlarged');
-        fan.classList.add('paused');
         enlargedCard = card;
         // Mostrar detalles del certificado seleccionado
         try { showCertificateDetails(card); } catch(e) { /* no-op */ }
@@ -1508,7 +1507,6 @@
 
       function resetEnlarge(){
         cards.forEach(c=>c.classList.remove('enlarged'));
-        fan.classList.remove('paused');
         enlargedCard = null;
       }
 
