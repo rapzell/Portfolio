@@ -1,0 +1,15 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/Certificados/*"
+  [headers.values]
+    Cache-Control = "public, max-age=60"
+
+[dev]
+  port = 8888
